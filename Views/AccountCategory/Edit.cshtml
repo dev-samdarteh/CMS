@@ -1,0 +1,125 @@
+﻿@*@model RhemaCMS.Models.CLNTModels.AccountCategory
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+
+<h4>AccountCategory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="AppGlobalOwnerId" class="control-label"></label>
+                <select asp-for="AppGlobalOwnerId" class="form-control" asp-items="ViewBag.AppGlobalOwnerId"></select>
+                <span asp-validation-for="AppGlobalOwnerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChurchBodyId" class="control-label"></label>
+                <select asp-for="ChurchBodyId" class="form-control" asp-items="ViewBag.ChurchBodyId"></select>
+                <span asp-validation-for="ChurchBodyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryDesc" class="control-label"></label>
+                <input asp-for="CategoryDesc" class="form-control" />
+                <span asp-validation-for="CategoryDesc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentCategoryId" class="control-label"></label>
+                <select asp-for="ParentCategoryId" class="form-control" asp-items="ViewBag.ParentCategoryId"></select>
+                <span asp-validation-for="ParentCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryCode" class="control-label"></label>
+                <input asp-for="CategoryCode" class="form-control" />
+                <span asp-validation-for="CategoryCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="strParentCategoryCode" class="control-label"></label>
+                <input asp-for="strParentCategoryCode" class="form-control" />
+                <span asp-validation-for="strParentCategoryCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="strSubCategoryCode" class="control-label"></label>
+                <input asp-for="strSubCategoryCode" class="form-control" />
+                <span asp-validation-for="strSubCategoryCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountType" class="control-label"></label>
+                <input asp-for="AccountType" class="form-control" />
+                <span asp-validation-for="AccountType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReportArea" class="control-label"></label>
+                <input asp-for="ReportArea" class="form-control" />
+                <span asp-validation-for="ReportArea" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BalanceType" class="control-label"></label>
+                <input asp-for="BalanceType" class="form-control" />
+                <span asp-validation-for="BalanceType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Owner" class="control-label"></label>
+                <input asp-for="Owner" class="form-control" />
+                <span asp-validation-for="Owner" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OwnerKey" class="control-label"></label>
+                <input asp-for="OwnerKey" class="form-control" />
+                <span asp-validation-for="OwnerKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LevelIndex" class="control-label"></label>
+                <input asp-for="LevelIndex" class="form-control" />
+                <span asp-validation-for="LevelIndex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" class="form-control" />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastMod" class="control-label"></label>
+                <input asp-for="LastMod" class="form-control" />
+                <span asp-validation-for="LastMod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedByUserId" class="control-label"></label>
+                <input asp-for="CreatedByUserId" class="form-control" />
+                <span asp-validation-for="CreatedByUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastModByUserId" class="control-label"></label>
+                <input asp-for="LastModByUserId" class="form-control" />
+                <span asp-validation-for="LastModByUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>*@

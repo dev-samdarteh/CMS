@@ -1,0 +1,904 @@
+﻿
+@model RhemaCMS.Models.ViewModels.MSTRChurchBodyModel
+
+@{
+    /// headers
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Church Units";
+    ///
+    ViewData["Title"] = @_pageTitle;
+    //ViewData["Title"] = Model.strAppName + " - Church Units";
+    Layout = "_Layout_sa";
+}
+
+
+<body id="page-top" class="w-100">
+    @{
+        var _oAGOId = -1; if (Model.oAppGloOwnId != null) { _oAGOId = (int)Model.oAppGloOwnId; };
+        //var _oCBId = -1; if (Model.oChurchBodyId != null) { _oCBId = (int)Model.oChurchBodyId; }
+    }
+
+    @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />*@
+
+
+    @*<input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+            <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+            <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+            <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+        <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oSubSetIndex" data-value="@Model.subSetIndex" />*@
+
+    <input type="hidden" asp-for="oAppGloOwnId" id="_oAppGloOwnId" />
+    <input type="hidden" asp-for="PageIndex" id="_PageIndex" />
+
+
+    <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+    <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+    @*<input type="hidden" id="_pageIndex" data-value="@Model.pageIndex" />*@
+    <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+
+
+    <div class="card bg-gradient-light">
+        <div class="card-header border-bottom">
+            <h3 class="card-title text-primary">
+                <i class="fas fa-th mr-1"></i>
+                @Model.strCurrTask
+            </h3>
+            <div class="card-tools">
+                @*<ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index_sa">Home</a></li>
+                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                    </ol>*@
+                <button type="button" class="btn btn-sm bg-light" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-sm bg-danger text-light" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="wrapper">
+                @*<div class="content-header pb-0">
+            <div class="container-fluid pb-0">
+                <div class="row mb-0">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+                @*@if (Model.setIndex == 1)
+        {
+            //var _strDesc = "'" + (Model.subSetIndex == 1 ? "Church unit" : "Faith Category") + "'";*@
+                <div class="card-body bg-transparent w-50" style="margin: 0 auto 0 auto ; padding:0; ">
+                    <div class="form-group row">
+                        <small class="font-weight-normal" asp-for="strAppGlobalOwn"><i class="fa fa-filter fa-sm text-gray"></i> &nbsp; Denomination (Church)</small>
+                        @*<label class="font-weight-normal" asp-for="oAppGloOwnId"> <i class="fa fa-filter fa-sm text-gray"></i> &nbsp; Denomination (Church) </label>*@
+                        <select id="_AppGlobalOwnerId" class="form-control" asp-for="oAppGloOwnId" asp-items="Model.lkpAppGlobalOwns" placeholder="Denomination (Church)" aria-describedby="fd_AppGlobalOwnerId" required>
+                            <option selected disabled value="">Select denomination (church)...</option>
+                        </select>
+                        <div class="invalid-feedback" id="fd_AppGlobalOwnerId">
+                            Select the denomination (church)
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="cus-div" style="width:100%; border: 1px inset #000;" />
+                <br />
+
+                @if (Model.PageIndex == 1)
+                {
+                    //var strHeadUnitDesc = !string.IsNullOrEmpty(Model.strParentCB_HeaderDesc) ? Model.strParentCB_HeaderDesc : " Chuch level "; 
+
+                    <table id="tbId_ChurchBody" class="table table-sm  table-bordered table-striped table-responsive-sm table-hover bg-white  pl-0 " cellspacing="0" style="border: 1px solid #2c2f5b">
+                        <thead>
+                            <tr>
+                                <th class="pl-2 " style="vertical-align: middle">
+                                    Congregation
+                                </th>
+                                <th style="vertical-align: middle">
+                                    Location
+                                </th>
+                                <th style="vertical-align: middle; text-align:center">
+                                    Church code
+                                </th>
+                                <th  style="vertical-align: middle; text-align:center">
+                                    Church Level @*Congregation Type*@
+                                </th>
+                                <th style="vertical-align: middle">
+                                    Parent Unit
+                                </th>
+                                <th  style="vertical-align: middle; text-align:center">
+                                    Status
+                                </th>
+                                <th width="100px" style="vertical-align: middle; text-align:center">
+                                    <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CB" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="1" data-backdrop="static" data-keyboard="false">
+                                        <i class="fa fa-refresh fa-sm text-success"></i>
+                                    </a>
+                                    @if (Model.oAppGloOwnId != null)
+                                    {
+                                        <a href="#" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                           onclick="AddEditCurrData_CB(0, @Model.oAppGloOwnId, @Model.PageIndex, '[New] Church unit')">
+                                            <i class="fa fa-plus fa-primary fa-sm "></i>
+                                        </a>
+                                    }
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.lsChurchBodyModels)
+                            {
+                                var strDesc = "'" + item.strChurchBody + "'";
+
+                            <tr>
+                                <td class="pl-2 border" style="vertical-align: middle">
+                                    @Html.DisplayFor(modelItem => item.strChurchBody)
+                                </td>
+                                <td class="border">
+                                    @{ var locDesc = (string.IsNullOrEmpty(item.strCongLoc) ? item.strCongLoc : item.strCongLoc2); }
+                                    @Html.DisplayFor(modelItem => locDesc)
+                                </td>
+                                <td class="text-center border">
+                                    @Html.DisplayFor(modelItem => item.oChurchBody.GlobalChurchCode)
+                                </td>
+                                <td class="text-center border">
+                                    @Html.DisplayFor(modelItem => item.strChurchLevel)
+                                </td>
+                                <td class="border">
+                                    @Html.DisplayFor(modelItem => item.strParentChurchBody)
+                                </td>
+                                <td class="text-center border">
+                                    @if (item.oChurchBody.Status == "A")
+                                            {<span class="badge badge-success">@Html.DisplayFor(modelItem => item.strStatus)</span> }
+                                        else
+                                            { <span class="badge badge-secondary">@Html.DisplayFor(modelItem => item.strStatus)</span>} 
+                                </td>
+                                <td style="vertical-align: middle ; text-align:center">
+                                    @if (item.oChurchBody.OrganisationType != "CR") // && item.numCLIndex > Model.oChurchBody_Logged.ChurchLevel.LevelIndex)
+                                    {
+                                        <div class="btn-group dropright ">
+                                            <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h text-gray text-lg"></i>
+                                            </button>
+                                            <div class="dropdown-menu p-1">
+                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                   onclick="AddEditCurrData_CB(@item.oChurchBody.Id, @item.oChurchBody.AppGlobalOwnerId, @Model.PageIndex, @strDesc)">
+                                                    <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                </a>
+                                                <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_CB(@item.oChurchBody.Id, @Model.PageIndex, false, '')">
+                                                    <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    } 
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                }
+
+                <!-- /.content-wrapper -->
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center; display:none" id="divLoader">
+        <img src="~/css/images/load.gif" width="100" />
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- Scroll to Top Button-->
+    @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+
+
+    <div id="loaderr">
+
+    </div>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="_modalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-teal text-light">
+                    <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                </div>
+                <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                    <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                    <button id="btnSaveChanges" type="submit" class="btn btn-outline-primary save-data font-weight-bold"><i class="fa fa-database fa-sm"></i> Save changes </button>
+
+                    @*<button id="btnSaveChanges" class="btn btn-primary" type="submit" >Submit form</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal-->
+    <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+        <div class="modal-dialog modal-sm bg-info" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 style="color: white; font-weight:bold"> Done! </h5>
+                </div>
+                <div class="modal-body bg-white" style="align-items:center">
+                    <label id="lblUserMessage" class="text-sm font-weight-normal text-center"></label>
+                </div>
+
+                <div class="modal-footer bg-white">
+                    <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<partial name="_CookieConsentPartial" />   *@
+
+
+</body>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+    <script>
+            
+
+
+        $(document).ready(function () {
+            //for table row
+            $("tr:even").css("background-color", "#fff");
+            $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+            $('#tbId_ChurchBody').DataTable({
+                "processing": true,
+                "columnDefs": [
+                    { "orderable": false, "targets": [0] },
+                    { "searchable": false, "orderable": false, "targets": [6] },
+                ],
+            });
+
+        });
+
+
+
+        var AddEditCurrData_CB = function (currId, currDenomId, _pageIndex, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+            //     alert('addORedit...');
+            //alert('addORedit.. ' + currId + ' ..currDenomId: ' + currDenomId + ' .._pageIndex: ' + _pageIndex + ' .._strItemName: ' + _strItemName);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+           // var currParBodyId = null;
+
+            if (currId < 0) currId = null;
+            if (currDenomId < 0) currDenomId = null;
+
+            //if (currChuBodyId < 0) currChuBodyId = null;
+            // if (currSetIndex < 0) currSetIndex = null;
+            //if (currSubSetIndex < 0) currSubSetIndex = null;
+
+               //  public IActionResult AddOrEdit_CB(int id = 0, int? oAppGloOwnId = null, int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null)
+
+                var url = "@Url.Action("AddOrEdit_CB", "AppVenAdmin")?id=" + currId + "&oAppGloOwnId=" + currDenomId + "&pageIndex=" + _pageIndex +
+                                            "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                     //   alert(url)
+
+                       // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                      //  alert(url)
+
+                        $('#divPopModal_AddEdit_lg').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit_lg').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit_lg .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+
+                        //alert('loading modal...')
+                        //$("#_setIndex").val(setIndex);
+                        //$('#divModalBody_AddEdit_lg').load(url, function () {
+                        $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);  
+                           // alert('load level..')
+                            $('#_ChurchLevelId').change();
+
+                            $("#divPopModal_AddEdit_lg").modal('show'); 
+                        });
+
+        };
+ 
+        var DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='') {   //currSubSetIndex,  proScope, subScope,
+
+            if (reload == false) {
+                if (newItemId != null ) {
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close',
+                        buttons: {
+                            ok: {
+                                btnClass: 'btn-info',
+                                action: function () {
+                                    AddEditCurrData_CB(newItemId, currDenomId, pageIndex, _hdrdesc);
+                                }
+                            }
+                        }
+                    });
+
+                }
+                else {
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close',
+                        btnClass: 'btn-info'
+                    });
+                }
+
+            }
+
+            else {
+                $.alert({
+                    title: 'Done!',
+                    type: 'green',
+                    typeAnimated: true,
+                    content: msg,
+                    closeIcon: true,
+                    closeIconClass: 'fa fa-close',
+                    buttons: {
+                        ok: {
+                            btnClass: 'btn-info',
+                            action: function () {
+                                ReloadCurrPage_CB(currDenomId, pageIndex);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+ 
+            //public ActionResult Index(int? oDenomId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 1, int? oParentId = null)
+        var ReloadCurrPage_CB = function (currDenomId = null, _pageIndex = 1) { //, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+                        //alert('load..');
+                      //  alert('load.. ' + currDenomId);
+
+                        //    public ActionResult Index_CB(int? oAppGloOwnId = null, int pageIndex = 1)
+            window.location.href = '@Url.Action("Index_CB", "AppVenAdmin")?oAppGloOwnId=' + currDenomId + '&pageIndex=' + _pageIndex; //+ '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+                        //if (parId == '') {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        //}
+                        //else {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+                        //}
+                    }
+    </script>
+
+
+    <script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+           // alert('click..');
+
+            const form = document.getElementById("currForm_CB");
+
+            if (form.checkValidity() === true) {
+
+                SaveCurr_CB(); //currSetIndex, currSubSetIndex);
+            }
+            else {
+               // alert('val 5')
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+
+           // }, false);
+        })
+
+        var SaveCurr_CB = function () { // (currSetIndex, currSubSetIndex) {
+            // alert('saving CL... ');
+
+            var currFormData = new FormData($("#currForm_CB").get(0));
+            // var currFormData = $("#currForm_CB").serialize();
+
+
+          //  alert('save... submitting...');
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEdit_CB", "AppVenAdmin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_CB",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                      //  var currChuBodyId = $("#_hdnChuBodyId").val();
+
+                        //var currId = $("#_hdnCurrId_CB").val();
+                      //  var _pageIndex = $("#_hdnPageIndex").val();
+                        //alert("saving currId: " + currId + " ...page: " + res.pageIndex);
+
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+
+                        var _desc = "'[New] Church unit'";
+                        if (res.resetNew == true) {
+                            //DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='')
+                            DisplaySuccessInfo(res.userMess, currDenomId, res.pageIndex, false, 0, _desc);
+
+                            // AddEditCurrData_CB = function (currId, currDenomId, _pageIndex, _strItemName)
+                           // AddEditCurrData_CB(0, currDenomId, _pageIndex, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                        }
+                        else {
+                            DisplaySuccessInfo(res.userMess, currDenomId, 1, true);
+
+                            //$("#btnSaveChanges").prop();
+                           // alert('closing...')
+
+                           // $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                      //  alert('err: ' + res.userMess);
+
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+        var DeleteCurrData_CB = function (currId, _pageIndex, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+
+       // var currUserId = $("#_oUserId_Logged").val();
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+      //  var currDenomId = $("#_hdnAppGloOwnId").val();
+        var currDenomId = $("#_oAppGloOwnId").val();
+
+       // var _pageIndex = $("#_hdnPageIndex").val();
+
+     //  alert('currDenomId: ' + currDenomId)
+     //  alert('currUserId: ' + currUserId_Logged)
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified church unit' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_CB", "AppVenAdmin")',
+                               // url: "/AppVenAdmin/Delete_CB",
+                                // public IActionResult Delete_CB(int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                data: { loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, currDenomId, _pageIndex, true); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                      //  ReloadCurrPage_CB(currDenomId, _pageIndex); //(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);                  // (oAppGloId, currChuBodyId, currSetIndex);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_CB(currId, _pageIndex, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+
+
+
+    <script> 
+        $(document).on('change', '#_AppGlobalOwnerId', function (e) {
+            e.preventDefault();
+
+            var appOwnId = $("#_AppGlobalOwnerId").val();
+
+           // var _pageIndex = $("#_hdnPageIndex").val();
+            var _pageIndex = $("#_PageIndex").val();
+
+          //    alert('mainId: ' + mainId);
+
+            ReloadCurrPage_CB(appOwnId, _pageIndex);
+
+        });
+
+
+        $(document).on('change', '#_CountryId', function (e) {
+            e.preventDefault();
+
+         var _ctryId = $("#_CountryId").val();
+
+            var hdn_CountryRegionId = $('#hdn_CountryRegionId').val();
+            
+         //  alert('ctryId: ' + _ctryId);
+
+            var url = '@Url.Action("GetCountryRegionsByCountry", "AppVenAdmin")'; // '@Url.Content("~/")' + 'AppVenAdmin/GetCountryRegionsByCountry';
+            $('#_CountryRegionId').empty();
+            //GetCountryRegionsByCountry( int? ctryId, bool addEmpty = false)
+            $.getJSON(url, { ctryId: _ctryId, addEmpty: true }, function (data) {
+                if (Object.keys(data).length > 0) {
+                    var items = '';
+                    $.each(data, function (i, ctryReg) {
+                        items += "<option value='" + ctryReg.value + "'>" + ctryReg.text + "</option>";   // alert(items);
+                    });
+                    // items += "<option value=''> Select </option>";
+                 //   alert(items)
+                    $('#_CountryRegionId').html(items);
+
+                    $('#_CountryRegionId').val(hdn_CountryRegionId); 
+                }
+            });
+        })
+
+
+
+
+         @*$(document).on('change', '#_ParentChurchBodyId', function (e) {
+            e.preventDefault();
+
+             var currDenomId = $("#_oAppGloOwnId").val();
+              var parentCBId = $("#_ParentChurchBodyId").val();
+             //  alert('ctryId: ' + ctryId);
+
+            var url = '@Url.Action("GetCountryByParentChurchBody", "AppVenAdmin")';
+             $('#_CountryId').empty();
+
+             document.getElementById('_CountryId').value = '';
+             $.getJSON(url, { oParentCBId: parentCBId, oAppGloOwnId: currDenomId }, function (res) {
+                 if (res != null) {  // alert(res.taskSuccess);  alert(res.strResId); alert(res.strRes);
+                     document.getElementById('_CountryId').value = res.strResId;
+                 }
+             });
+
+             // And now fire change event when the DOM is ready
+             $('#_CountryId').trigger('change');    // $('#_CountryId').change();
+        })*@
+
+         
+
+         $(document).on('change', '#_ChurchBodyId_4', function (e) {
+            e.preventDefault();
+
+           //  alert('_ChurchBodyId_4: ' + $("#_ChurchBodyId_4").val())
+
+            var currDenomId = $("#_oAppGloOwnId").val();
+            var parentCBId = $("#_ChurchBodyId_4").val();
+             var hdn_ChurchBodyId_5 = $('#hdn_ChurchBodyId_5').val();
+           //  alert('4. parentCBId: ' + parentCBId);
+
+            var url = '@Url.Action("GetChurchBodyListByParentBody", "AppVenAdmin")';
+            $('#_ChurchBodyId_5').empty();
+
+             //  public JsonResult GetChurchBodyListByParentBody(int? oParentCBId, int? oAppGloOwnId, string strOrgType = null, bool addEmpty = false)
+             $.getJSON(url, { oParentCBId: parentCBId, oAppGloOwnId: currDenomId, strOrgType: 'CH', addEmpty: true }, function (data) {
+                if (Object.keys(data).length > 0) {
+                    var items = '';
+                    $.each(data, function (i, oData) {
+                        items += "<option value='" + oData.value + "'>" + oData.text + "</option>";   // alert(items);
+                    });
+                    // items += "<option value=''> Select </option>";
+                    $('#_ChurchBodyId_5').html(items);
+
+                    $('#_ChurchBodyId_5').val(hdn_ChurchBodyId_5); 
+
+
+                    //if ($("#_div_ChurchBodyId_6").is(":hidden") == false) {
+                    //    $('#_ChurchBodyId_5').change();
+                    //}
+                }
+            });
+        })
+
+         $(document).on('change', '#_ChurchBodyId_3', function (e) {
+            e.preventDefault();
+
+            var currDenomId = $("#_oAppGloOwnId").val();
+            var parentCBId = $("#_ChurchBodyId_3").val();
+             var hdn_ChurchBodyId_4 = $('#hdn_ChurchBodyId_4').val();
+           //  alert('_ChurchBodyId_3: ' + $("#_ChurchBodyId_3").val())
+
+            var url = '@Url.Action("GetChurchBodyListByParentBody", "AppVenAdmin")';
+            $('#_ChurchBodyId_4').empty();
+
+             //  public JsonResult GetChurchBodyListByParentBody(int? oParentCBId, int? oAppGloOwnId, string strOrgType = null, bool addEmpty = false)
+             $.getJSON(url, { oParentCBId: parentCBId, oAppGloOwnId: currDenomId, strOrgType: 'CH', addEmpty: true }, function (data) {
+                if (Object.keys(data).length > 0) {
+                    var items = '';
+                    $.each(data, function (i, oData) {
+                        items += "<option value='" + oData.value + "'>" + oData.text + "</option>";   // alert(items);
+                    });
+                    // items += "<option value=''> Select </option>";
+                    $('#_ChurchBodyId_4').html(items);
+
+                    $('#_ChurchBodyId_4').val(hdn_ChurchBodyId_4); 
+
+                    if ($("#_div_ChurchBodyId_5").is(":hidden") == false) {
+                        $('#_ChurchBodyId_4').change();
+                    }
+                }
+            });
+         })
+
+         $(document).on('change', '#_ChurchBodyId_2', function (e) {
+            e.preventDefault();
+          //  alert(' triggered...')
+
+            var currDenomId = $("#_oAppGloOwnId").val();
+             var parentCBId = $("#_ChurchBodyId_2").val();
+
+             var hdn_ChurchBodyId_3 = $('#hdn_ChurchBodyId_3').val();
+          //   alert('_ChurchBodyId_2: ' + $("#_ChurchBodyId_2").val())
+
+            var url = '@Url.Action("GetChurchBodyListByParentBody", "AppVenAdmin")';
+            $('#_ChurchBodyId_3').empty();
+
+            //  public JsonResult GetChurchBodyListByParentBody(int? oParentCBId, int? oAppGloOwnId, string strOrgType = null, bool addEmpty = false)
+            $.getJSON(url, { oParentCBId: parentCBId, oAppGloOwnId: currDenomId, strOrgType: 'CH', addEmpty: true }, function (data) {
+                if (Object.keys(data).length > 0) {
+                    var items = '';
+                    $.each(data, function (i, oData) {
+                        items += "<option value='" + oData.value + "'>" + oData.text + "</option>";   // alert(items);
+                    });
+                    // items += "<option value=''> Select </option>";
+                    $('#_ChurchBodyId_3').html(items);
+
+                    $('#_ChurchBodyId_3').val(hdn_ChurchBodyId_3); 
+
+                    if ($("#_div_ChurchBodyId_4").is(":hidden") == false) {
+                        $('#_ChurchBodyId_3').change();
+                    }
+                }
+            });
+        })
+
+    @* $(document).on('change', '#_ChurchBodyId_1', function (e) {
+        e.preventDefault();
+
+        var currDenomId = $("#_oAppGloOwnId").val();
+        var parentCBId = $("#_ChurchBodyId_1").val();
+
+        //   alert('1. parentCBId: ' + parentCBId);
+
+        var url = '@Url.Action("GetChurchBodyListByParentBody", "AppVenAdmin")';
+        $('#_ChurchBodyId_2').empty();
+
+        //  public JsonResult GetChurchBodyListByParentBody(int? oParentCBId, int? oAppGloOwnId, string strOrgType = null, bool addEmpty = false)
+        $.getJSON(url, { oParentCBId: parentCBId, oAppGloOwnId: currDenomId, strOrgType: 'CH', addEmpty: true }, function (data) {
+            if (Object.keys(data).length > 0) {
+                var items = '';
+                $.each(data, function (i, oData) {
+                    items += "<option value='" + oData.value + "'>" + oData.text + "</option>";   // alert(items);
+                });
+                // items += "<option value=''> Select </option>";
+                $('#_ChurchBodyId_2').html(items);
+                if ($("#_div_ChurchBodyId_3").is(":hidden") == false) {
+                    $('#_ChurchBodyId_2').change();
+                }
+            }
+        });
+    }) *@
+
+
+
+            $(document).on('change', '#_ChurchLevelId', function (e) {
+            e.preventDefault();
+
+            var currDenomId = $("#_oAppGloOwnId").val();
+            var churchLevelId = $("#_ChurchLevelId").val();
+
+          // alert('_ChurchLevelId: ' + churchLevelId);
+ 
+
+            //  public JsonResult GetChurchLevelIndexByChurchLevel(int? oChurchLevelId, int? oAppGloOwnId, bool addEmpty = false)
+            var url = '@Url.Action("GetChurchLevelIndexByChurchLevel", "AppVenAdmin")';
+
+                $('#_ChurchBodyId_2').empty();
+
+             //document.getElementById('_CountryId').value = '';
+            $.getJSON(url, { oChurchLevelId: churchLevelId, oAppGloOwnId: currDenomId }, function (res) {
+                 if (res != null) {  // alert(res.taskSuccess);  alert(res.strResId); alert(res.strRes);
+                    // document.getElementById('_CountryId').value = res.strResId;    // return Json(new { taskSuccess = res, numResLev = _numResLev, strRes = _strRes });
+
+                     var CHLevelIndex = res.numResLev - 1;
+                     $('#_numCLIndex').val(res.numResLev);
+                     $('#_oCBLevelCount').val(CHLevelIndex);
+
+                   // alert('CHLevelIndex: ' + CHLevelIndex);
+                     //
+                     $('#_div_ChurchBodyId_1').prop('hidden', !(CHLevelIndex > 0));
+                     ///
+                     $('#_div_ChurchBodyId_2').prop('hidden', !(CHLevelIndex > 1));
+                     $('#_div_ChurchBodyId_3').prop('hidden', !(CHLevelIndex > 2));
+                     $('#_div_ChurchBodyId_4').prop('hidden', !(CHLevelIndex > 3));
+                     $('#_div_ChurchBodyId_5').prop('hidden', !(CHLevelIndex > 4));
+                     ///
+                     //if ($("#_div_ChurchBodyId_2").is(":hidden") == false) {
+                     //    alert('visible... trigger')
+
+                     initChurchBodyListLookUp();
+                     $('#_CountryId').change();
+                    
+                        // $('#_CountryId').trigger('change'); 
+                     //}
+                 }
+            });
+        })
+
+
+        var initChurchBodyListLookUp = function () {
+
+            var url = '@Url.Action("GetInitChurchBodyListByAppGloOwn", "AppVenAdmin")';
+            
+            var currDenomId = $("#_oAppGloOwnId").val();
+           // var churchLevelId = $("#_ChurchLevelId").val();
+
+           // var tempChurchId_2 = $('#_ChurchBodyId_2').val();
+
+           var hdn_ChurchBodyId_2 = $('#hdn_ChurchBodyId_2').val();
+            
+
+          //  alert('bf: ' + tempChurchId_2)
+          //  alert('bf: ' + tempChurchId_2 + ' ...  bf hdn: ' + hdn_ChurchBodyId_2)
+
+            $('#_ChurchBodyId_2').empty();
+            //   public JsonResult GetInitChurchBodyListByAppGloOwn(int? oAppGloOwnId, bool addEmpty = false)
+            $.getJSON(url, { oAppGloOwnId: currDenomId, addEmpty: true }, function (data) {
+                if (Object.keys(data).length > 0) {
+                    var items = '';
+                    $.each(data, function (i, oData) {
+                        items += "<option value='" + oData.value + "'>" + oData.text + "</option>";   // alert(items);
+                    });
+                    // items += "<option value=''> Select </option>";
+                    $('#_ChurchBodyId_2').html(items);
+                     
+                  //  alert('af: ' + tempChurchId_2)
+                  //  alert('af: ' + tempChurchId_2 + ' ... af hdn: ' + hdn_ChurchBodyId_2)
+
+                   // alert('hdn2: ' + $('#hdn_ChurchBodyId_2').val())
+
+                    $('#_ChurchBodyId_2').val(hdn_ChurchBodyId_2); 
+
+                    if ($("#_div_ChurchBodyId_3").is(":hidden") == false) {
+                       // alert('trig 2...')
+                        $('#_ChurchBodyId_2').change();
+                    }
+                }
+            });
+        }
+
+
+    </script>
+
+}

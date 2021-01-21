@@ -1,0 +1,100 @@
+﻿@*@model RhemaCMS.Models.CLNTModels.AccountMaster
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+<h4>AccountMaster</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AccountNo" class="control-label"></label>
+                <input asp-for="AccountNo" class="form-control" />
+                <span asp-validation-for="AccountNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppGlobalOwnerId" class="control-label"></label>
+                <select asp-for="AppGlobalOwnerId" class ="form-control" asp-items="ViewBag.AppGlobalOwnerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChurchBodyId" class="control-label"></label>
+                <select asp-for="ChurchBodyId" class ="form-control" asp-items="ViewBag.ChurchBodyId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountTypeCategoryId" class="control-label"></label>
+                <select asp-for="AccountTypeCategoryId" class ="form-control" asp-items="ViewBag.AccountTypeId"></select>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsSubAccount" /> @Html.DisplayNameFor(model => model.IsSubAccount)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountCategoryId" class="control-label"></label>
+                <select asp-for="AccountCategoryId" class ="form-control" asp-items="ViewBag.AccountCategoryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountName" class="control-label"></label>
+                <input asp-for="AccountName" class="form-control" />
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PerTransLimit" class="control-label"></label>
+                <input asp-for="PerTransLimit" class="form-control" />
+                <span asp-validation-for="PerTransLimit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BudgetEst" class="control-label"></label>
+                <input asp-for="BudgetEst" class="form-control" />
+                <span asp-validation-for="BudgetEst" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" class="form-control" />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastMod" class="control-label"></label>
+                <input asp-for="LastMod" class="form-control" />
+                <span asp-validation-for="LastMod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedByUserId" class="control-label"></label>
+                <input asp-for="CreatedByUserId" class="form-control" />
+                <span asp-validation-for="CreatedByUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastModByUserId" class="control-label"></label>
+                <input asp-for="LastModByUserId" class="form-control" />
+                <span asp-validation-for="LastModByUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>*@

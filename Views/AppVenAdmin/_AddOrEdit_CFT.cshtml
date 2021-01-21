@@ -1,0 +1,50 @@
+﻿@model RhemaCMS.Models.ViewModels.ChurchFaithTypeModel 
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center w-75" style="margin: 0 auto 0 auto ; padding:0;  ">
+
+    <form id="currForm_CFT" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_CFT" class=" form-group bg-transparent p-2">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oChurchFaithType.Id" id="_hdnCurrId_CFT" />  
+
+        <input type="hidden" asp-for="oChurchFaithType.Category" />
+        <input type="hidden" asp-for="oChurchFaithType.Level" />
+
+        <input type="hidden" asp-for="oChurchFaithType.Created" />
+        <input type="hidden" asp-for="oChurchFaithType.LastMod" />
+        <input type="hidden" asp-for="oChurchFaithType.CreatedByUserId" />
+        <input type="hidden" asp-for="oChurchFaithType.LastModByUserId" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.subSetIndex" id="_subSetIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oCurrUserId_Logged" id="_oCurrUserId_Logged" />
+
+        @if (Model.oChurchFaithType != null)
+        { 
+            <div class="form-group col-md">
+                <label asp-for="oChurchFaithType.FaithDescription" class="control-label">Description</label>
+                <input asp-for="oChurchFaithType.FaithDescription" class="form-control text-sm" />
+                <span asp-validation-for="oChurchFaithType.FaithDescription" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label asp-for="oChurchFaithType.Level" class="control-label"></label>
+                <input asp-for="oChurchFaithType.Level" class="form-control text-sm" id="_Level" disabled />
+            </div>
+
+            @if (Model.subSetIndex == 2)
+            {
+                <div class="form-group col-md">
+                    <label asp-for="oChurchFaithType.FaithTypeClassId" class="control-label">Church Sect (Faith stream)</label>
+                    <select asp-for="oChurchFaithType.FaithTypeClassId" class="form-control text-sm" asp-items="@Model.lkpFaithTypeClasses"></select>
+                    <span asp-validation-for="oChurchFaithType.FaithTypeClassId" class="text-danger"></span>
+                </div>
+            }
+
+        }
+
+        <br />
+    </form>
+</div>

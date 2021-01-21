@@ -1,0 +1,769 @@
+﻿
+@model RhemaCMS.Models.ViewModels.ClientAppServerConfigModel
+
+@{
+    /// headers
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Client App Server Configuration";
+    ///
+    ViewData["Title"] = @_pageTitle;
+    //ViewData["Title"] = Model.strAppName + " - Client App Server Configuration";
+    Layout = "_Layout_sa";
+}
+
+
+<body id="page-top" class="w-100">
+    @{
+        var _oAGOId = -1; if (Model.oAppGloOwnId != null) { _oAGOId = (int)Model.oAppGloOwnId; };
+
+        //var _oCBId = -1; if (Model.oChurchBodyId != null) { _oCBId = (int)Model.oChurchBodyId; }
+    }
+
+    @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />*@
+
+
+    @*<input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+            <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+            <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+            <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+        <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oSubSetIndex" data-value="@Model.subSetIndex" />*@
+
+    <input type="hidden" asp-for="oAppGloOwnId" id="_oAppGloOwnId" />
+    <input type="hidden" asp-for="PageIndex" id="_PageIndex" />
+
+
+    <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+    <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+    @*<input type="hidden" id="_pageIndex" data-value="@Model.pageIndex" />*@
+    <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+
+
+    <div class="card bg-gradient-light">
+        <div class="card-header border-bottom">
+            <h3 class="card-title text-primary">
+                <i class="fas fa-th mr-1"></i>
+                @Model.strCurrTask
+            </h3>
+            <div class="card-tools">
+                @*<ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index_sa">Home</a></li>
+                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                    </ol>*@
+                <button type="button" class="btn btn-sm bg-light" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-sm bg-danger text-light" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="wrapper">
+                @*<div class="content-header pb-0">
+                        <div class="container-fluid pb-0">
+                            <div class="row mb-0">
+                                <div class="col-sm-6">
+                                    <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right">
+                                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                @*@if (Model.setIndex == 1)
+                    {
+                        //var _strDesc = "'" + (Model.subSetIndex == 1 ? "Client server configuration" : "Faith Category") + "'";*@
+                
+
+                @if (Model.PageIndex == 2 )
+                {
+                    @using (Html.BeginForm("AddOrEditBLK_CASC", "AppVenAdmin", FormMethod.Post, new { @id = "currFormBLK_CASC" }))
+                    {
+                        // var test = Model.oAppGloOwnId;
+                        <input type="hidden" asp-for="oAppGloOwnId" id="_hdnAppGloOwnId_BLK" />
+                        // var strL = "'" + Model.strAttnLongevity + "'";
+
+                        <div class="p-3 rounded justify-content-center" style="background-color:gainsboro">
+
+                            <table id="tbId_ClientAppServerConfig_BLK" class="table table-sm  table-bordered table-striped table-responsive-sm table-hover bg-white  pl-0 " cellspacing="0" style="border: 1px solid #2c2f5b">
+                                <thead>
+                                    <tr style="text-align: left;">
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                         
+                                        <th width="100px" class="pl-2" style="vertical-align: middle">
+                                            Denomination (Church)
+                                        </th>
+                                        <th width="150px" style="vertical-align: middle">
+                                            Database Server
+                                        </th>
+                                        <th style="vertical-align: middle">
+                                            Database
+                                        </th>
+                                        <th width="120px" style="text-align:center; vertical-align: middle">
+                                            User Id
+                                        </th>
+                                        <th width="120px" style="text-align:center; vertical-align: middle">
+                                            Password
+                                        </th>
+                                        <th width="120px" style="text-align:center; vertical-align: middle">
+                                            Configured
+                                        </th>
+                                        <th width="120px" style="text-align:center; vertical-align: middle">
+                                            Status
+                                        </th>
+                                        <th width="120px" style="vertical-align: middle; text-align:center">
+                                            @*<a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CASC" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="1" data-backdrop="static" data-keyboard="false">
+                                                <i class="fa fa-arrow-left fa-sm text-primary"></i>
+                                            </a>*@
+
+                                            <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CASC" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="2" data-backdrop="static" data-keyboard="false">
+                                                <i class="fa fa-refresh fa-sm text-success"></i>
+                                            </a>
+                                           
+                                                <a href="#" data-remote="false" class="btn btn-light text-primary " data-backdrop="static" onclick="AddEditCurrData_CASC(0, @_oAGOId, @Model.PageIndex, '[New] Client server configuration')">
+                                                    <i class="fa fa-plus fa-primary fa-sm "></i> 
+                                                </a>
+                                            
+                                            @*<a href="#" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static" onclick="AddEditCurrData_CASC(0, @Model.oAppGloOwnId, @Model.PageIndex, '[New] Client server configuration')">
+                                                    <i class="fa fa-plus fa-primary fa-sm "></i> &nbsp; Add New
+                                                </a>*@
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbId_ClientAppServerConfigBody_BLK">
+                                    @for (int i = 0; i < Model.lsCASConfigModels.Count; i++)
+                                    {
+                                     //   var strDesc = "'" + (!string.IsNullOrEmpty(Model.lsCASConfigModels[i].oCASConfig.ServerName) ? Model.lsCASConfigModels[i].oCASConfig.CustomName : Model.lsCASConfigModels[i].oCASConfig.Name) + "'";
+                                      
+                                        <tr id="row_template_CL" style="text-align:left">
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.Id)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.AppGlobalOwnerId, new { @id = "_AppGlobalOwnerId" })</td> 
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.Created)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.LastMod)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.CreatedByUserId)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.LastModByUserId)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.ConfigDate)</td>
+                                             
+                                            <td   class="p-2 text-center" style="vertical-align: middle">
+                                                @Html.DropDownList("lsCASConfigModels[" + i + "].oCASConfig_AppGlobalOwnerId", new SelectList(Model.lkpAppGlobalOwns, "Value", "Text", Model.lsCASConfigModels[i].oCASConfig.AppGlobalOwnerId), new { @class = "form-control" })
+                                            </td> 
+                                            <td  class="p-2 text-center" style="vertical-align: middle">
+                                                @Html.TextBoxFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.ServerName, new { @class = "form-control font-weight-normal" })
+                                            </td>
+                                            <td  style="vertical-align: middle">
+                                                @Html.TextBoxFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.DbaseName, new { @class = "form-control font-weight-normal" })
+                                            </td>
+                                            <td style="vertical-align: middle">
+                                                @Html.TextBoxFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.SvrUserId, new { @class = "form-control" })
+                                            </td>
+                                            <td  style="vertical-align: middle">
+                                                @Html.TextBoxFor(modelItem => Model.lsCASConfigModels[i].oCASConfig.SvrPassword, new { @class = "form-control text-center", @type="password" })
+                                            </td>
+                                             <td  style="vertical-align: middle">
+                                                @Html.DisplayFor(modelItem => Model.lsCASConfigModels[i].strConfigDate, new { @class = "form-control font-weight-normal" })
+                                            </td>
+                                            <td  class="p-2 text-center" style="vertical-align: middle">
+                                                @Html.DropDownList("lsCASConfigModels[" + i + "].oCASConfig_Status", new SelectList(Model.lkpStatuses, "Value", "Text", Model.lsCASConfigModels[i].oCASConfig.Status), new { @class = "form-control" })
+                                            </td> 
+                                            <td style="vertical-align: middle; text-align:center">
+                                                <a href="#" class="btn btn-outline-danger border-0 btn-sm " onclick="DeleteCurrData_CASC(@Model.lsCASConfigModels[i].oCASConfig.Id, @Model.PageIndex, false, '')">
+                                                    <i class="fa fa-trash "></i>
+                                                </a>
+                                                
+
+                                                @*<div class="btn-group dropright">
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu p-1">
+                                                            <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                               onclick="AddEditCurrData_CL(@Model.lsCASConfigModels[i].oCASConfig.Id, @Model.lsCASConfigModels[i].oCASConfig.AppGlobalOwnerId, @Model.PageIndex, @strDesc)">
+                                                                <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                            </a>
+                                                            <a href="#" class="btn btn-light btn-sm text-danger small"
+                                                               onclick="DeleteCurrData_CL(@Model.lsCASConfigModels[i].oCASConfig.Id, @Model.PageIndex, false, '')">
+                                                                <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>*@
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-white " style="font-weight: bold ">
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                        <th width="0" hidden></th>
+                                         
+                                        <th style=" vertical-align: middle"> @* AppGloOwn *@  </th>
+                                        <th align="right" style="vertical-align: middle">  @* Server *@  </th>
+                                        <th align="right" style="vertical-align: middle">  @* Dbase *@  </th>
+                                        <th align="right" style="vertical-align: middle">  @* User *@  </th>
+                                        <th align="right" style="vertical-align: middle">  @* Pwd *@  </th>
+                                        <th align="right" style="vertical-align: middle">  @* Config date *@  </th> 
+                                        <th align="right" style="vertical-align: middle">  @* status *@
+                                            @if (Model.PageIndex == 2)
+                                            {
+                                                <a href="#" data-remote="false" class="btn btn-light text-primary w-100" data-backdrop="static" onclick="AddEditCurrData_CASC(0, @_oAGOId, @Model.PageIndex, '[New] Client server configuration')">
+                                                    <i class="fa fa-plus fa-primary fa-sm "></i> &nbsp; Add New
+                                                </a>
+                                            }
+                                        </th>
+                                        <th style="vertical-align: middle; text-align:center">
+                                            @if ( Model.PageIndex == 2)
+                                            {
+                                                <button id="btnSaveChanges_BLK" type="button" class="btn btn-outline-dark save-data w-100" data-toggle="tooltip" data-placement="top" title="Add new Client server configuration">
+                                                    <i class="fa fa-database"></i> &nbsp; Save
+                                                </button>
+                                            }
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    }
+
+                }
+
+
+                @*}*@
+                <!-- /.content-wrapper -->
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center; display:none" id="divLoader">
+        <img src="~/css/images/load.gif" width="100" />
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- Scroll to Top Button-->
+    @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+
+
+    <div id="loaderr">
+
+    </div>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="_modalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-teal text-light">
+                    <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                </div>
+                <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                    <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                    <button id="btnSaveChanges" type="submit" class="btn btn-outline-primary save-data font-weight-bold"><i class="fa fa-database fa-sm"></i> Save changes </button>
+
+                    @*<button id="btnSaveChanges" class="btn btn-primary" type="submit" >Submit form</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal-->
+    <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+        <div class="modal-dialog modal-sm bg-info" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 style="color: white; font-weight:bold"> Done! </h5>
+                </div>
+                <div class="modal-body bg-white" style="align-items:center">
+                    <label id="lblUserMessage" class="text-sm font-weight-normal text-center"></label>
+                </div>
+
+                <div class="modal-footer bg-white">
+                    <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<partial name="_CookieConsentPartial" />   *@
+
+
+</body>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+    <script>
+            $(document).ready(function () {
+                //for table row
+                $("tr:even").css("background-color", "#fff");
+                $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+                //$('#tbId_ClientAppServerConfig').DataTable({
+                //    "processing": true,
+                //    "columnDefs": [
+                //        { "searchable": false, "orderable": false, "targets": [4] },
+                //    ],
+                //});
+
+                $('#tbId_ClientAppServerConfig_BLK').DataTable({
+                    "processing": true,
+                    "columnDefs": [
+                        { "searchable": false, "orderable": false, "targets": [14] },
+                    ],
+                });
+
+            });
+
+    var AddEditCurrData_CASC = function (currId, currDenomId, _pageIndex, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+            //     alert('addORedit...');
+            //alert('addORedit.. ' + currId + ' ..currDenomId: ' + currDenomId + ' .._pageIndex: ' + _pageIndex + ' .._strItemName: ' + _strItemName);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+           // var currParBodyId = null;
+
+            if (currId < 0) currId = null;
+            if (currDenomId < 0) currDenomId = null;
+
+            //if (currChuBodyId < 0) currChuBodyId = null;
+            // if (currSetIndex < 0) currSetIndex = null;
+            //if (currSubSetIndex < 0) currSubSetIndex = null;
+
+               //  public IActionResult AddOrEdit_CASC(int id = 0, int? oAppGloOwnId = null, int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null)
+
+                var url = "@Url.Action("AddOrEdit_CASC", "AppVenAdmin")?id=" + currId + "&oAppGloOwnId=" + currDenomId + "&pageIndex=" + _pageIndex +
+                                            "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                     //   alert(url)
+
+                       // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                      //  alert(url)
+
+                        $('#divPopModal_AddEdit_lg').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit_lg').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit_lg .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+
+                        //alert('loading modal...')
+                        //$("#_setIndex").val(setIndex);
+                        //$('#divModalBody_AddEdit_lg').load(url, function () {
+                        $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit_lg").modal('show');
+                        });
+
+        };
+
+
+
+    var DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='') {   //currSubSetIndex,  proScope, subScope,
+
+            if (reload == false) {
+                if (newItemId != null ) {
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close',
+                        buttons: {
+                            ok: {
+                                btnClass: 'btn-info',
+                                action: function () {
+                                    AddEditCurrData_CASC(newItemId, currDenomId, pageIndex, _hdrdesc);
+                                }
+                            }
+                        }
+                    });
+
+                }
+                else {
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close',
+                        btnClass: 'btn-info'
+                    });
+                }
+
+            }
+
+            else {
+                $.alert({
+                    title: 'Done!',
+                    type: 'green',
+                    typeAnimated: true,
+                    content: msg,
+                    closeIcon: true,
+                    closeIconClass: 'fa fa-close',
+                    buttons: {
+                        ok: {
+                            btnClass: 'btn-info',
+                            action: function () {
+                                ReloadCurrPage_CASC(currDenomId, pageIndex);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+
+            //public ActionResult Index(int? oDenomId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 1, int? oParentId = null)
+        var ReloadCurrPage_CASC = function (currDenomId = null, _pageIndex = 1) { //, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+                        //alert('load..');
+                      //  alert('load.. ' + currDenomId);
+
+                        //    public ActionResult Index_CASC(int? oAppGloOwnId = null, int pageIndex = 1)
+            window.location.href = '@Url.Action("Index_CASC", "AppVenAdmin")?oAppGloOwnId=' + currDenomId + '&pageIndex=' + _pageIndex; //+ '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+                        //if (parId == '') {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        //}
+                        //else {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+                        //}
+                    }
+    </script>
+
+
+    <script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+           // alert('click..');
+
+            const form = document.getElementById("currForm_CASC");
+
+            if (form.checkValidity() === true) {
+
+                SaveCurr_CASC(); //currSetIndex, currSubSetIndex);
+            }
+            else {
+               // alert('val 5')
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+
+           // }, false);
+        })
+
+        var SaveCurr_CASC = function () { // (currSetIndex, currSubSetIndex) {
+            // alert('saving CL... ');
+
+            var currFormData = new FormData($("#currForm_CASC").get(0));
+            // var currFormData = $("#currForm_CASC").serialize();
+
+
+          //  alert('save... submitting...');
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEdit_CASC", "AppVenAdmin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_CASC",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                      //  var currChuBodyId = $("#_hdnChuBodyId").val();
+
+                        //var currId = $("#_hdnCurrId_CASC").val();
+                      //  var _pageIndex = $("#_hdnPageIndex").val();
+                        //alert("saving currId: " + currId + " ...page: " + res.pageIndex);
+
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+
+                        var _desc = "'[New] Client server configuration'";
+                        if (res.resetNew == true) {
+                            //DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='')
+                            DisplaySuccessInfo(res.userMess, currDenomId, res.pageIndex, false, 0, _desc);
+
+                            // AddEditCurrData_CASC = function (currId, currDenomId, _pageIndex, _strItemName)
+                           // AddEditCurrData_CASC(0, currDenomId, _pageIndex, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                        }
+                        else {
+                            DisplaySuccessInfo(res.userMess, currDenomId, res.pageIndex, true);
+
+                            //$("#btnSaveChanges").prop();
+                           // alert('closing...')
+
+                           // $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+
+        $(document).on('click', '#btnSaveChanges_BLK', function (e) {
+            e.preventDefault();
+
+           // alert('save.. BLK? ');
+
+            const form = document.getElementById("currFormBLK_CASC");
+
+            if (form.checkValidity() === true) {
+
+                SaveCurrBLK_CASC(); //currSetIndex, currSubSetIndex);
+            }
+            else {
+                // alert('val 5')
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+            //   alert('save.. cb: ' + currChuBodyId + '.. id: ' + currVisitorId + '.. isMigratedVis: ' + isMigratedVis);
+            // SaveCurrBLK_CASC(); //currVisitorId, currChuBodyId, _strAttendee, _strLongevity);
+        })
+
+        var SaveCurrBLK_CASC = function () { // (currSetIndex, currSubSetIndex) {
+           //  alert('saving BLK CL... ');
+
+           // var currFormData = new FormData($("#currForm_CASC").get(0));
+
+            var currFormData = $("#currFormBLK_CASC").serialize();
+
+          //  alert('save... submitting...');
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEditBLK_CASC", "AppVenAdmin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_CASC",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                //contentType: false,
+               // processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                      //  var currChuBodyId = $("#_hdnChuBodyId").val();
+                        //var _PageIndex = $("#_PageIndex").val();
+                        var currDenomId = $("#_oAppGloOwnId").val();
+
+                        var _desc = "'[New] Client server configuration'";
+                        if (res.resetNew == true) {
+                            //DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='')
+                            DisplaySuccessInfo(res.userMess, currDenomId, res.pageIndex, false, 0, _desc);
+
+                            // AddEditCurrData_CASC = function (currId, currDenomId, _pageIndex, _strItemName)
+                           // AddEditCurrData_CASC(0, currDenomId, _pageIndex, _desc);
+                        }
+
+                        else {
+                            DisplaySuccessInfo(res.userMess, currDenomId, 2, true);
+
+                            //ReloadCurrPage_CASC(currDenomId, pageIndex);
+
+                            //$("#btnSaveChanges").prop();
+                           // alert('closing...')
+                           // $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+
+
+        var DeleteCurrData_CASC = function (currId, _pageIndex, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+
+       // var currUserId = $("#_oUserId_Logged").val();
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+      //  var currDenomId = $("#_hdnAppGloOwnId").val();
+        var currDenomId = $("#_oAppGloOwnId").val();
+
+       // var _pageIndex = $("#_hdnPageIndex").val();
+
+     //  alert('currDenomId: ' + currDenomId)
+     //  alert('currUserId: ' + currUserId_Logged)
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified Client server configuration' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_CASC", "AppVenAdmin")',
+                               // url: "/AppVenAdmin/Delete_CASC",
+                                // public IActionResult Delete_CASC(int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                data: { loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, currDenomId, _pageIndex, true); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                      //  ReloadCurrPage_CASC(currDenomId, _pageIndex); //(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);                  // (oAppGloId, currChuBodyId, currSetIndex);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_CASC(currId, _pageIndex, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+   
+}

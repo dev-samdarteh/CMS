@@ -1,0 +1,332 @@
+﻿@model RhemaCMS.Models.ViewModels.LogOnVM
+
+
+@{
+    /// headers
+    var userMess = @ViewData["strUserLoginFailMess"] as string;
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Account Login";
+    ///
+    ViewData["Title"] = @_pageTitle;
+
+    Layout = "_LayoutLogin";
+    var strIsValid = "F";
+    if (Model != null) { strIsValid = Model.IsValidated; }
+
+}
+
+    <div class="row">
+        <div class="col-md-6 mb-3 " >
+            @*<div class="justify-content-center mt-2 w-75" style=" margin: 75px auto auto auto; vertical-align: middle ">
+                <div class="text-light text-center">
+                    <div><a class="text-warning text-lg" href="http://rhema-systems.com" target="_blank">RHEMA SYSTEMS &amp; Associates LTD - Ghana </a> </div>
+                    <small class="font-weight-normal"> Delivering tailored solutions for today's needs </small>
+                </div>
+                <div class="text-center pt-5">
+                    <h1> All in one Church Solution </h1>
+                </div>
+            </div>*@
+
+            <div id="carouselExampleCaptions" class="carousel slide p-5" data-bs-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></li>
+                    <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></li>
+                    <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item" data-bs-interval="5000" data-slide="true" data-wrap="true">
+                        <img src="~/frontend/dist/img/photo1.png" class="d-block w-100" alt="Rhema Systems">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5> Rhema Systems Limited </h5>
+                            <p> Delivering tailored solutions for today's needs </p>
+                        </div>
+                    </div>
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="~/frontend/dist/img/photo2.png" class="d-block w-100" alt="Rhema Systems">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5> RHEMA-CMS </h5>
+                            <p> All in one Church Solution </p>
+                        </div>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000" data-slide="true" data-wrap="true">
+                        <img src="~/frontend/dist/img/photo3.jpg" class="d-block w-100" alt="Rhema Systems">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5> Rhema Systems Limited </h5>
+                            <p> Your one stop for all tech needs </p>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    @*<span class="visually-hidden">Previous</span>*@
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    @*<span class="visually-hidden">Next</span>*@
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3 center-flex-custom " style="border-left: 1px solid grey">
+            <div class="form-group" style=" width: 300px;">
+                <form needs-validation novalidate asp-action="LoginUserAcc" asp-route-strIsValidated="@strIsValid">
+                    @*class="w3ls-login box box--big ">*@
+                    @*<div class="card shadow-sm small p-5 pb-1" style="color: darkgrey;  height:auto; min-height: if (!InitializeUserLogging())
+        return RedirectToAction("LoginUserAcc", "UserLogin");px; ">*@
+                    <div asp-validation-summary="ModelOnly" class="alert alert-heading text-sm bg-warning text-dark m-0 mb-2" role="alert">
+                    </div>
+
+                    <input type="hidden" asp-for="IsValidated" id="_basicVerif" />
+
+                    @*<label class="btn-danger"> @ViewBag.UserPromptMsg </label>*@
+
+                    @{
+                        if (ViewBag.VerificationCodeEnabled == false)
+                        {
+                            var strSalutation = "";
+                            if (string.IsNullOrEmpty(strSalutation))
+                            {
+                                var ts = DateTime.Now.TimeOfDay;
+                                if (ts.Hours >= 0 && ts.Hours < 12) { strSalutation = "Good morning"; }
+                                else if (ts.Hours <= 16) { strSalutation = "Good afternoon"; }
+                                else if (ts.Hours < 24) { strSalutation = "Good evening"; }
+                            }
+
+                            var strToday = String.Format("{0:dddd d-MMMM-yyyy}", DateTime.Now);
+
+                            <h5 class="text-center pb-1 m-auto text-info" style="
+                                    font-family:Verdana, sans-serif, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva">
+                                @strSalutation, please login.
+                            </h5>
+                            <small class="text-center text-sm form-text text-muted">
+                                @strToday
+                            </small>
+
+                            @*<hr class="w-75" style="border: 1px inset grey" /><i class="fa fa-key fa-lg" style="font-size:30px; margin: 0px auto 0px auto ; padding:5px; color: whitesmoke ; "></i>*@
+                            <br />
+                            <br />
+                            @* #e7f3aa *@
+                            <div class="input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color:whitesmoke ; border: 1px solid whitesmoke" id="basic-addon1">
+                                    <i class="fa fa-home text-gray" style="width: 15px" aria-hidden="true"></i></span>
+                                </div>
+                                <input asp-for="ChurchCode" class="form-control bg-transparent text-sm" type="text" placeholder="Church code" aria-label="Church code" aria-describedby="basic-addon1"
+                                       style=" color :black; font-family:Verdana, Geneva, Tahoma, sans-serif ; border: 1px solid whitesmoke" required>
+                            </div>
+                            @*<span asp-validation-for="ChurchCode" class="text-danger" ></span>*@
+                            <div class="input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: whitesmoke; border: 1px solid whitesmoke" id="basic-addon1">
+                                    <i class="fa fa-user text-gray" style="width: 15px" aria-hidden="true"></i></span>
+                                </div>
+                                <input asp-for="Username" class="form-control bg-transparent text-sm" type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"
+                                       style=" color :black;  font-family:Verdana, Geneva, Tahoma, sans-serif; border: 1px solid whitesmoke " required>
+                            </div>
+                            @*<span asp-validation-for="Username" class="text-danger"></span>*@
+
+                            <div class="input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: whitesmoke; border: 1px solid whitesmoke" id="basic-addon1">
+                                    <i class="fa fa-unlock-alt text-gray" style="width: 15px" aria-hidden="true"></i></span>
+                                </div>
+                                <input asp-for="Password" class="form-control bg-transparent text-sm" type="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"
+                                       style="color:black; font-family:Verdana, Geneva, Tahoma, sans-serif; border: 1px solid whitesmoke; " required />
+
+                                @*<div class="input-group-append">border-right:0
+                        <span class="input-group-text" style=" background-color:white;  border: 1px solid #52b4d9; border-left: 0">
+                            <span id="showPwd" toggle="#password-field" class="fa fa-fw fa-eye fa-sm field-icon toggle-password" style="margin: auto; background-color:transparent"></span>
+                        </span>
+                    </div>*@
+                            </div>
+
+                            @*<span asp-validation-for="Password" class="text-danger"></span>*@
+
+                            <br />
+                            <br />
+                            <div class="form-row col-sm-12 agile-field-txt m-0 p-0">
+                                <input type="submit" value="Login" class="btn btn-outline-info btn-lg w-100 text-md" />
+                            </div>
+
+
+                            @* <div class="form-row col-sm-12">
+
+                    </div>
+                   <div class="form-group col-sm-12">
+                    <a href="#" id="btn1" class="btn btn-outline-dark ">
+                        <i class="fa fa-arrow-left fa-sm"></i>&nbsp; Back
+                    </a>
+                </div>*@
+
+
+                        }
+                    }
+
+                    @{
+                        if (ViewBag.VerificationCodeEnabled == true)
+                        {
+                            <div style=" margin:auto; font-family:Verdana, Geneva, Tahoma, sans-serif;">
+                                <button asp-controller="UserLogin" asp-action="LoginUserAcc" asp-route-navBack="true" asp-route-strIsValidated="@Model.IsValidated" class="btn btn-link btn-lg " style="position:absolute; left:0; top:0">
+                                    <i class="fas fa-arrow-left fa-sm" style="color: #52b4d9"></i>
+                                </button>
+
+                                <br />
+
+                                <div class="panel panel-info" style="border-bottom: 3px solid #52b4d9; text-align:center ">
+                                    @*<i class="fa fa-user fa-lg" style="color: grey"></i>*@
+                                    <h5 style="color: #52b4d9"> Hi, @Model.strLogUserDesc</h5>
+                                </div>
+
+                                <br />
+
+                                @* <div class="breadcrumb breadcrumb-item  shadow-sm bg-light " style=" left: auto; right: auto; background-color:lightgrey; min-height:50px">
+                            <i class="fas fa-user fa-sm" style="color: grey"></i>
+                            <span> </span>
+                        </div>
+                      <a class="navbar-brand mr-1" asp-controller="UserLogin" asp-action="LoginUserAcc">
+                        <h3>RHEMACLOUD</h3>
+                    </a>*@
+
+                                <br />
+                                <br />
+                                <h6 style="text-align:center; color:dimgrey ; font-weight:bold">Please authenticate...</h6>
+                                <h6 style="text-align:center; color:dimgrey ">
+                                    Enter 8-digit verification code sent via email /sms:
+                                </h6>
+                                <br />
+
+
+                                @*<div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color:#52b4d9 ; border: 1px" id="basic-addon1"><i class="fa fa-key fa-lg" style="color: whitesmoke; width: 15px" aria-hidden="true"></i></span>
+                        </div>
+                        <input asp-for="VerificationCode" class="form-control" type="text" placeholder="Enter verification code" aria-label="Username" aria-describedby="basic-addon1"
+                               style=" color :black  ; font-size:small; font-family:Verdana, Geneva, Tahoma, sans-serif; border: 1px solid #52b4d9 ">
+
+                        <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color: lightgrey ; border: 1px solid lightgrey" id="basic-addon1"><i class="fa fa-key fa-lg" style="color: whitesmoke; width: 15px" aria-hidden="true"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Enter verification code" aria-label="Search" aria-describedby="basic-addon2"
+                               style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
+
+                        <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                    </div>*@
+
+                                <input asp-for="VerificationCode" type="text" autocomplete="off" class="form-control" placeholder="verification code" aria-label="" aria-describedby="basic-addon2"
+                                       style=" text-align:center">
+                                <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                                <br />
+                                <br />
+
+                                @*<div class="agile-field-txt col-sm">
+                        <input asp-for="VerificationCode" class="form-control" type="text" placeholder="Verification code" required="" style="background-color:white ; color :black  ; font-size:small;font-family:Verdana, Geneva, Tahoma, sans-serif" />
+                        <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                    </div>*@
+
+                                <br />
+                                <br />
+
+                                <div class="panel panel-info" style="bottom:0; border: 0px solid #52b4d9; text-align: center">
+                                    @*<i class="fa fa-location-arrow fa-lg" style="color: grey"></i>*@
+                                    <input type="submit" value=" Login" class="btn btn-outline-info" style="font-weight:bold; width: 150px " />  @*position:absolute; bottom:2px;*@
+
+                                    @*<a asp-controller="UserLogin" asp-action="LoginUserAcc" class="btn btn-outline-info" style="font-weight:bold; width: 150px ">
+                            Login &nbsp; <i class="fas fa-arrow-right fa-sm"></i>
+                        </a>*@
+                                </div>
+
+
+
+                                @*<div class="container">
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">Line 1</li>
+                                <li class="list-group-item">Line 2</li>
+                            </ul>
+                        </div>
+                    </div>*@
+                            </div>
+                        }
+                    }
+
+                    @*</div>*@
+                </form>
+
+
+                @if (ViewBag.VerificationCodeEnabled == false)
+                {
+                    <div class="jumbotron-fluid text-center pt-5 text-gray text-sm">
+                        <a class="text-gray text-sm" asp-controller="UserLogin" asp-action="AddOrEdit_ChangeUserPwd" asp-route-churchCode="@Model.ChurchCode" asp-route-username="@Model.Username">
+                            Forgot password ?
+                        </a>
+                        <hr class="mt-1 mb-1 ml-auto mr-auto" style="width:300px; border-bottom:1px inset gray " />
+                        No account yet? <a class="text-gray text-sm" href="http://rhema-systems.com" target="_blank"> Sign up today!</a>
+                    </div>
+                }
+
+
+                @*<div style=" margin:auto; font-family:Verdana, Geneva, Tahoma, sans-serif;">
+                    <div class="dropdown-menu">
+                        <form class="px-4 py-3">
+                            <div class="form-group">
+                                <label for="exampleDropdownFormEmail1">Email address</label>
+                                <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleDropdownFormPassword1">Password</label>
+                                <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                    Remember me
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">New around here? Sign up</a>
+                        <a class="dropdown-item" href="#">Forgot password?</a>
+                    </div>
+                </div>*@
+            </div>
+
+        </div>
+    </div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @*script for show password*@
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("Password"); /*/getElementById("Pwd_1");  *('# <%= Pwd.ClientID %>');*/
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        //$(".toggle-password").click(function () {
+        $("#showPwd").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $("#Password");
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+    </script>
+
+
+}
+

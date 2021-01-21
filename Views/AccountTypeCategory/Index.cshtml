@@ -1,0 +1,644 @@
+﻿
+@model RhemaCMS.Models.ViewModels.AccountCategoryModel
+
+@{
+    ViewData["Title"] = Model.strAppName + " - Account Type Category";
+    // Layout = "_Layout_sa";
+}
+
+
+<body id="page-top" class="w-100">
+    @{
+        var _oCBId = Model.oChurchBodyId != null ? (int)Model.oChurchBodyId : -1;
+        var _oAGOId = Model.oAppGlolOwnId != null ? (int)Model.oAppGlolOwnId : -1;
+    }
+
+    @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />*@
+
+
+    <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+    <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+    <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+    <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+
+    @*<input type="hidden" id="_promptUserMsg" data-value="@ViewBag.promptUserMsg" />*@
+
+    <div id="PlaceHolderHere"></div>
+
+    <div id="wrapper">
+        <div class="content-header pb-0">
+            <div class="container-fluid pb-0">
+                <div class="row mb-0">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <hr style="border: 1px solid #808080" />
+
+        <!-- content -->
+        <div class="panel panel-default justify-content-center mt-5">
+            <div class="card mb-3 w-100 bg-transparent">
+                @*<div class="card-header bg-w " style="color: #2c2f5b ;">
+                        <div>
+                            <i class="fas fa-users fa-lg" style="color: grey"></i>&nbsp;&nbsp;
+                            <span style=" font-size: x-large; text-transform:uppercase"> System Admin Tasks </span>
+                            <span style="font-size: x-large; font-variant-caps: titling-caps; color: #0094ff">
+                                @Model.oChurchBody?.Name
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-header rounded-bottom border-0 bg-white" style="color: #000; margin-left:auto; margin: 1px ">
+                        <div class="small ">
+                            <br />
+
+                        </div>
+                    </div>*@
+
+                <div class="card-body ">
+                    @if (Model.setIndex == 1)  // system admin tasks
+                    {
+                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light " data-backdrop="static" onclick="AddEditCurrData(0, @_oAGOId, @_oCBId, @Model.setIndex, '[New Financial Category]')">
+                            @*<i class="fas fa-plus  fa-sm "></i>*@
+                            <span class="fas fa-plus fa-sm " aria-hidden="true"> &nbsp; Reset to defaults </span>
+                        </a>
+                        @*<a href="#" id="btnResetToDefaults" data-remote="false" class="btn btn-primary " data-backdrop="static">
+                <span class="fas fa-refresh fa-sm " aria-hidden="true"> &nbsp; Reset to defaults </span>
+            </a>*@
+                         
+                        @*<form id="currForm_AC" method="post" enctype="multipart/form-data" asp-action="ResetToDefaults_AC" class=" form-group bg-transparent"
+                              style="margin-top:0px; padding-left: 3px; padding-right:3px;   ">
+
+                            <button id="btnResetToDefaults" type="button" class="btn btn-dark save-data"><i class="fa fa-refresh fa-sm"></i> Reset to defaults </button>
+                        </form>*@
+
+
+                            <table id="tblAccountCategory" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-0 w-100" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style=" vertical-align: middle">
+                                            Account Type Category
+                                        </th>
+                                        <th align="center" style=" vertical-align: middle">
+                                            Account Type
+                                        </th>
+                                        <th style="vertical-align: middle">
+                                            Report Area
+                                        </th>
+                                        <th style="vertical-align: middle">
+                                            Bal
+                                        </th>
+                                        <th class="text-center" style="vertical-align: middle; width: 70px ">
+                                            Status
+                                        </th>
+                                        <th class="p-1 text-center" align="center" style="vertical-align: middle; width: 70px">
+                                            <a class="btn btn-light btn-sm " asp-controller="AccountCategory" asp-action="Index" asp-route-oAppGloOwnId="@Model.oAppGlolOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="1" data-backdrop="static" data-keyboard="false">
+                                                <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                            </a>
+                                            <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-info btn-sm" data-backdrop="static" onclick="AddEditCurrData(0, @_oAGOId, @_oCBId, @Model.setIndex, '[New Financial Category]')">
+                                                @*<i class="fas fa-plus  fa-sm "></i>*@
+                                                <span class="fas fa-plus fa-sm " aria-hidden="true"></span>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.lsAccountCategoryModel)
+                                    {
+                                        var strDesc = "'" + item.strAccountCategory + "'";
+                                        <tr>
+                                            <td style="vertical-align: middle">
+                                                @item.strAccountCategory
+                                            </td>
+                                            <td style="vertical-align: middle">
+                                                @item.strAccountType
+                                            </td>
+                                            <td style="vertical-align: middle;  ">
+                                                @item.strReportArea
+                                            </td>
+                                            <td style="vertical-align: middle; ">
+                                                @item.oAccountCategory.BalanceType
+                                            </td>
+                                            <td style="vertical-align: middle" align="center">
+                                                @if (item.oAccountCategory.Status == "A")
+                                                {<i class="fa fa-check fa-sm text-success"></i>}
+                                                else if (item.oAccountCategory.Status == "B")
+                                                { <i class="fa fa-times fa-sm text-secondary"></i>}
+                                            </td>
+                                            <td class="p-1 text-center" align="center" style=" vertical-align: middle ; ">
+                                                <div class="btn-group dropright">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu p-1">
+                                                        @*  public IActionResult AddOrEdit_AC(int? oAppGloOwnId = null, int? oCurrChuBodyId = null, int? id = 0, int setIndex = 0,
+                                            int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null) *@
+                                                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                           onclick="AddEditCurrData(@item.oAccountCategory.Id, @_oAGOId, @_oCBId, @Model.setIndex, @strDesc)">
+                                                            <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                        </a>
+                                                        <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_AC(@item.oAccountCategory.Id,  @_oAGOId, @_oCBId,  @Model.setIndex, @strDesc)">
+                                                            <i class="fa fa-trash fa-sm"></i> &nbsp; Delete
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            }
+                    </div>
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+
+
+
+    <div style="text-align:center; display:none" id="divLoader">
+        <img src="~/css/images/load.gif" width="100" />
+    </div>
+
+    <!-- /#wrapper -->
+    <!-- Scroll to Top Button-->
+    @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+
+
+    <div id="loaderr">
+
+    </div>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable  bg-light" role="document" style="width:auto ; height:auto">
+            <div class="modal-content">
+                <div class="modal-header bg-gray-dark text-light">
+                    <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                </div>
+                <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                    <button id="btnResetToDefaults_AC" type="button" class="btn btn-primary save-data"><i class="fa fa-database fa-sm"></i> Reset to defaults</button>
+                    <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                    <button id="btnSaveChanges" type="button" class="btn btn-dark save-data"><i class="fa fa-database fa-sm"></i> Save changes </button> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal-->
+    <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+        <div class="modal-dialog modal-sm bg-info" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 style="color: white; font-weight:bold"> Done! </h5>
+                </div>
+                <div class="modal-body bg-white" style="align-items:center">
+                    <label id="lblUserMessage"></label>
+                </div>
+
+                <div class="modal-footer bg-white">
+                    <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<partial name="_CookieConsentPartial" />   *@
+
+
+</body>
+
+
+<!-- Bootstrap CSS -->
+@*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">*@
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+
+    @*@section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+            <script>
+            $('.Create').click(function() {
+            $('.divForCreate').Load('@Url.Action("AddOrEdit", "cb_mbr", new {id = Model.id})')
+            });
+            </script>
+        }*@
+
+
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="~/content/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+
+    <!-- Page level plugin JavaScript-->
+    @*<script src="~/content/vendor/chart.js/Chart.min.js"></script>
+        <script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>*@
+
+    <!-- Custom scripts for all pages-->
+    @*<script src="~/content/js/sb-admin.min.js"></script>*@
+
+    <!-- Demo scripts for this page-->
+    @*<script src="~/content/js/demo/datatables-demo.js"></script>
+        <script src="~/content/js/demo/chart-area-demo.js"></script>*@
+
+
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+
+    <!-- Page level plugin JavaScript-->
+    <script src="~/content/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+
+
+     
+
+
+    <script>
+                $(document).ready(function () {
+                    //for table row
+                    $("tr:even").css("background-color", "#fff");
+                    $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+                    var currSetIndex = $("#_oSetIndex").data("value");
+
+                    if (currSetIndex == 1) {
+                        $('#tblAccountCategory').DataTable({
+                            "order": [] ,
+                            "processing": false,
+                            "columnDefs": [
+                                { "searchable": false, "orderable": false, "targets": [5] },
+                            ],
+                        });
+                    }
+                });
+
+
+                    //$('#exampleModal').on('hidden.bs.modal', function (e) {
+                    //    $('.modal-body').html("");
+                    //})
+
+                var AddEditCurrData = function (currId, currDenomId, currChuBodyId, currSetIndex, _strItemName) {
+                //  alert('addORedit...');
+                 //  alert('addORedit.. ' + currId + ' __indx: ' + currSetIndex);
+
+                    if (currId < 0) currId = null;
+                    if (currDenomId < 0) currDenomId = null;
+                    if (currChuBodyId < 0) currChuBodyId = null;
+                    if (currSetIndex < 0) currSetIndex = null;
+
+                    ////_oChurchBody_Logged _oAppGloOwnId_Logged _oUserId_Logged
+                    //var currAGOId_Logged = $("#currAGOId_Logged").val();
+                    //var currCBId_Logged = $("#_oChurchBodyId_Logged").val();
+                    //var currUserId_Logged = $("#_oUserId_Logged").val();
+
+                    //_oSetIndex _oAppGloOwnId_Logged _oChurchBodyId_Logged
+                    var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+                    var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+                    var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+                    //alert('currAGOId_Logged : ' + currAGOId_Logged);
+                    //alert('currCBId_Logged : ' + currCBId_Logged);
+                    //alert('currUserId_Logged : ' + currUserId_Logged);
+
+                    //   public IActionResult AddOrEdit_AC(int? oAppGloOwnId = null, int? oCurrChuBodyId = null, int? id = 0, int setIndex = 0, int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null) 
+                    var url = "/AccountCategory/AddOrEdit_AC?oAppGloOwnId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&setIndex=" + currSetIndex +
+                                                                                "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged ;
+
+                    // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                    if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                  //  alert(url)
+
+                    $('#divPopModal_AddEdit_lg').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+
+
+                    //alert('loading modal...')
+                    //$("#_setIndex").val(setIndex);
+                    //$('#divModalBody_AddEdit_lg').load(url, function () {
+                    $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                        $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                        //$("#_AccountCategorydByScope").change();
+                        //$("#_AccountCategoryMode").change();
+
+                        $("#divPopModal_AddEdit_lg").modal('show');
+                    });
+
+                };
+
+
+                var DisplaySuccessInfo = function (msg, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, reload = false) {
+
+                    $("#lblUserMessage").text(msg);
+                    //$("#_urlSuccessOK").val(reloadUrl);
+
+                    $("#divPopModal_Success").modal('show');
+
+                    if (reload) {
+                        ReloadCurrPage_CNFG(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);
+
+                        //window.location.href = "/AccountCategory/Index?oCurrChuBodyId=" + currChuBodyId + "&id=" + currId;
+                    }
+                };
+
+                //  public ActionResult Index(int? oAppGloOwnId = null, int? oCurrChuBodyId = null, int setIndex = 1) 
+                var ReloadCurrPage = function (currDenomId = null, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+                   // alert('load..');
+                    window.location.href = '/AccountCategory/Index?oAppGloOwnId=' + currDenomId + '&oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex; // + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+                    //if (parId == '') {
+                    //    window.location.href = '/AccountCategory/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    //}
+                    //else {
+                    //    window.location.href = '/AccountCategory/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+                    //}
+                }
+
+            
+
+    </script>
+
+
+    <script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+            alert('click..');
+            var currSetIndex = $("#_setIndex").val();
+            // alert('savin...: sub: ' + currSetIndex);
+
+            if (parseInt(currSetIndex) == 1) {
+                SaveCurr_AC(currSetIndex);
+            }
+        })
+
+        var SaveCurr_AC = function (currSetIndex) {
+            //  alert('save... ' + currSetIndex);
+
+            var currFormData = new FormData($("#currForm_AC").get(0));
+            // var currFormData = $("#currForm_AC").serialize();
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                url: "/AccountCategory/AddOrEdit_AC",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+                        var currSetIndex = $("#_setIndex").val();
+                        // var currId = $("#_hdnCurrId_AC").val();
+                        DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex); // "/AccountCategory/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        // document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+
+                        // $('#btnSaveChanges').html('Update');
+                        if (res.resetNew == true) {
+                            AddEditCurrData(0, currDenomId, currChuBodyId, 1, '[New Account Type Category]');
+                        }
+                        else {
+                            $("#divPopModal_AddEdit_lg .close").click();
+                           // ReloadCurrPage(currDenomId, currChuBodyId, currSetIndex);
+                        }
+
+                        //window.location.href = '/AccountCategory/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+        var DeleteCurrData_AC = function (currId, currChuBodyId, currSetIndex, delConfirm = false, msg = "") {
+            // alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+
+            //  if (delConfirm == null) { delConfirm = false; }
+
+            //alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+            var oAppGloId = null;
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified  account type category ?' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/AccountCategory/Delete_AC",
+                                data: { id: currId, setIndex: currSetIndex, delConfirmed: delConfirm },
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {
+                                        //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_CNFG(oAppGloId, currChuBodyId, currSetIndex);
+                                    }
+                                    else {
+                                        // alert(res.userMess);
+                                        if (currSetIndex == 1 && !delConfirm) {
+                                            DeleteCurrData_AC(currId, currChuBodyId, currSetIndex, true, res.userMess);
+                                        }
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Delete failed!',
+                                                content: 'Could not delete specified record(s). Please try again.',
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+         
+
+
+      //  $("#btnResetToDefaults").click(function () {
+
+        $(document).on('click', '#btnResetToDefaults_AC', function (e) {
+            e.preventDefault();
+
+            alert('click..');
+
+            //_oSetIndex _oAppGloOwnId_Logged _oChurchBodyId_Logged
+          //  var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+           // var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+            alert('click..' + currUserId_Logged);
+
+            //var currSetIndex = $("#_oSetIndex").data("value");
+           // var currSetIndex = $("#_setIndex").val();
+            // alert('savin...: sub: ' + currSetIndex);
+
+            var currFormData = new FormData($("#currForm_AC").get(0));
+            // var currFormData = $("#currForm_AC").serialize();
+
+
+            // var values = {
+            //    'str': document.getElementById('elem1').value,
+            //    'id': document.getElementById('elem2').value
+            //};
+           
+
+            //$.ajax({
+            //    type: 'POST',
+            //    // data: formdata,
+            //    // processData: false,
+            //    url: "/AccountCategory/ResetToDefaults_AC",
+            //    //data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+            //    //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            //    contentType: false,
+            //    processData: false,
+
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                url: "/AccountCategory/ResetToDefaults_AC",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        //var currDenomId = $("#_oAppGloOwnId_Logged").data("value");
+                        //var currChuBodyId = $("#_oChurchBodyId_Logged").data("value");
+                        //var currSetIndex = $("#_oSetIndex").data("value");
+
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+                        var currDenomId = $("#_hdnAppGloOwnId").val(); 
+                        var currSetIndex = $("#_setIndex").val();
+                        // var currId = $("#_hdnCurrId_AC").val();
+                        DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex); // "/AccountCategory/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        // document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+
+                        // $('#btnSaveChanges').html('Update');
+                        //if (res.resetNew == true) {
+                        //    AddEditCurrData(0, currDenomId, currChuBodyId, 1, '[New Account Type Category]');
+                        //}
+                        //else {
+                        //    $("#divPopModal_AddEdit_lg .close").click();
+                        //}
+
+                        ReloadCurrPage(currDenomId, currChuBodyId, currSetIndex);
+                        //window.location.href = '/AccountCategory/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        })
+
+    </script>
+
+
+
+}

@@ -1,0 +1,182 @@
+﻿@model RhemaCMS.Models.ViewModels.TitheModel
+
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center"
+     style="width: 80%; margin: 0px auto 10px auto ; padding:0;  ">
+
+    <form id="currForm_TITHE" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_TITHE" class=" form-group bg-transparent"
+          style="margin-top:0px; padding-left: 3px; padding-right:3px;   ">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oTitheTrans.Id" id="_hdnCurrId_TITHE" />
+        <input type="hidden" asp-for="oTitheTrans.ChurchBodyId" id="_hdnChuBodyId" />
+        <input type="hidden" asp-for="oTitheTrans.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+        <input type="hidden" asp-for="oTitheTrans.CurrencyId" />
+        <input type="hidden" asp-for="oTitheTrans.PostStatus" />
+        <input type="hidden" asp-for="oTitheTrans.PostedDate" />
+        <input type="hidden" asp-for="oTitheTrans.ReceivedByUserId" />
+
+        @*<input type="hidden" asp-for="oTitheTrans.ChurchMemberId" />
+        <input type="hidden" asp-for="oTitheTrans.Corporate_ChurchBodyId" />
+        <input type="hidden" asp-for="oTitheTrans.TitherDesc" />*@
+                 
+        <input type="hidden" asp-for="oTitheTrans.Created" />
+        <input type="hidden" asp-for="oTitheTrans.LastMod" />
+        <input type="hidden" asp-for="oTitheTrans.CreatedByUserId" />
+        <input type="hidden" asp-for="oTitheTrans.LastModByUserId" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />
+
+
+        <br />
+        <br />
+        @if (Model.oTitheTrans != null)
+        {
+            // var photoPath = "~/img_db/" + (Model.oTitheTrans.UserPhoto ?? "df_user_p.png");
+
+            <div class="form-row ">
+                <div class="form-group  col-sm-6">
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm-6">
+                            <label asp-for="oTitheTrans.Id " class="control-label"> Trans. # </label>
+                            @if (Model.oTitheTrans.Id != 0)
+                            {<input asp-for="oTitheTrans.Id" class="form-control text-sm" autocomplete="off" disabled /> }
+                            else
+                            { <input value="- NEW -" class="form-control text-sm text-center text-light bg-teal small" autocomplete="off" disabled />}
+                            <span asp-validation-for="oTitheTrans.Id" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label asp-for="oTitheTrans.AccountPeriodId" class="control-label"></label>
+                            <select class="form-control text-sm" asp-for="oTitheTrans.AccountPeriodId" asp-items="Model.lkpAccountPeriods"></select>
+                            <span asp-validation-for="oTitheTrans.AccountPeriodId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.TitheDate " class="control-label"></label>
+                            <input asp-for="oTitheTrans.TitheDate" class="form-control text-sm" autocomplete="off" />
+                            <span asp-validation-for="oTitheTrans.TitheDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.TithedByScope" class="control-label"></label>
+                            <select id="_TithedByScope" class="form-control text-sm" asp-for="oTitheTrans.TithedByScope" asp-items="Model.lkpTitherScopes"></select>
+                            <span asp-validation-for="oTitheTrans.TithedByScope" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.TitheMode" class="control-label"></label>
+                            <select id="_TitheMode" class="form-control text-sm" asp-for="oTitheTrans.TitheMode" asp-items="Model.lkpTitheModes"></select>
+                            <span asp-validation-for="oTitheTrans.TitheMode" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row col-sm" id="_divChurchMemberId" hidden>
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.ChurchMemberId" class="control-label"></label>
+                            <select id="_ChurchMemberId" class="form-control text-sm" asp-for="oTitheTrans.ChurchMemberId" asp-items="Model.lkpChurchMembers_Local"></select>
+                            <span asp-validation-for="oTitheTrans.ChurchMemberId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm" id="_divCorporate_ChurchBodyId" hidden>
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.Corporate_ChurchBodyId" class="control-label"></label>
+                            <select id="_Corporate_ChurchBodyId" class="form-control text-sm" asp-for="oTitheTrans.Corporate_ChurchBodyId" asp-items="Model.lkpChurchEvents"></select>
+                            <span asp-validation-for="oTitheTrans.Corporate_ChurchBodyId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm" id="_divTitherDesc" hidden>
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.TitherDesc " class="control-label"></label>
+                            <input id="_TitherDesc" asp-for="oTitheTrans.TitherDesc" class="form-control text-sm" autocomplete="off" />
+                            <span asp-validation-for="oTitheTrans.TitherDesc" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.ReceivedByUserId " class="control-label"></label>
+                            @*<label asp-for="strReceivedBy" class="form-control text-sm bg-gray-light"></label>*@
+                            <input asp-for="strReceivedBy" class="form-control text-sm" autocomplete="off" disabled />
+                            <span asp-validation-for="oTitheTrans.ReceivedByUserId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6 mt-0 pl-3 border-left align-middle">
+                    @*<img class="card-img-top img-thumbnail smaller" src="@photoPath" asp-append-version="true" style="width:100%; height: 200px; margin:5px" />*@
+
+                    <div class="form-row col-sm">
+                        <label asp-for="oTitheTrans.TitheAmount" class="control-label"></label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text text-sm" id="basic-addon1">
+                                    <span class="text-center w-auto" aria-hidden="true">@Model.strCurrency</span>
+                                </span>
+                            </div>
+
+                            @*  fas fa-coins fa-sm
+                            @Html.TextBoxFor(m => m.oTitheTrans.AmtPaid, new { @type = "number", @class = "form-control", @min = "0" }) border: 1px solid #52b4d9   placeholder="Tithe amount" *@
+
+                            <input asp-for="oTitheTrans.TitheAmount" type="number" min="0" max="@decimal.MaxValue" placeholder="0.00" class="form-control text-right" aria-label="Tithe amount" aria-describedby="basic-addon1"
+                                   style="font-size: larger; font-family:Verdana, Geneva, Tahoma, sans-serif; ">
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        @* <div>
+                                            <label>
+                                                Amount $
+                                                <input type="number" placeholder="0.00" required name="price" min="0" value="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$" onblur="
+                                                                    this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'red' ">
+                                            </label>
+                                        </div>
+                                       <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.PmntMode" class="control-label"></label>
+                            <select class="form-control text-sm" asp-for="oTitheTrans.PmntMode" asp-items="Model.lkpPaymentModes"></select>
+                            <span asp-validation-for="oTitheTrans.PmntMode" class="text-danger"></span>
+                        </div>*@
+                    </div>
+                    @*<div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.PmntMode" class="control-label"></label>
+                            <select class="form-control text-sm" asp-for="oTitheTrans.PmntMode" asp-items="Model.lkpPaymentModes"></select>
+                            <span asp-validation-for="oTitheTrans.PmntMode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.PmntModeRefNo " class="control-label"></label>
+                            <input asp-for="oTitheTrans.PmntModeRefNo" class="form-control text-sm" autocomplete="off" />
+                            <span asp-validation-for="oTitheTrans.PmntModeRefNo" class="text-danger"></span>
+                        </div>
+                    </div>*@
+                    <div class="form-row col-sm">
+                        <label for="basic-url"> Posting </label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text text-sm" id="basic-addon3"> @Model.strPostStatus </span>
+                            </div>
+                            @*<label asp-for="strPostDate" class="form-control text-sm" id="basic-url" aria-describedby="basic-addon3"></label>*@
+                            <input asp-for="oTitheTrans.PostedDate" class="form-control text-sm" id="basic-url" aria-describedby="basic-addon3" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oTitheTrans.Comments " class="control-label"></label>
+                            <textarea asp-for="oTitheTrans.Comments" class="form-control text-sm" aria-label="With textarea"></textarea>
+                            <span asp-validation-for="oTitheTrans.Comments" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <br />
+    </form>
+</div>

@@ -1,0 +1,654 @@
+﻿
+@model RhemaCMS.Models.ViewModels.OffertoryModel
+
+@{
+    ViewData["Title"] = Model.strAppName + " - Offertory";
+   // Layout = "_Layout_sa";
+}
+
+
+    <body id="page-top" class="w-100">
+        @{
+            var _oCBId = Model.oChurchBodyId != null ? (int)Model.oChurchBodyId : -1;
+            var _oAGOId = Model.oAppGlolOwnId != null ? (int)Model.oAppGlolOwnId : -1;
+        }
+
+        @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />*@
+
+
+        <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+        <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+        <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+
+        @*<input type="hidden" id="_promptUserMsg" data-value="@ViewBag.promptUserMsg" />*@
+
+        <div id="PlaceHolderHere"></div>
+
+       
+        <!-- /.row (main row) -->
+        <!-- solid sales graph -->
+        <div class="card bg-gradient-light">
+            <div class="card-header border-0">
+                <h3 class="card-title">
+                    <i class="fas fa-th mr-1"></i>
+                    @Model.strCurrTask
+                </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="wrapper">
+                    <div class="content-header pb-0">
+                        <div class="container-fluid pb-0">
+                            <div class="row mb-0">
+                                <div class="col-sm-6">
+                                    <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                                </div><!-- /.col -->
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right">
+                                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                                    </ol>
+                                </div><!-- /.col -->
+                            </div><!-- /.row -->
+                        </div><!-- /.container-fluid -->
+                    </div>
+                    <hr style="border: 1px solid #808080" />
+
+                    <!-- content -->
+                    <div class="panel panel-default justify-content-center mt-5">
+                        <div class="card mb-3 w-100 bg-transparent">
+                            @*<div class="card-header bg-w " style="color: #2c2f5b ;">
+                        <div>
+                            <i class="fas fa-users fa-lg" style="color: grey"></i>&nbsp;&nbsp;
+                            <span style=" font-size: x-large; text-transform:uppercase"> System Admin Tasks </span>
+                            <span style="font-size: x-large; font-variant-caps: titling-caps; color: #0094ff">
+                                @Model.oChurchBody?.Name
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-header rounded-bottom border-0 bg-white" style="color: #000; margin-left:auto; margin: 1px ">
+                        <div class="small ">
+                            <br />
+
+                        </div>
+                    </div>*@
+
+                            <div class="card-body ">
+                                @if (Model.setIndex == 1)  // system admin tasks
+                                {
+                                    <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-outline-info " data-backdrop="static" onclick="AddEditCurrData(0, @_oAGOId, @_oCBId, @Model.setIndex, '[New Offertory]')">
+                                        @*<i class="fas fa-plus  fa-sm "></i>*@
+                                        <span class="fas fa-plus fa-sm " aria-hidden="true"> &nbsp; Add Offering</span>
+                                    </a>
+                                    <table id="tblOFFT" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-0 w-100" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th style=" vertical-align: middle">
+                                                    Offertory Date
+                                                </th>
+                                                <th align="center" style=" vertical-align: middle">
+                                                    Period
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Offertory Type
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Church Event
+                                                </th>
+                                                <th class="text-right" style="vertical-align: middle; width: 40px">
+                                                    Curr
+                                                </th>
+                                                <th class="text-right" style="vertical-align: middle; ">
+                                                    Amount
+                                                </th>
+                                                <th class="text-center" style="vertical-align: middle; width: 70px ">
+                                                    Posting
+                                                </th>
+                                                <th class="p-1 text-right" align="right" style="vertical-align: middle; width: 70px">
+                                                    <a class="btn btn-light btn-sm " asp-controller="OffertoryTrans" asp-action="Index" asp-route-oAppGloOwnId="@Model.oAppGlolOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="1" data-backdrop="static" data-keyboard="false">
+                                                        <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                                    </a>
+                                                    <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-info btn-sm" data-backdrop="static" onclick="AddEditCurrData(0, @_oAGOId, @_oCBId, @Model.setIndex, '[New Offertory]')">
+                                                        @*<i class="fas fa-plus  fa-sm "></i>*@
+                                                        <span class="fas fa-plus fa-sm " aria-hidden="true"></span>
+                                                    </a>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.lsOffertoryModel)
+                                            {
+                                                var strDesc = "'" + item.strOffertoryDate + "'";
+                                                <tr>
+                                                    <td style="vertical-align: middle">
+                                                        @item.strOffertoryDate
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        @item.strAccountPeriod
+                                                    </td>
+                                                    <td style="vertical-align: middle;  ">
+                                                        @item.strOffertoryType
+                                                    </td>
+                                                    <td style="vertical-align: middle; ">
+                                                        @item.strRelatedEvent
+                                                    </td>
+                                                    <td style="vertical-align: middle" align="right">
+                                                        @item.strCurrency
+                                                    </td>
+                                                    <td style="vertical-align: middle" align="right">
+                                                        @item.strAmount
+                                                    </td>
+                                                    <td style="vertical-align: middle" align="center">
+                                                        @if (item.oOffertoryTrans.PostStatus == "O")
+                                                        {<i class="fas fa-lock-open fa-sm text-primary"></i>}
+                                                        else if (item.oOffertoryTrans.PostStatus == "P")
+                                                        { <i class="fa fa-check fa-sm text-success"></i>}
+                                                        else if (item.oOffertoryTrans.PostStatus == "R")
+                                                        { <i class="fa fa-times fa-sm text-secondary"></i>}
+                                                    </td>
+                                                    <td style=" vertical-align: middle ; text-align:center">
+                                                        <div class="btn-group dropright">
+                                                            <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu p-1">
+                                                                @*  public IActionResult AddOrEdit_OFFT(int? oAppGloOwnId = null, int? oCurrChuBodyId = null, int? id = 0, int setIndex = 0,
+                                                        int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null) *@
+                                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                                   onclick="AddEditCurrData(@item.oOffertoryTrans.Id, @_oAGOId, @_oCBId, @Model.setIndex, @strDesc)">
+                                                                    <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                                </a>
+                                                                <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_OFFT(@item.oOffertoryTrans.Id,  @_oAGOId, @_oCBId,  @Model.setIndex, @strDesc)">
+                                                                    <i class="fa fa-trash fa-sm"></i> &nbsp; Delete
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.content-wrapper -->
+                </div>
+            </div>
+            <!-- /.card-body -->
+            @*<div class="card-footer bg-transparent">
+                <div class="row">
+                    <div class="col-4 text-center">
+                        <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60"
+                               data-fgColor="#39CCCC">
+
+                        <div class="text-white">Mail-Orders</div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60"
+                               data-fgColor="#39CCCC">
+
+                        <div class="text-white">Online</div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60"
+                               data-fgColor="#39CCCC">
+
+                        <div class="text-white">In-Store</div>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+
+        <div style="text-align:center; display:none" id="divLoader">
+            <img src="~/css/images/load.gif" width="100" />
+        </div>
+
+        <!-- /#wrapper -->
+        <!-- Scroll to Top Button-->
+        @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+
+
+        <div id="loaderr">
+
+        </div>
+
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"> Logout to end your current session. Sure?</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable  bg-light" role="document" style="width:auto ; height:auto">
+                <div class="modal-content">
+                    <div class="modal-header " style="background-color: lightblue;  ">
+                        <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                    </div>
+                    <div class="modal-footer " style="background-color:   lightgrey; left:auto; right: auto">
+                        <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                        <button id="btnSaveChanges" type="button" class="btn btn-light save-data"><i class="fa fa-database fa-sm"></i> Save changes </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal-->
+        <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+            <div class="modal-dialog modal-sm bg-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h5 style="color: white; font-weight:bold"> Done! </h5>
+                    </div>
+                    <div class="modal-body bg-white" style="align-items:center">
+                        <label id="lblUserMessage"></label>
+                    </div>
+
+                    <div class="modal-footer bg-white">
+                        <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*<partial name="_CookieConsentPartial" />   *@
+
+
+    </body>
+
+
+<!-- Bootstrap CSS -->
+@*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">*@
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+
+    @*@section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+            <script>
+            $('.Create').click(function() {
+            $('.divForCreate').Load('@Url.Action("AddOrEdit", "cb_mbr", new {id = Model.id})')
+            });
+            </script>
+        }*@
+
+
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="~/content/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+
+    <!-- Page level plugin JavaScript-->
+    @*<script src="~/content/vendor/chart.js/Chart.min.js"></script>
+        <script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>*@
+
+    <!-- Custom scripts for all pages-->
+    @*<script src="~/content/js/sb-admin.min.js"></script>*@
+
+    <!-- Demo scripts for this page-->
+    @*<script src="~/content/js/demo/datatables-demo.js"></script>
+        <script src="~/content/js/demo/chart-area-demo.js"></script>*@
+
+
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+
+    <!-- Page level plugin JavaScript-->
+    <script src="~/content/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+
+
+     
+
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("Password"); /*/getElementById("Pwd_1");  *('# <%= Pwd.ClientID %>');*/
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        //$(".toggle-password").click(function () {
+        $("#showPwd").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $("#Password");
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+    </script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            //for table row
+            $("tr:even").css("background-color", "#fff");
+            $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+            var currSetIndex = $("#_oSetIndex").data("value");
+
+            if (currSetIndex == 1) {
+                $('#tblOFFT').DataTable({
+                    "order": [] ,
+                    "processing": false,
+                    "columnDefs": [
+                        { "searchable": false, "orderable": false, "targets": [7] },
+                    ],
+                });
+            }
+
+
+        });
+
+
+            //$('#exampleModal').on('hidden.bs.modal', function (e) {
+            //    $('.modal-body').html("");
+            //})
+
+        var AddEditCurrData = function (currId, currDenomId, currChuBodyId, currSetIndex, _strItemName) {
+            //alert('addORedit...');
+          //  alert('addORedit.. ' + currId + ' __indx: ' + currSetIndex);
+
+            if (currId < 0) currId = null;
+            if (currDenomId < 0) currDenomId = null;
+            if (currChuBodyId < 0) currChuBodyId = null;
+            if (currSetIndex < 0) currSetIndex = null;
+
+            ////_oChurchBody_Logged _oAppGloOwnId_Logged _oUserId_Logged
+            //var currAGOId_Logged = $("#currAGOId_Logged").val();
+            //var currCBId_Logged = $("#_oChurchBodyId_Logged").val();
+            //var currUserId_Logged = $("#_oUserId_Logged").val();
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+            //alert('currAGOId_Logged : ' + currAGOId_Logged);
+            //alert('currCBId_Logged : ' + currCBId_Logged);
+            //alert('currUserId_Logged : ' + currUserId_Logged);
+
+            // public IActionResult AddOrEdit_OFFT(int? oAppGloOwnId = null, int? oCurrChuBodyId = null, int? id = 0, int setIndex = 0,
+            //                                          int ? oAGOId_Logged = null, int ? oCBId_Logged = null, int ? oUserId_Logged = null)
+            var url = "/OffertoryTrans/AddOrEdit_OFFT?oAppGloOwnId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&setIndex=" + currSetIndex +
+                                                                        "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged ;
+
+            // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+            if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+          //  alert(url)
+
+            $('#divPopModal_AddEdit_lg').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+
+
+            //alert('loading modal...')
+            //$("#_setIndex").val(setIndex);
+            //$('#divModalBody_AddEdit_lg').load(url, function () {
+            $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                $("#divPopModal_AddEdit_lg").modal('show');
+            });
+
+        };
+
+
+        var DisplaySuccessInfo = function (msg, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, reload = false) {
+
+            $("#lblUserMessage").text(msg);
+            //$("#_urlSuccessOK").val(reloadUrl);
+
+            $("#divPopModal_Success").modal('show');
+
+            if (reload) {
+                ReloadCurrPage_CNFG(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);
+
+                //window.location.href = "/OffertoryTrans/Index?oCurrChuBodyId=" + currChuBodyId + "&id=" + currId;
+            }
+        };
+
+        //public ActionResult Index(int? oDenomId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 1, int? oParentId = null)
+        var ReloadCurrPage = function (currDenomId = null, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+           // alert('load..');
+            window.location.href = '/OffertoryTrans/Index?oDenomId=' + currDenomId + '&oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+            //if (parId == '') {
+            //    window.location.href = '/OffertoryTrans/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+            //}
+            //else {
+            //    window.location.href = '/OffertoryTrans/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+            //}
+        }
+
+        $(document).on('change', '#_CountryId', function (e) {
+            e.preventDefault();
+
+            var ctryId = $("#_CountryId").val();
+          //  alert('ctryId: ' + ctryId);
+
+            var url = '@Url.Content("~/")' + 'OffertoryTrans/GetCountryRegionsByCountry';
+            $('#_CountryRegionId').empty();
+            //GetCountryRegionsByCountry( int? ctryId, bool addEmpty = false)
+             $.getJSON(url, { ctryId: ctryId, addEmpty: true}, function (data) {
+                if (Object.keys(data).length > 0)
+                {
+                    var items = '';
+                    $.each(data, function (i, ctryReg) {
+                        items += "<option value='" + ctryReg.value + "'>" + ctryReg.text + "</option>";   // alert(items);
+                    });
+                   // items += "<option value=''> Select </option>";
+                    $('#_CountryRegionId').html(items);
+                }
+            });
+        });
+
+
+
+
+
+    </script>
+
+
+    <script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+           // alert('click..'); 
+            var currSetIndex = $("#_setIndex").val(); 
+           // alert('savin...: sub: ' + currSetIndex);
+
+            if (parseInt(currSetIndex) == 1) {
+                SaveCurr_OFFT(currSetIndex);
+            }            
+        })
+
+
+        var SaveCurr_OFFT = function (currSetIndex) {
+          //  alert('save... ' + currSetIndex);
+
+            var currFormData = new FormData($("#currForm_OFFT").get(0));
+            // var currFormData = $("#currForm_OFFT").serialize();
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                url: "/OffertoryTrans/AddOrEdit_OFFT",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+                        // var currId = $("#_hdnCurrId_OFFT").val();
+                        DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex); // "/OffertoryTrans/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        // document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+
+                       // $('#btnSaveChanges').html('Update');
+                        if (res.resetNew == true) {
+                            AddEditCurrData(0, currDenomId, currChuBodyId, 1, '[New Offertory]');
+                        }
+                        else {
+                            $("#divPopModal_AddEdit_lg .close").click();
+                        }
+                       
+                        //window.location.href = '/OffertoryTrans/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                    // $("#lblUserMessage").text(msg);
+                }
+            }
+            })
+            }
+
+        var DeleteCurrData_OFFT = function (currId, currChuBodyId, currSetIndex,   delConfirm = false, msg = "") {
+            // alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+
+            //  if (delConfirm == null) { delConfirm = false; }
+
+            //alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+            var oAppGloId = null;
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified ' + (currSetIndex == 1 ? 'system admin profile' : 'church admin profile') : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/OffertoryTrans/Delete_OFFT",
+                                data: { id: currId, setIndex: currSetIndex, delConfirmed: delConfirm },
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {
+                                        //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_CNFG(oAppGloId, currChuBodyId, currSetIndex);
+                                    }
+                                    else {
+                                        // alert(res.userMess);
+                                        if (currSetIndex == 1 && !delConfirm) {
+                                            DeleteCurrData_OFFT(currId, currChuBodyId, currSetIndex, true, res.userMess);
+                                        }
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Delete failed!',
+                                                content: 'Could not delete specified record(s). Please try again.',
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+         
+
+
+    </script>
+
+
+
+}

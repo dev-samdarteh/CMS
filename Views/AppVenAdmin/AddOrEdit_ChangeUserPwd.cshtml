@@ -1,0 +1,176 @@
+﻿@model RhemaCMS.Models.ViewModels.ResetUserPasswordModel
+
+ 
+@{
+    ViewData["Title"] = "RHEMA-CMS";
+    Layout = "_LayoutLogin";
+
+    //var strIsValid = "F";
+    //if (Model != null) { strIsValid = Model.IsValidated; }
+
+}
+
+ 
+
+<div class="form-group justify-content-center mt-2 " style=" width:400px;  margin: 75px auto auto auto; vertical-align: middle ">
+    <form asp-action="AddOrEdit_ChangeUserPwd">
+        @*class="w3ls-login box box--big ">   asp-route-strIsValidated="@strIsValid"   *@
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger text-sm text-light p-1 mb-1" role="alert">
+        </div>
+
+        <div class="card shadow-sm small p-5" style="color: darkgrey;  height:auto; min-height: 400px; ">
+
+            @*<input type="hidden" asp-for="IsValidated" id="_basicVerif" />*@
+
+            @*<label class="btn-danger"> @ViewBag.UserPromptMsg </label>*@
+
+            @{
+                if (Model.pageIndex == 1)
+                { 
+                    <input type="hidden" asp-for="pageIndex" />
+                    <div class="input-group mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color:#52b4d9 ; border: 1px" id="basic-addon1"><i class="fa fa-home" style="color:white ; width: 25px" aria-hidden="true"></i></span>
+                        </div>
+                        <input asp-for="ChurchCode" class="form-control" type="text" placeholder="Church code" aria-label="Church code" aria-describedby="basic-addon1"
+                               style=" color :black  ; font-size:small;font-family:Verdana, Geneva, Tahoma, sans-serif ; border: 1px solid #52b4d9">
+                    </div> 
+                    <div class="input-group mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color: #52b4d9; border: 1px" id="basic-addon1"><i class="fa fa-user" style="color: white; width: 25px" aria-hidden="true"></i></span>
+                        </div>
+                        <input asp-for="Username" class="form-control" type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"
+                               style=" color :black  ; font-size:small;font-family:Verdana, Geneva, Tahoma, sans-serif; border: 1px solid #52b4d9 ">
+                    </div> 
+                    @*<div class="input-group mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color: #52b4d9; border:1px" id="basic-addon1"><i class="fa fa-unlock-alt " style="color: white;  width: 25px" aria-hidden="true"></i></span>
+                        </div>
+                        <input asp-for="Password" class="form-control " type="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"
+                               style="color :black  ; font-size: small;font-family:Verdana, Geneva, Tahoma, sans-serif;border: 1px solid #52b4d9; " /> 
+                    </div>*@ 
+                    <br />
+                    <div class="form-row col-sm">
+                        <div class="form-row col-sm-12">
+                            <div class="agile-field-txt" style="margin:auto">
+                                <input type="submit" value="Login" class="btn btn-outline-info btn-lg" style="font-size: medium; width: 300px" />   @*position:absolute;  right: 0*@
+                            </div>
+                        </div>
+                    </div>
+                     
+                }
+            }
+
+            <br />
+            @{
+                if (Model.pageIndex == 2)
+                {
+                        <div style=" margin:auto; font-family:Verdana, Geneva, Tahoma, sans-serif;">
+                            <button asp-controller="UserLogin" asp-action="AddOrEdit_ChangeUserPwd" asp-route-navBack="true" class="btn btn-link btn-lg " style="position:absolute; left:0; top:0">
+                                <i class="fas fa-arrow-left fa-sm text-info"></i>
+                            </button>
+
+                            <br />
+                            <input type="hidden" asp-for="pageIndex" />
+                            <input type="hidden" asp-for="ChurchCode" />
+                            <input type="hidden" asp-for="Username" />
+                            <input type="hidden" asp-for="oUserId_Logged" />
+
+                            <div class="panel panel-info" style="border-bottom: 3px solid #52b4d9; text-align:center ">
+                                @*<i class="fa fa-user fa-lg" style="color: grey"></i>*@
+                                <h5 class="text-success"> Hi, @Model.strLogUserDesc</h5>
+                            </div>
+
+                            <div class="input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-gray-light border" id="basic-addon1"><i class="fa fa-home text-white" style="width: 25px" aria-hidden="true"></i></span>
+                                </div>
+                                <input asp-for="ChurchCode" class="form-control text-sm" type="text" placeholder="Church code" aria-label="Church code" aria-describedby="basic-addon1"
+                                       style="font-family:Verdana, Geneva, Tahoma, sans-serif ; border: 1px solid #52b4d9" disabled>
+                            </div>
+                            <div class="input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-gray-light border" id="basic-addon1"><i class="fa fa-user text-white" style="width: 25px" aria-hidden="true"></i></span>
+                                </div>
+                                <input asp-for="Username" class="form-control text-sm" type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"
+                                       style="font-family:Verdana, Geneva, Tahoma, sans-serif; border: 1px solid #52b4d9" disabled>
+                            </div>
+                            <br />
+                            <h6 style="text-align:center; color:dimgrey ; font-weight:bold">Please authenticate...</h6>
+                            <h6 style="text-align:center; color:dimgrey ">
+                                Enter 8-digit verification code sent via email /sms:
+                            </h6>
+                            <input asp-for="VerificationCode" type="text" autocomplete="off" class="form-control text-center text-primary" placeholder="verification code" aria-label="" aria-describedby="basic-addon2" />
+                            <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                            <br />
+
+                            <div class="form-row col-sm">
+                                <div class="form-group col-sm">
+                                    <label asp-for="CurrentPassword" class="control-label"></label>
+                                    <input asp-for="CurrentPassword" class="form-control text-sm" autocomplete="off" />
+                                    <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row col-sm">
+                                <div class="form-group col-sm">
+                                    <label asp-for="AuthTypeUsed" class="control-label"></label>
+                                    <select class="form-control text-sm" asp-for="AuthTypeUsed" asp-items="Model.lkpAuthTypes"></select>
+                                    <span asp-validation-for="AuthTypeUsed" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row col-sm">
+                                <div class="form-group col-sm">
+                                    <label asp-for="NewPassword" class="control-label"></label>
+                                    <input asp-for="NewPassword" type="password" class="form-control text-sm" autocomplete="off" />
+                                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row col-sm">
+                                <div class="form-group col-sm">
+                                    <label asp-for="RepeatPassword" class="control-label"></label>
+                                    <input asp-for="RepeatPassword" type="password" class="form-control text-sm" autocomplete="off" />
+                                    <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="panel panel-info" style="bottom:0; border: 0px solid #52b4d9; text-align: center">
+                                <input type="submit" value="Login" class="btn btn-outline-info" style="font-weight:bold; width: 150px " />
+                            </div>
+                        </div>
+                }
+            }
+        </div>
+    </form> 
+</div>
+
+
+@section Scripts {
+    @*script for show password*@
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("Password"); /*/getElementById("Pwd_1");  *('# <%= Pwd.ClientID %>');*/
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        //$(".toggle-password").click(function () {
+        $("#showPwd").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $("#Password");
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+    </script>
+
+
+}
+

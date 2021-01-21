@@ -1,0 +1,2006 @@
+﻿
+@model RhemaCMS.Models.ViewModels.AppVenAdminVM
+
+@{
+    ViewData["Title"] = Model.strAppName + " - System Administration";
+    Layout = "_Layout_sa";
+}
+
+
+    <body id="page-top" class="w-100">
+        @{
+            var _oCBId = Model.oChurchBodyId != null ? (int)Model.oChurchBodyId : -1;
+            var _oAGOId = Model.oAppGloOwnId != null ? (int)Model.oAppGloOwnId : -1;
+        }
+
+
+        <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oSubSetIndex" data-value="@Model.subSetIndex" />
+        <input type="hidden" id="_oChurchBody_Logged" data-value="@Model.oChurchBody_Logged" />
+        <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+        <input type="hidden" id="_pageIndex" data-value="@Model.pageIndex" />
+        <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+        <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+
+
+        @*<input type="hidden" id="_promptUserMsg" data-value="@ViewBag.promptUserMsg" />*@
+
+        <div id="PlaceHolderHere"></div>
+
+        <div id="wrapper">
+            <div class="content-header pb-0">
+                <div class="container-fluid pb-0">
+                    <div class="row mb-0">
+                        <div class="col-sm-6">
+                            <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index_sa">Home</a></li>
+                                <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <hr style="border: 1px solid #808080" />
+
+            <!-- content -->
+            <div class="panel panel-default justify-content-center mt-5">
+                <div class="card mb-3 w-75" style="background-color: transparent; left:auto; right:auto">
+                    @*<div class="card-header bg-w " style="color: #2c2f5b ;">
+                        <div>
+                            <i class="fas fa-users fa-lg" style="color: grey"></i>&nbsp;&nbsp;
+                            <span style=" font-size: x-large; text-transform:uppercase"> System Admin Tasks </span>
+                            <span style="font-size: x-large; font-variant-caps: titling-caps; color: #0094ff">
+                                @Model.oChurchBody?.Name
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-header rounded-bottom border-0 bg-white" style="color: #000; margin-left:auto; margin: 1px ">
+                        <div class="small ">
+                            <br />
+
+                        </div>
+                    </div>*@
+
+                    <div class="card-body ">
+                        @if (Model.setIndex == 1)  // system admin tasks
+                        {
+                            if (Model.pageIndex == 1)  // enlist... profiles
+                            {
+                                @if (Model.subSetIndex != 0)  // user profiles
+                                {
+                                    <table id="tblSysAdmin" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-1 w-100" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th class="pl-1" style="text-align:left; vertical-align: middle">
+                                                    User Description
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Username
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Denomination
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Congregation
+                                                </th>
+                                                <th align="left" style="vertical-align: middle; text-align:left ">
+                                                    Expires
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Status
+                                                </th>
+                                                <th style="text-align: center; width: auto; vertical-align: middle">
+                                                    <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="@Model.setIndex" asp-route-subSetIndex="@Model.subSetIndex" asp-route-pageIndex="1" data-backdrop="static" data-keyboard="false">
+                                                        <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                                    </a>
+                                                    <div class="btn-group dropright">
+                                                        <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                                data-placement="top" title="Add administrator account">
+                                                            <i class="fas fa-user-plus" style="color: lightblue;"></i>&nbsp;
+                                                        </button>
+                                                        <div class="dropdown-menu p-1">
+                                                            @if (Model.subSetIndex == 1)  //SYS task
+                                                            {
+                                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, @Model.setIndex,  2, '[New Super Admin Account]')">
+                                                                    <i class="fas fa-screwdriver  fa-sm "></i> &nbsp; Super Admin
+                                                                </a>
+                                                            }
+                                                            @if (Model.subSetIndex == 2)  //(Model.subSetIndex == 2)  //SUP_ADMN task
+                                                            {
+                                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary " data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, @Model.setIndex,  3, '[New Sys Admin Account]')">
+                                                                    <i class="fas fa-user-cog   fa-sm "></i> &nbsp; System Admin
+                                                                </a>
+                                                            }
+                                                            @if (Model.subSetIndex == 2 || Model.subSetIndex == 3)  //SUP_ADMN or SYS_ADMN task
+                                                            {
+                                                                <a href="#" id="btnAddEdit" data-remote="false" class="dropdown-item-text small font-weight-normal" data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, @Model.setIndex, 6, '[New Church Admin Profile]')">
+                                                                    <i class="fa fa-cog fa-sm   "></i> &nbsp; Church Admin
+                                                                </a>
+                                                                <a href="#" id="btnAddEdit" data-remote="false" class="dropdown-item-text small font-weight-normal" data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, @Model.setIndex, 11, '[New Congregation Admin Profile]')">
+                                                                    <i class="fa fa-cog fa-sm  "></i> &nbsp; Congregation Admin
+                                                                </a>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.lsUserProfiles)
+                                            {
+                                                var strDesc = "'" + item.oUserProfile.UserDesc + "'";
+                                                <tr>
+                                                    <td align="left" style="vertical-align: middle">
+                                                        &nbsp;
+                                                        @*<a href="#" id="btnAddEdit" class="text-black-50" data-backdrop="static" data-keyboard="false"
+                                            onclick="AddEditCurr_UP(@item.oUserProfile?.Id, @Model.oChurchBodyId, false, true, @strMemName)">
+                                            @item.oUserProfile.UserDesc
+                                        </a>*@
+
+                                                        @*<a href="#" id="btnAddEdit" data-remote="false" class="text-black-50" data-backdrop="static" onclick="AddEditCurrData_CNFG(@item.oUserProfile.Id, @_oAGOId, @_oCBId, @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                            @item.oUserProfile.UserDesc
+                                        </a>*@
+                                                        <a id="btnAddEdit" class="btn btn-link btn-sm" data-remote="false" asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId"
+                                                           asp-route-id="@item.oUserProfile.Id" asp-route-setIndex="@Model.setIndex" asp-route-subSetIndex="@Model.subSetIndex" asp-route-pageIndex="2" data-backdrop="static" data-keyboard="false">
+                                                            @item.oUserProfile.UserDesc
+                                                        </a>
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        @item.oUserProfile.Username
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        @item.strAppGloOwn
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        @item.strChurchBody
+                                                    </td>
+                                                    <td style="vertical-align: middle; text-align:left ">
+                                                        @item.oUserProfile.strExpr
+                                                    </td>
+                                                    <td style="vertical-align: middle; text-align:center">
+                                                        @if (item.oUserProfile?.UserStatus == "A")
+                                                        {<i class="fas fa-check fa-sm" style="color:limegreen"></i> }
+                                                        else if (item.oUserProfile?.UserStatus == "E")
+                                                        { <i class="fas fa-user-times fa-sm" style="color:tomato"></i> }
+                                                        else
+                                                        { <i class="fas fa-user-slash fa-sm" style="color: grey"></i>}
+                                                        @Html.DisplayFor(modelItem => item.oUserProfile.strUserStatus)
+                                                    </td>
+
+                                                    <td style=" vertical-align: middle ; text-align:center">
+                                                        @*@if ((Model.subSetIndex == 1 && item.profileScope=="V" && (string.Compare(item.oUserProfile.Username, "sys", true)==0 || string.Compare(item.oUserProfile.Username, "supadmin", true) == 0)) ||
+                                             (Model.subSetIndex == 2 && item.profileScope == "V" && (string.Compare(item.oUserProfile.Username, "sys", true) == 0 || string.Compare(item.oUserProfile.Username, "supadmin", true) == 0)) ||
+                                           (Model.subSetIndex == 1))  //SYS task
+                                        {*@
+                                                        <div class="btn-group dropright">
+                                                            <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu p-1">
+                                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                                   onclick="AddEditCurrData_CNFG(@item.oUserProfile.Id, @_oAGOId, @_oCBId, @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                                                    <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                                </a>
+                                                                <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_UPR(@item.oUserProfile.Id,  @_oAGOId, @_oCBId,  @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                                                    <i class="fa fa-trash fa-sm"></i> &nbsp; Delete
+                                                                </a>
+
+                                                                @*<a href="#" id="btnAddEdit" data-remote="false" class="btn btn-warning btn-sm text-primary text-sm" data-backdrop="static" onclick="AddEditCurrData_CNFG(@item.oUserProfile.Id, @Model.oChurchBodyId, @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                                    <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                </a>*@
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                }   // system profiles
+                                else if (Model.subSetIndex == 20)  // system roles
+                                {
+                                    <table id="tblSysPerm" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-1 w-100" cellspacing="0">
+                                        <thead>
+                                            <tr style="text-align: center; ">
+                                                <th style="text-align:left; vertical-align: middle">
+                                                    Role Name
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Role Type
+                                                </th>
+                                                <th style="width: 80px; vertical-align: middle">
+                                                    Level
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Status
+                                                </th>
+                                                <th style="text-align: center; width: 80px; vertical-align: middle">
+                                                    <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="@Model.setIndex" asp-route-subSetIndex="@Model.subSetIndex" data-backdrop="static" data-keyboard="false">
+                                                        <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                                    </a>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.lsRoles)
+                                            {
+                                                // var strMemName = "'" + item.strMemberFullName + "'";
+                                                <tr style="text-align:center">
+                                                    <td align="left" style="vertical-align: middle">
+                                                        @item.RoleName
+                                                    </td>
+                                                    <td align="left">
+                                                        @item.RoleType
+                                                    </td>
+                                                    <td>
+                                                        @item.RoleLevel
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        @if (item.RoleStatus == "A")
+                                                        {<i class="fas fa-check fa-sm" style="color:limegreen"></i> }
+                                                        else if (item.RoleStatus == "E")
+                                                        { <i class="fas fa-user-times fa-sm" style="color:tomato"></i> }
+                                                        else
+                                                        { <i class="fas fa-user-slash fa-sm" style="color: grey"></i>}
+                                                        @*@Html.DisplayFor(modelItem => item.PermStatus)*@
+                                                    </td>
+
+                                                    <td style=" vertical-align: middle ">
+                                                        <a href="#" class="btn btn-outline-light btn-sm" style="color: dimgrey ; " onclick="AddEditCurrData_CNFG(@item.Id, @Model.oChurchBodyId, @Model.setIndex, @Model.subSetIndex)">
+                                                            <i class="fa fa-pencil fa-sm "></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-outline-light btn-sm " style="color: dimgrey ; " onclick="DeleteCurrData_UPR(@item.Id, @Model.oChurchBodyId, @Model.setIndex, @Model.subSetIndex)">
+                                                            <i class="fa fa-trash fa-sm"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                } //
+                                else if (Model.subSetIndex == 21)  // system perms
+                                {
+                                    <table id="tblSysPerm" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-1 w-100" cellspacing="0">
+                                        <thead>
+                                            <tr style="text-align: center; ">
+                                                <th style="text-align:left; vertical-align: middle">
+                                                    Description
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Permission Name
+                                                </th>
+                                                <th style="width: 80px; vertical-align: middle">
+                                                    Code
+                                                </th>
+                                                <th style="vertical-align: middle">
+                                                    Status
+                                                </th>
+                                                <th style="text-align: center; width: 80px; vertical-align: middle">
+                                                    <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="@Model.setIndex" asp-route-subSetIndex="@Model.subSetIndex" data-backdrop="static" data-keyboard="false">
+                                                        <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                                    </a>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.lsPermissions)
+                                            {
+                                                // var strMemName = "'" + item.strMemberFullName + "'";
+                                                <tr style="text-align:center">
+                                                    <td align="left" style="vertical-align: middle">
+                                                        @item.strPermDesc
+                                                    </td>
+                                                    <td align="left">
+                                                        @item.PermissionName
+                                                    </td>
+                                                    <td>
+                                                        @item.PermissionCode
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        @if (item.PermStatus == "A")
+                                                        {<i class="fas fa-check fa-sm" style="color:limegreen"></i> }
+                                                        else if (item.PermStatus == "E")
+                                                        { <i class="fas fa-user-times fa-sm" style="color:tomato"></i> }
+                                                        else
+                                                        { <i class="fas fa-user-slash fa-sm" style="color: grey"></i>}
+                                                        @*@Html.DisplayFor(modelItem => item.PermStatus)*@
+                                                    </td>
+
+                                                    <td style=" vertical-align: middle ">
+                                                        <a href="#" class="btn btn-outline-light btn-sm" style="color: dimgrey ; " onclick="AddEditCurrData_CNFG(@item.Id, @Model.oChurchBodyId, @Model.setIndex, @Model.subSetIndex)">
+                                                            <i class="fa fa-pencil fa-sm "></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-outline-light btn-sm " style="color: dimgrey ; " onclick="DeleteCurrData_UPR(@item.Id, @Model.oChurchBodyId, @Model.setIndex, @Model.subSetIndex)">
+                                                            <i class="fa fa-trash fa-sm"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                            }
+                            else if (Model.pageIndex == 2 || Model.pageIndex == 3)  //1-profile header [hide detail form], 2-view detail : edit via modal... tabs :- user roles | user groups | user perms
+                            {
+                                <div id="accordion">
+                                    <div class="card shadow-sm  w-100" style="border: 1px solid black; ">
+                                        <div class="card-header bg-white " id="heading_1" data-toggle="collapse" data-target="#collapse_1" aria-expanded="false" aria-controls="collapse_1">
+                                            <h5 class="mb-0">
+                                                <i class="fa fa-user fa-lg" style="width:15px ;color: lightgrey "></i>
+                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse_1" aria-expanded="false" aria-controls="collapse_1"
+                                                        style="font-variant-caps:small-caps  ; color: black">
+                                                    @{
+                                                        var userDesc = "User Profile";
+                                                        if (Model.oUserProfileModel != null)
+                                                            if (@Model.oUserProfileModel.oUserProfile != null)
+                                                                userDesc += ": " + Model.oUserProfileModel.oUserProfile.UserDesc;
+                                                    }
+
+                                                    @userDesc
+                                                    <i class="fa fa-caret-down " style="color: grey; Position:absolute; font-size: larger; right: 10px; top:22px ; "></i>
+                                                </button>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapse_1" class="collapse " aria-labelledby="heading_1" data-parent="#accordion">
+                                            @*class="collapse show"*@
+                                            <div class="card-body " style=" padding: 20px; ">
+                                                <!-- Nav tabs -->
+                                                <div class="p-3">
+                                                    <ul class="nav nav-tabs" role="tab" style="margin-left: 0px">
+                                                        <li id="l1" class="nav-item active">
+                                                            <a class="nav-link active" href="#tab_user_rol" aria-controls="tab_user_rol" role="tab" data-toggle="tab">
+                                                                <h7 class="breadcrumb-item" style="font-size:small; ">
+                                                                    <i class="fas fa-table" style="color: deepskyblue"></i> &nbsp;&nbsp; User Roles
+                                                                </h7>
+                                                            </a>
+                                                        </li>
+                                                        <li id="l2" class="nav-item ">
+                                                            <a class="nav-link " href="#tab_user_grp" aria-controls="tab_user_grp" role="tab" data-toggle="tab">
+                                                                <h7 class="breadcrumb-item" style="font-size:small; ">
+                                                                    <i class="fa fa-user-o fa-lg" style="color: #ff6a00"></i> &nbsp;&nbsp; User Groups
+                                                                </h7>
+                                                            </a>
+                                                        </li>
+                                                        <li id="l3" class="nav-item ">
+                                                            <a class="nav-link " href="#tab_user_perm" aria-controls="tab_user_perm" role="tab" data-toggle="tab">
+                                                                <h7 class="breadcrumb-item" style="font-size:small; ">
+                                                                    <i class="fa fa-user-o fa-lg" style="color: #2c2f5b"></i> &nbsp;&nbsp; User Permissions (All)
+                                                                </h7>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content shadow-sm w-100">
+                                                        <div role="tabpanel" class="tab-pane active bg-transparent" id="tab_user_rol">
+                                                            <div class="panel panel-default p-3" style="margin:10px -1px 0px 0px; padding: 10px; overflow:auto;  font-weight:normal">
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane bg-transparent" id="tab_user_grp">
+                                                            <div class="panel panel-default" style=" margin:10px -1px 0px 0px; padding: 10px; background-color:transparent; overflow:auto;">
+                                                                <br />
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane bg-transparent" id="tab_user_perm">
+                                                            <div class="panel panel-default p-3" style="margin:10px -1px 0px 0px; padding: 10px; overflow:auto;  font-weight:normal">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                            }
+                        }
+
+                        else if (Model.setIndex == 2)  // faith types
+                        {
+                            @if (Model.subSetIndex == 1 )
+                            {
+                               //var _strDesc = "'" + (Model.subSetIndex == 1 ? "Faith Stream" : "Faith Category") + "'";
+                                <table id="tbId_FaithTypes" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-1" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th style="vertical-align: middle">
+                                                &nbsp; Description
+                                            </th> 
+
+                                            <th width="100px" align="center" style="vertical-align: middle">
+                                                <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="@Model.setIndex" asp-route-subSetIndex="1" asp-route-pageIndex="1" data-backdrop="static" data-keyboard="false">
+                                                    <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                                </a>
+                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                   onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, @Model.setIndex, 1, '[New Faith Stream]')">
+                                                    <i class="fa fa-plus fa-sm fa-primary"></i>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.lsFaithCategories)
+                                        {
+                                            var strDesc = "'" + item.strFaithTypeClass + "'";
+                                            <tr>
+                                                <td style="vertical-align: middle">
+                                                    @item.oChurchFaithType.FaithDescription
+                                                </td>
+                                                @if (Model.setIndex == 2)
+                                                {
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.strFaithTypeClass)
+                                                    </td>
+                                                }
+                                                <td style=" vertical-align: middle ; text-align:center">
+                                                    <div class="btn-group dropright">
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu p-1">
+                                                            <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                               onclick="AddEditCurrData_CNFG(@item.oChurchFaithType.Id, @_oAGOId, @_oCBId, @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                                                <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                            </a>
+                                                            <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_CFT(@item.oChurchFaithType.Id,  @_oAGOId, @_oCBId,  @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                                                <i class="fa fa-trash fa-sm"></i> &nbsp; Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else if ( Model.subSetIndex == 2) 
+                            {
+                               // var _strDesc = "'" + (Model.subSetIndex == 1 ? "Faith Stream" : "Faith Category") + "'";
+                                <table id="tbId_FaithTypes_Sub" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-1 w-100" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th style="vertical-align: middle">
+                                                &nbsp; Description
+                                            </th>
+                                            <th style="border-bottom: 2px solid grey">
+                                                Church faith stream
+                                            </th>
+                                            <th align="center" width="100px" style=" vertical-align: middle">
+                                                <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="@Model.setIndex" asp-route-subSetIndex="@Model.subSetIndex" asp-route-pageIndex="1" data-backdrop="static" data-keyboard="false">
+                                                    <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                                </a>
+                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                   onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, @Model.setIndex, 2, '[New Faith Category]')">
+                                                    <i class="fa fa-plus fa-sm fa-primary"></i>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.lsFaithCategories)
+                                        {
+                                            var strDesc = "'" + item.strFaithTypeClass + "'";
+                                        <tr>
+                                            <td style="vertical-align: middle">
+                                                @item.oChurchFaithType.FaithDescription
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.strFaithTypeClass)
+                                            </td>
+                                            <td style=" vertical-align: middle ; text-align:center">
+                                                <div class="btn-group dropright">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu p-1">
+                                                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                           onclick="AddEditCurrData_CNFG(@item.oChurchFaithType.Id, @_oAGOId, @_oCBId, @Model.setIndex, 2, @strDesc)">
+                                                            <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                        </a>
+                                                        <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_CFT(@item.oChurchFaithType.Id,  @_oAGOId, @_oCBId,  @Model.setIndex, 2, @strDesc)">
+                                                            <i class="fa fa-trash fa-sm"></i> &nbsp; Delete
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        }
+
+                        else if (Model.setIndex == 3)  // denominations
+                        {
+                            @if (Model.subSetIndex == 1)  // denominations
+                            {
+                                <table id="tblSysAdmin" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-1 w-100" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:left; vertical-align: middle">
+                                                Denomination
+                                            </th>
+                                            <th style="vertical-align: middle">
+                                                Faith Category
+                                            </th>
+                                            <th style="vertical-align: middle">
+                                                Country
+                                            </th>
+                                            <th style="vertical-align: middle">
+                                                Levels
+                                            </th>
+                                            <th style="vertical-align: middle">
+                                                Status
+                                            </th>
+                                            <th style="text-align: center; width: auto; vertical-align: middle">
+                                                <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="3" asp-route-subSetIndex="1" data-backdrop="static" data-keyboard="false">
+                                                    <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                                </a>
+                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, 3, 2, '[New Church Level')">
+                                                    <i class="fas fa-place-of-worship  fa-sm "></i> &nbsp; New Denomination
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.lsUserProfiles)
+                                        {
+                                            var strDesc = "'" + item.oUserProfile.UserDesc + "'";
+                                            <tr>
+                                                <td align="left" style="vertical-align: middle">
+                                                    &nbsp;
+                                                    <a id="btnAddEdit" data-remote="false" asp-controller="AppVenAdmin" asp-action="Index" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId"
+                                                       asp-route-id="@item.oUserProfile.Id" asp-route-setIndex="@Model.setIndex" asp-route-subSetIndex="@Model.subSetIndex" asp-route-pageIndex="2" data-backdrop="static" data-keyboard="false">
+                                                        @item.oUserProfile.UserDesc
+                                                    </a>
+                                                </td>
+                                                <td style="vertical-align: middle">
+                                                    @item.oUserProfile.Username
+                                                </td>
+                                                <td style="vertical-align: middle">
+                                                    @item.strAppGloOwn
+                                                </td>
+                                                <td style="vertical-align: middle">
+                                                    @item.strChurchBody
+                                                </td>
+                                                <td style="vertical-align: middle; text-align:left ">
+                                                    @item.oUserProfile.strExpr
+                                                </td>
+                                                <td style="vertical-align: middle; text-align:center">
+                                                    @if (item.oUserProfile?.UserStatus == "A")
+                                                    {<i class="fas fa-check fa-sm" style="color:limegreen"></i> }
+                                                    else if (item.oUserProfile?.UserStatus == "E")
+                                                    { <i class="fas fa-user-times fa-sm" style="color:tomato"></i> }
+                                                    else
+                                                    { <i class="fas fa-user-slash fa-sm" style="color: grey"></i>}
+                                                    @Html.DisplayFor(modelItem => item.oUserProfile.strUserStatus)
+                                                </td>
+
+                                                <td style=" vertical-align: middle ; text-align:center">
+                                                    <div class="btn-group dropright">
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu p-1">
+                                                            <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static" onclick="AddEditCurrData_CNFG(@item.oUserProfile.Id, @_oAGOId, @_oCBId, @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                                                <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                            </a>
+                                                            <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_UPR(@item.oUserProfile.Id,  @_oAGOId, @_oCBId,  @Model.setIndex, @Model.subSetIndex, @strDesc)">
+                                                                <i class="fa fa-trash fa-sm"></i> &nbsp; Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else //if (Model.subSetIndex == 1)  // tabs :- church levels | congregations | user admin acc | subscriptions
+                            {
+                                <!-- place denomination header here -->
+                                @*<div class="btn-group dropright">
+                    <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            data-placement="top" title="Add administrator account">
+                        <i class="fas fa-user-plus" style="color: lightblue;"></i>&nbsp;
+                    </button>
+                    <div class="dropdown-menu p-1">
+                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, 3, 2, '[New Church Level')">
+                            <i class="fas fa-ellipsis-v  fa-sm "></i> &nbsp; Church Level
+                        </a>
+                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary " data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, 3, 3, '[New Congregation]')">
+                            <i class="fas fa-place-of-worship   fa-sm "></i> &nbsp; Congregation
+                        </a>
+                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-dark" data-backdrop="static" onclick="AddEditCurrData_CNFG(0, @_oAGOId, @_oCBId, 3, 6, '[New Church Admin Profile]')">
+                            <i class="fa fa-user-cog fa-sm   "></i> &nbsp; Admin Profile
+                        </a>
+                    </div>
+                </div>*@
+
+
+
+
+
+                                <!-- Nav tabs -->
+                                <div class="p-3">
+                                    <ul class="nav nav-tabs" role="tab" style="margin-left: 0px">
+                                        <li id="l1" class="nav-item active">
+                                            <a class="nav-link active" href="#tab_chu_lev" aria-controls="tab_chu_lev" role="tab" data-toggle="tab">
+                                                <h7 class="breadcrumb-item" style="font-size:small; ">
+                                                    <i class="fas fa-table" style="color: deepskyblue"></i> &nbsp;&nbsp; Church Levels
+                                                </h7>
+                                            </a>
+                                        </li>
+                                        <li id="l2" class="nav-item ">
+                                            <a class="nav-link " href="#tab_cong" aria-controls="tab_cong" role="tab" data-toggle="tab">
+                                                <h7 class="breadcrumb-item" style="font-size:small; ">
+                                                    <i class="fa fa-user-o fa-lg" style="color: #ff6a00"></i> &nbsp;&nbsp; Congregations
+                                                </h7>
+                                            </a>
+                                        </li>
+                                        <li id="l3" class="nav-item ">
+                                            <a class="nav-link " href="#tab_chu_acc" aria-controls="tab_chu_acc" role="tab" data-toggle="tab">
+                                                <h7 class="breadcrumb-item" style="font-size:small; ">
+                                                    <i class="fa fa-user-o fa-lg" style="color: #2c2f5b"></i> &nbsp;&nbsp; User Admin Accounts
+                                                </h7>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content shadow-sm " style="width:100%; ">
+                                        <div role="tabpanel" class="tab-pane active bg-transparent" id="tab_chu_lev">
+                                            <div class="panel panel-default p-3" style="margin:10px -1px 0px 0px; padding: 10px; overflow:auto;  font-weight:normal">
+
+                                            </div>
+                                        </div>
+
+                                        <div role="tabpanel" class="tab-pane bg-transparent" id="tab_cong">
+                                            <div class="panel panel-default" style=" margin:10px -1px 0px 0px; padding: 10px; background-color:transparent; overflow:auto;">
+                                                <br />
+
+                                            </div>
+                                        </div>
+
+                                        <div role="tabpanel" class="tab-pane bg-transparent" id="tab_chu_adm">
+                                            <div class="panel panel-default p-3" style="margin:10px -1px 0px 0px; padding: 10px; overflow:auto;  font-weight:normal">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+
+                        else if (Model.setIndex == 4)  // client subscriptions
+                        {
+
+                        }
+
+                        else if (Model.setIndex == 5)  // Client Server Config
+                        {
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-wrapper -->
+        </div>
+
+
+        @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            onclick="AddEditCurrData_CNFG(0, @CBId, @Model.setIndex,  @Model.subSetIndex )"
+            Launch demo modal
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="mdo">
+            onclick="AddEditCurrData_CNFG(0, @CBId, @Model.setIndex,  @Model.subSetIndex )"
+            Open modal for mdo
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="fat">Open modal for fat</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="getbootstrap">Open modal for getbootstrap</button>*@
+
+
+        @*<div style="text-align:center; display:none" id="divLoader">
+            <img src="~/css/images/load.gif" width="100" />
+        </div>*@
+
+        <!-- /#wrapper -->
+        <!-- Scroll to Top Button-->
+        @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+        @*<div id="loader">
+
+        </div>*@
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"> Logout to end your current session. Sure?</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable bg-gray" role="document" style="width:auto ; height:auto">
+                <div class="modal-content">
+                    <div class="modal-header bg-teal">
+                        <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                    </div>
+                    <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                        <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                        <button id="btnSaveChanges" type="button" class="btn btn-secondary text-white save-data"><i class="fa fa-database fa-sm"></i> Save changes </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal-->
+        <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+            <div class="modal-dialog modal-sm bg-gradient-success" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h5 style="color: white; font-weight:bold"> Done! </h5>
+                    </div>
+                    <div class="modal-body bg-white" style="align-items:center">
+                        <label id="lblUserMessage"></label>
+                    </div>
+
+                    <div class="modal-footer bg-white">
+                        <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        @*<partial name="_CookieConsentPartial" />   *@
+
+
+    </body>
+
+
+<!-- Bootstrap CSS -->
+@*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">*@
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+
+    @*@section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+            <script>
+            $('.Create').click(function() {
+            $('.divForCreate').Load('@Url.Action("AddOrEdit", "cb_mbr", new {id = Model.id})')
+            });
+            </script>
+        }*@
+
+
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="~/content/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+
+    <!-- Page level plugin JavaScript-->
+    @*<script src="~/content/vendor/chart.js/Chart.min.js"></script>
+        <script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>*@
+
+    <!-- Custom scripts for all pages-->
+    @*<script src="~/content/js/sb-admin.min.js"></script>*@
+
+    <!-- Demo scripts for this page-->
+    @*<script src="~/content/js/demo/datatables-demo.js"></script>
+        <script src="~/content/js/demo/chart-area-demo.js"></script>*@
+
+
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+
+    <!-- Page level plugin JavaScript-->
+    @*<script src="~/content/vendor/chart.js/Chart.min.js"></script>
+        <script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>*@
+
+
+
+
+
+    @* <script>
+            //$('#button1').on('click', function (e) {
+            //    alert('call load...');
+            //    console.log("S");
+            //    loadingFunc();
+            //})
+
+            //function loadingFunc() {
+            //    alert('load called...');
+            //    //  var url = "/AppVenAdmin/AddOrEdit_CNFG";  //"/echo/html/"
+            //    var oAppGloId = null;
+            //    var currChuBodyId = null;
+            //    var currParBodyId = null;
+            //    var currId = 0;
+            //    var currSetIndex = 1;
+            //    var currSubSetIndex = 1;
+
+            //    var url = "/AppVenAdmin/AddOrEdit_CNFG?oDenomId=" + oAppGloId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&oParentId=" + currParBodyId + "&setIndex=" + currSetIndex + "&subSetIndex=" + currSubSetIndex;
+            //    alert(url)
+            //    //console.log("S1");
+            //    $('#loaderr').load(url, function (responseTxt, statusTxt, xhr) {
+            //        // console.log("S2");
+
+            //        alert('show modal')
+            //        alert($('#loaderr').val())
+
+            //        $('myModal').empty().append(responseTxt).modal('show');
+
+            //        //alert('show modal')
+            //        //$("#myModal").modal('show');
+            //    });
+            //}
+
+
+            //$('#exampleModal').on('show.bs.modal', function (event) {
+            //    var button = $(event.relatedTarget) // Button that triggered the modal
+            //    var recipient = button.data('whatever') // Extract info from data-* attributes
+            //    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            //    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            //    var modal = $(this)
+            //    modal.find('.modal-title').text('New message to ' + recipient)
+            //    modal.find('.modal-body input').val(recipient)
+            //})
+
+        </script>*@
+
+
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("Password"); /*/getElementById("Pwd_1");  *('# <%= Pwd.ClientID %>');*/
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        //$(".toggle-password").click(function () {
+        $("#showPwd").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $("#Password");
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            //for table row
+            $("tr:even").css("background-color", "#fff");
+            $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+            var currSetIndex = $("#_oSetIndex").data("value");
+            var currSubSetIndex = $("#_oSubSetIndex").data("value");
+
+            if (currSetIndex == 1) {
+                if (currSubSetIndex == 1) {
+                    $('#tblSysAdmin').DataTable({
+                        "processing": true,
+                        "columnDefs": [
+                            { "searchable": false, "orderable": false, "targets": [6] },
+                        ],
+                    });
+                }
+                else if (currSubSetIndex == 3) {
+                    $('#tblSysPerm').DataTable({
+                        "processing": true,
+                        "columnDefs": [
+                            { "searchable": false, "orderable": false, "targets": [4] },
+                        ],
+                    });
+                }
+            }
+
+           // alert('currSetIndex: ' + currSetIndex + ' ... currSubSetIndex: ' + currSubSetIndex)
+
+            //if (currSetIndex == 2) {
+            //   // alert()
+
+            //    if (currSubSetIndex == 1) {
+            //        $('#tbId_FaithTypes').DataTable({
+            //            "processing": true,
+            //            "columnDefs": [
+            //                { "searchable": false, "orderable": false, "targets": [1] },
+            //            ],
+            //        });
+            //    }
+
+            //    else if (currSubSetIndex == 2) {
+            //        $('#tbId_FaithTypes_Sub').DataTable({
+            //            "processing": true,
+            //            "columnDefs": [
+            //                { "searchable": false, "orderable": false, "targets": [2] },
+            //            ],
+            //        });
+            //    }
+            //}
+
+
+
+            //if (currSetIndex == 2) {
+            //    if (currsubSetIndex == 1) {
+            //        $('#tbId_FaithTypes').DataTable({
+            //            "processing": true,
+            //            "columnDefs": [
+            //                { "searchable": false, "orderable": false, "targets": [2] },
+            //            ],
+            //        });
+            //    }
+            //    else {
+            //        $('#tbId_FaithTypes').DataTable({
+            //            "processing": true,
+            //            "columnDefs": [
+            //                { "searchable": false, "orderable": false, "targets": [3] },
+            //            ],
+            //        });
+            //    }
+            //}
+
+            //$('#tbId_AppGlobalOwn').DataTable({
+            //    "processing": true,
+            //    "columnDefs": [
+            //        { "searchable": false, "orderable": false, "targets": [6] },
+            //    ],
+            //});
+
+            //$('#tbId_ChurchLevel').DataTable({
+            //    "processing": true,
+            //    "columnDefs": [
+            //        { "searchable": false, "orderable": false, "targets": [2] },
+            //    ],
+            //});
+
+            //$('#tbId_ChurchBody').DataTable({
+            //    "processing": false,
+            //    "columnDefs": [
+            //        { "searchable": false, "orderable": false, "targets": [5] },
+            //    ],
+            //});
+
+
+
+            //$('#tbId_AppSubscriptions').DataTable({
+            //    "processing": true,
+            //    "columnDefs": [
+            //        { "searchable": false, "orderable": false, "targets": [3] },
+            //    ],
+            //});
+
+
+        });
+
+
+            //$('#exampleModal').on('hidden.bs.modal', function (e) {
+            //    $('.modal-body').html("");
+            //})
+
+        var AddEditCurrData_CNFG = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName) {
+           // alert('addORedit...');
+           // alert('addORedit.. ' + currId + ' __indx: ' + currSetIndex + ' __ sub_indx: ' + currSubSetIndex);
+            //alert('currChuBodyId.. ' + currChuBodyId + ' __ _strItemName: ' + _strItemName);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+            if (currId < 0) currId = null;
+            if (currDenomId < 0) currDenomId = null;
+            if (currChuBodyId < 0) currChuBodyId = null;
+            if (currSetIndex < 0) currSetIndex = null;
+            if (currSubSetIndex < 0) currSubSetIndex = null;
+
+            //if (currAGOId_Logged < 0) currAGOId_Logged = null;
+            //if (currCBId_Logged < 0) currCBId_Logged = null;
+            //if (currUserId_Logged < 0) currUserId_Logged = null;
+
+            var currParBodyId = null;
+
+            
+
+                    //alert('currAGOId_Logged : ' + currAGOId_Logged);
+                    //alert('currCBId_Logged : ' + currCBId_Logged);
+                    //alert('currUserId_Logged : ' + currUserId_Logged);
+
+            // var _url = "/AppVenAdmin/AddOrEdit_CFT?oDenomId=" + oAppGloId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&setIndex=" + currSetIndex + "&subSetIndex=" + currSubSetIndex;
+
+           // var currSetIndex = currSetIndex; // $("#_oSetIndex").data("value");
+            //var currSubSetIndex = currSubSetIndex; // $("#_oSubSetIndex").data("value");
+            //var currChurchBody_Logged = $("#_oChurchBody_Logged").data("value");
+            //var currAppGloOwnId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            //var currPageIndex = $("#_pageIndex").data("value");
+
+            // public IActionResult  AddOrEdit_CNFG(int? oDenomId = null, int? oCurrChuBodyId = null, int id = 0, int? oParentId = null, int setIndex = 0, int subSetIndex = 0)
+            //var url = "/AppVenAdmin/AddOrEdit_CNFG?oDenomId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&oParentId=" + currParBodyId + "&setIndex=" +
+            //    currSetIndex + "&subSetIndex=" + currSubSetIndex;
+               // "&subSetIndex=" + currSubSetIndex + "&subSetIndex=" + currSubSetIndex + "&subSetIndex=" + currSubSetIndex ;
+
+
+            var url = "@Url.Action("AddOrEdit_CNFG", "AppVenAdmin")?oDenomId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&oParentId=" + currParBodyId + "&setIndex=" +
+                        currSetIndex + "&subSetIndex=" + currSubSetIndex + "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+
+
+            if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+
+          //  alert(url)
+
+            $('#divPopModal_AddEdit_lg').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+
+
+            @*$.get("@Url.Action("AddOrEdit_CNFG", "AppVenAdmin", new { oDenomId = 1, oCurrChuBodyId = 1029,
+                  id=0, setIndex=1, subSetIndex=1  })",
+                    function (data) {
+                        $('#exampleModal .modal-body').html(data);
+                    })
+            $('#exampleModal').modal('show');*@
+
+
+            ////$("#_setIndex").val(setIndex);
+            //$('#exampleModal .modal-body').load(url, function () {
+            //    $("#exampleModal").modal('show');
+            //});
+
+
+            //$("#_setIndex").val(setIndex);
+            $('#divModalBody_AddEdit_lg').load(url, function () {
+
+                $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                $("#divPopModal_AddEdit_lg").modal('show');
+            });
+
+
+            //$("#divModalBody_AddEdit_lg").load(url, function (responseTxt, statusTxt, xhr) {
+            //    alert(responseTxt)
+            //    if (statusTxt == "success")
+            //        alert("External content loaded successfully!");
+            //    if (statusTxt == "error")
+            //        alert("Error: " + xhr.status + ": " + xhr.statusText);
+            //});
+
+
+            //$('#divPopModal_AddEdit_lg').find(".modal-body").load(url);
+            //$.get(url, function (data) {
+            //    alert(data);
+            //    //
+            //    $("#divModalBody_AddEdit_lg").html(data);
+            //});
+
+
+            //$('#divPopModal_AddEdit_lg').modal('show').find('.modal-body').load(url);
+
+            //$("#divPopModal_AddEdit_lg .modal-content").html('');
+            //$("#divPopModal_AddEdit_lg .modal-content").load(url);
+            //$("#divPopModal_AddEdit_lg").modal('show');
+
+
+            //$("#divModalBody_AddEdit_lg").load(url, function (response, status, xhr) {
+            //    alert('res: ' + status);
+            //    $("#divPopModal_AddEdit_lg").modal('show');
+            //});
+
+            //$.get(url, function (data) {
+            //    alert('attach data');
+            //    $("#divModalBody_AddEdit_lg").html(data);
+            //}).success(function () {
+            //    alert('show modal');
+            //    $("#divPopModal_AddEdit_lg").modal('show');
+            //}).error(function () {
+            //    alert('err !');
+            //});
+
+
+          //  $("#successtest").load(url);
+
+            //$("#divModalBody_AddEdit_lg").load(url, function () {
+            //    alert('show modal')
+            //    $("#divPopModal_AddEdit_lg").modal('show');
+            //});
+
+
+            //$("#successtest").load(url, function (response, status, xhr) {
+            //    alert('res: ' + status);
+            //    if (status != "error") {
+            //        $("#divPopModal_AddEdit_lg").modal('show');
+            //    }
+            //    else if (status == "error") {
+            //        alert('err');
+            //        var msg = "Sorry but there was an error: ";
+            //        $("#error").html(msg + xhr.status + " " + xhr.statusText);
+            //    };
+            //});
+
+
+        };
+
+        var AddEditCurr_Mem1 = function (currId, currChuBodyId, memClass, dbReload = false, isViewOnly = false, _strMemberFullName, isMultiView = true) {
+            //alert("currId.. edit via MemPane: " + currId);
+
+            //  public IActionResult AddOrEdit_PersData(int id = 0, int? oCurrChuBodyId=null, bool dbload=true, bool _isViewPageOnly = true)
+            var url = "/ChurchMembers/AddOrEdit_PersData?id=" + currId + "&oCurrChuBodyId=" + currChuBodyId + "&memClass=" + memClass + "&dbload=" + dbReload + "&_isViewPageOnly=" + isViewOnly + "&_isMultiView=" + isMultiView;
+
+            // var url = "/ChurchPane/AddOrEdit?id=" + currId + "&dbload=" + dbReload;
+            alert("clicked: " + url);
+
+            if (isViewOnly == false) {
+                $('#divPopModal_AddEdit').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+
+            //$(document).on('load', '#divModalBody_AddEdit', function (e) {
+            //     alert("currId add_edit b : " + currId);
+            //     $("#_hdnCurrId").val(currId);
+            //     $("#divPopModal_AddEdit").modal('show');
+            //})
+
+            $("#divModalBody_AddEdit").load(url, function () {
+                // alert("currId add_edit b : " + currId);
+                $("#_hdnCurrId").val(currId);
+
+                if (isViewOnly == true) {
+                    disable_hideEditControls();
+                }
+                else {
+                    $('#_divFooterCommit').prop('hidden', false);
+                }
+
+                $('#_hdrMemTitle').html('Church Member :- ' + _strMemberFullName);
+                $("#divPopModal_AddEdit").modal('show');
+            });
+            // window.location.href = "/AppGlobalOwner/Index";
+        };
+
+        var AddEditCurrData_CFT1 = function (currId, currChuBodyId, currSetIndex, currSubSetIndex) {
+            //alert('addORedit CFT...');
+            // alert('addORedit CFT.. ' + currId + ' __ indx: ' + currSetIndex);
+           // alert('currChuBodyId.. ' + currChuBodyId);
+
+            //IActionResult AddOrEdit_CNFG(int? oCurrChuBodyId, int id = 0, int? oParentId = null, int setIndex = 0)
+            if (currChuBodyId < 0) currChuBodyId = null;
+            var oAppGloId = null;
+
+            //if (currSetIndex == 4) { oAppGloId = $("#_oCurrAppGloId_Filter4").val(); }
+            //else if (currSetIndex == 5) { oAppGloId = $("#_oCurrAppGloId_Filter5").val(); }
+
+           // var currChuBodyId = null; //$("#_oCurrAppGloId_Filter4").val();
+              var currParBodyId = null;
+
+            // public IActionResult AddOrEdit_CFT(int? oDenomId = null, int? oCurrChuBodyId=null, int id = 0, int setIndex = 0, int subSetIndex = 0)
+              var _url = "/AppVenAdmin/AddOrEdit_CFT?oDenomId=" + oAppGloId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&setIndex=" + currSetIndex + "&subSetIndex=" + currSubSetIndex;
+
+              @*var _url = '@Url.Action("AddOrEdit_CFT", "AppVenAdmin",
+                                                 new { oDenomId = oAppGloId, oCurrChuBodyId= currChuBodyId })';*@
+
+              alert(_url);
+
+            if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+            $('#divPopModal_AddEdit_lg').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            ////$("#_setIndex").val(setIndex);
+            // // $('#divPopModal_AddEdit_lg').removeData("modal")
+
+                //$('#divModalBody_AddEdit_lg').load('@Url.Action("AddOrEdit_CFT", "AppVenAdmin")');
+
+              $("#divModalBody_AddEdit_lg").load(_url, function () {
+                  alert('CFT modal...');
+
+                $("#divPopModal_AddEdit_lg").modal('show');
+              });
+
+
+              //// Fill modal with content from link href
+              //$("#divPopModal_AddEdit_lg").on("show.bs.modal", function (e) {
+              //    alert('CFT modal...');
+              //    //var link = $(e.relatedTarget);
+              //    $(this).find(".modal-body").load(url);
+              //});
+        };
+
+        var AddEditCurrData_CFT2 = function (currId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName) {
+                    //alert('addORedit...');
+                  //  alert('addORedit.. ' + currId + ' __indx: ' + currSetIndex);
+
+            if (currId < 0) currId = null;
+            if (currDenomId < 0) currDenomId = null;
+            if (currChuBodyId < 0) currChuBodyId = null;
+            if (currSetIndex < 0) currSetIndex = null;
+            if (currSubSetIndex < 0) currSubSetIndex = null;
+
+                    ////_oChurchBody_Logged _oAppGloOwnId_Logged _oUserId_Logged
+                    //var currAGOId_Logged = $("#currAGOId_Logged").val();
+                    //var currCBId_Logged = $("#_oChurchBodyId_Logged").val();
+                    //var currUserId_Logged = $("#_oUserId_Logged").val();
+
+                    var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+                    var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+                    var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+                    //alert('currAGOId_Logged : ' + currAGOId_Logged);
+                    //alert('currCBId_Logged : ' + currCBId_Logged);
+                    //alert('currUserId_Logged : ' + currUserId_Logged);
+
+            // var _url = "/AppVenAdmin/AddOrEdit_CFT?oDenomId=" + oAppGloId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&setIndex=" + currSetIndex + "&subSetIndex=" + currSubSetIndex;
+            var url = "@Url.Action("AddOrEdit_CFT", "AppVenAdmin")?oAppGloOwnId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&setIndex=" + currSetIndex +
+                        "&subSetIndex=" + currSubSetIndex + "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                   // alert(url)
+
+                    // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                    if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                  //  alert(url)
+
+                    $('#divPopModal_AddEdit_lg').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+
+
+                    //alert('loading modal...')
+                    //$("#_setIndex").val(setIndex);
+                    //$('#divModalBody_AddEdit_lg').load(url, function () {
+                    $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                        $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+
+                        $("#divPopModal_AddEdit_lg").modal('show');
+                    });
+
+                };
+
+
+
+        var DisplaySuccessInfo = function (msg, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, reload = false) {
+
+            $("#lblUserMessage").text(msg);
+            //$("#_urlSuccessOK").val(reloadUrl);
+
+            $("#divPopModal_Success").modal('show');
+
+            if (reload) {
+                ReloadCurrPage_CNFG(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);
+
+                //window.location.href = "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&id=" + currId;
+            }
+        };
+
+        //public ActionResult Index(int? oDenomId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 1, int? oParentId = null)
+        var ReloadCurrPage_CNFG = function (currDenomId = null, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+           // alert('load..');
+            window.location.href = '/AppVenAdmin/Index?oDenomId=' + currDenomId + '&oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+            //if (parId == '') {
+            //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+            //}
+            //else {
+            //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+            //}
+        }
+
+        $(document).on('change', '#_CountryId', function (e) {
+            e.preventDefault();
+
+            var ctryId = $("#_CountryId").val();
+          //  alert('ctryId: ' + ctryId);
+
+            var url = '@Url.Content("~/")' + 'AppVenAdmin/GetCountryRegionsByCountry';
+            $('#_CountryRegionId').empty();
+            //GetCountryRegionsByCountry( int? ctryId, bool addEmpty = false)
+             $.getJSON(url, { ctryId: ctryId, addEmpty: true}, function (data) {
+                if (Object.keys(data).length > 0)
+                {
+                    var items = '';
+                    $.each(data, function (i, ctryReg) {
+                        items += "<option value='" + ctryReg.value + "'>" + ctryReg.text + "</option>";   // alert(items);
+                    });
+                   // items += "<option value=''> Select </option>";
+                    $('#_CountryRegionId').html(items);
+                }
+            });
+
+
+        });
+
+
+        //   $('#btnAction2').click(function () {
+
+        //$(document).on('click', '#btnAction2', function (e) {
+        //    e.preventDefault();
+
+        //    alert('mod clicked')
+        //    var url = $(this).data("url");
+        //    $.ajax({
+        //        type: "GET",
+        //        url: url,
+        //        dataType: 'json',
+        //        success: function (res) {
+
+        //            // get the ajax response data
+        //            var data = res.body;
+        //            // update modal content
+        //            $('.modal-body').text(data.someval);
+        //            // show modal
+        //            $('#myModal').modal('show');
+
+        //        },
+        //        error: function (request, status, error) {
+        //            console.log("ajax call went wrong:" + request.responseText);
+        //        }
+        //    });
+        //});
+    </script>
+
+
+    <script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+            alert('saving..');
+            alert('_setIndex: ' + $("#_setIndex").val());
+            alert('_subSetIndex...: sub: ' + $("#_subSetIndex").val());
+
+            var currSetIndex = $("#_setIndex").val();
+            var currSubSetIndex = $("#_subSetIndex").val();
+
+            if (parseInt(currSetIndex) == 1) {
+                SaveCurr_UPR(currSetIndex, currSubSetIndex);
+            }
+
+            else if (parseInt(currSetIndex) == 2) {
+                if (parseInt(currSetIndex) == 1 || parseInt(currSetIndex) == 2) {
+                    SaveCurr_CFT(currSetIndex, currSubSetIndex);
+                }
+            }
+
+            else if (parseInt(currSetIndex) == 3) {
+                SaveCurr_AGO(currSetIndex);
+            }
+
+            else if (parseInt(currSetIndex) == 4) {
+                SaveCurr_CL(currSetIndex);
+            }
+
+            else if (parseInt(currSetIndex) == 5) {
+                SaveCurr_CB(currSetIndex);
+            }
+        })
+
+
+        var SaveCurr_UPR = function (currSetIndex, currSubSetIndex) {
+            alert('save... ' + currSetIndex);
+
+            var currFormData = new FormData($("#currForm_UPR").get(0));
+            // var currFormData = $("#currForm_UPR").serialize();
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                url: "/AppVenAdmin/AddOrEdit_UPR",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+                        // var currId = $("#_hdnCurrId_UPR").val();
+                        DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+
+                        // AddEditCurrData_CNFG(res.oCurrId, currChuBodyId, currSetIndex, currSubSetIndex);
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+                    else //if (res.taskSuccess == false)
+                    {
+                        alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+        var DeleteCurrData_UPR = function (currId, currChuBodyId, currSetIndex, currSubSetIndex, delConfirm = false, msg = "") {
+            // alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+
+            //  if (delConfirm == null) { delConfirm = false; }
+
+            //alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+            var oAppGloId = null;
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified ' + (currSetIndex == 1 ? 'system admin profile' : 'church admin profile') : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/AppVenAdmin/Delete_UPR",
+                                data: { id: currId, setIndex: currSetIndex, delConfirmed: delConfirm },
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {
+                                        //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex, currSubSetIndex);
+                                        ReloadCurrPage_CNFG(oAppGloId, currChuBodyId, currSetIndex, currSubSetIndex);
+                                    }
+                                    else {
+                                        // alert(res.userMess);
+                                        if (currSetIndex == 1 && !delConfirm) {
+                                            DeleteCurrData_UPR(currId, currChuBodyId, currSetIndex, currSubSetIndex, true, res.userMess);
+                                        }
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Delete failed!',
+                                                content: 'Could not delete specified record(s). Please try again.',
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+        var SaveCurr_CFT = function (currSetIndex, currSubSetIndex) {
+             alert('save CFT... ' + currSetIndex);
+
+            var currFormData = new FormData($("#currForm_CFT").get(0));
+            // var currFormData = $("#currForm_CFT").serialize();
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                // var url = "@Url.Action("AddOrEdit_CFT", "AppVenAdmin")?oAppGloOwnId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&setIndex=" + currSetIndex +
+                    //    "&subSetIndex=" + currSubSetIndex + "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                url: @Url.Action("AddOrEdit_CFT", "AppVenAdmin") , // "/AppVenAdmin/AddOrEdit_CFT",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+                        // var currId = $("#_hdnCurrId_CFT").val();
+                        //alert(res.userMess);
+                        DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        //document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+                        //AddEditCurrData_CNFG(res.oCurrId, currChuBodyId, currSetIndex, currSubSetIndex);
+
+                        if (res.resetNew == true) {
+                            AddEditCurrData_CFT(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, (currSubSetIndex == 1 ? '[New Faith Type]' : '[New Faith Category]'));
+                        }
+                        else {
+                            $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+                    else {
+                        alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+        var DeleteCurrData_CFT = function (currId, currChuBodyId, currSetIndex, currSubSetIndex, delConfirm = false, msg = "") {
+            // alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+
+            //  if (delConfirm == null) { delConfirm = false; }
+
+            //alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+            var oAppGloId = null;
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified ' + (currSetIndex == 1 ? 'Church faith type' : 'Church faith subtype') : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/AppVenAdmin/Delete_CFT",
+                                data: { id: currId, setIndex: currSetIndex, delConfirmed: delConfirm },
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {
+                                        //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex, currSubSetIndex);
+                                        ReloadCurrPage_CNFG(oAppGloId, currChuBodyId, currSetIndex, currSubSetIndex);
+                                    }
+                                    else {
+                                        // alert(res.userMess);
+                                        if (currSetIndex == 1 && !delConfirm) {
+                                            DeleteCurrData_CFT(currId, currChuBodyId, currSetIndex, currSubSetIndex, true, res.userMess);
+                                        }
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Delete failed!',
+                                                content: 'Could not delete specified record(s). Please try again.',
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+
+
+
+
+
+
+
+
+        var DeleteCurrData_AGO = function (currId, currChuBodyId, currSetIndex, delConfirm = false, msg = '') {
+            // alert('del 2');  // alert('DEL.. ' + currId + ' :: delConfirm: ' + delConfirm + ' :: CB: ' + currChuBodyId+ ' :: ?: ' );
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified denomination' : msg) + ' ?', // + (strDelChuBody != '' ? ', ' + strDelChuBody : '') + '?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/AppVenAdmin/Delete_AGO",
+                                data: { id: currId, setIndex: currSetIndex, delConfirmed: delConfirm },
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {
+                                        $.alert({
+                                            title: '',
+                                            type: 'green',
+                                            typeAnimated: true,
+                                            content: 'Deleted!',
+                                            closeIcon: true,
+                                            closeIconClass: 'fa fa-close'
+                                            //buttons: {
+                                            //    ok: function () {
+                                            //        alert('refreshing...');
+                                            //        ReloadCurrPage_CNFG(currChuBodyId, currSetIndex);
+                                            //    }
+                                            //}
+                                        });
+                                    }
+                                    else {
+                                        if (!delConfirm) {
+                                            DeleteCurrData_AGO(currId, currChuBodyId, currSetIndex, true, res.userMess);
+                                        }
+                                        else {
+                                            $.alert({
+                                                title: 'Delete failed!',
+                                                content: 'Could not delete specified record(s). Please try again.',
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+                    //,
+                }
+            });
+
+        }
+
+        var SaveCurr_AGO = function (currSetIndex) {
+            //  alert('save... ' + currSetIndex);
+
+            //var currFormData = $("#currForm_AGO").serialize();
+            var currFormData = new FormData($("#currForm_AGO").get(0));
+            // alert('savin... ' + currSetIndex);
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                url: "/AppVenAdmin/AddOrEdit_AGO",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                // contentType: 'application/x-www-form-urlencoded; charset=UTF-8',  //
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        // var currChuBodyId = $("#_hdnChuBodyId").val();
+
+                        $.alert({
+                            title: 'Success!',
+                            content: res.userMess,
+                            type: 'green',
+                            typeAnimated: true,
+                            buttons: {
+                                ok: {
+                                    btnClass: 'btn-success ',
+                                    action: function () {
+                                        document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+                                        AddEditCurrData_CNFG(res.oCurrId, currSetIndex);
+                                    }
+                                }
+                            }
+                        });
+
+                        // var currId = $("#_hdnCurrId_AGO").val();
+                        //  alert(res.userMess);
+                        //  DisplaySuccessInfo(res.userMess, currChuBodyId, currSetIndex); // "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        //'Member transfer request details saved.'  window.location.href = "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&id=" + currId;
+                    }
+                    else {
+                        $.alert({
+                            title: 'Saving failed!',
+                            content: res.userMess,
+                        });
+                    }
+                }
+            })
+        }
+
+        var SaveCurr_CL = function (currSetIndex) {
+            //  alert('save... ' + currSetIndex);
+
+            var currFormData = $("#currForm_CL").serialize();
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                url: "/AppVenAdmin/AddOrEdit_CL",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+
+                        $.alert({
+                            title: 'Success!',
+                            content: res.userMess,
+                            type: 'green',
+                            typeAnimated: true,
+                            action: function () {
+                                document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+                                AddEditCurrData_CNFG(res.oCurrId, currSetIndex);
+                                ReloadCurrPage_CNFG(currChuBodyId, currSetIndex);
+                            }
+                        });
+                    }
+                    else {
+                        $.alert({
+                            title: 'Saving failed!',
+                            content: res.userMess,
+                            type: 'orange',
+                            typeAnimated: true,
+                        });
+                    }
+                }
+            })
+        }
+
+        var DeleteCurrData_CL = function (currId, currChuBodyId, currSetIndex, delConfirm = false, msg = '') {
+            // alert('del 2');  // alert('DEL.. ' + currId + ' :: delConfirm: ' + delConfirm + ' :: CB: ' + currChuBodyId+ ' :: ?: ' );
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified church level' : msg) + ' ?', // + (strDelChuBody != '' ? ', ' + strDelChuBody : '') + '?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/AppVenAdmin/Delete_CL",
+                                data: { id: currId, setIndex: currSetIndex, delConfirmed: delConfirm },
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {
+                                        $.alert({
+                                            title: '',
+                                            type: 'green',
+                                            typeAnimated: true,
+                                            content: 'Deleted!',
+                                            //closeIcon: true,
+                                            //closeIconClass: 'fa fa-close'
+                                            //buttons: {
+                                            //    ok: function () {
+                                            //        alert('refreshing...');
+
+                                            //ReloadCurrPage_CNFG(currChuBodyId, currSetIndex);
+                                            //    }
+                                            //}
+                                        });
+                                        ReloadCurrPage_CNFG(currChuBodyId, currSetIndex);
+                                    }
+                                    else {
+                                        if (!delConfirm && res.userMess.toString().indexOf("connections") >= 0) {
+                                            DeleteCurrData_CL(currId, currChuBodyId, currSetIndex, true, res.userMess);
+                                        }
+                                        else {
+                                            $.alert({
+                                                title: 'Delete failed!',
+                                                content: res.userMess,
+                                                type: 'orange',
+                                                typeAnimated: true,
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+                    //,
+                }
+            });
+
+        }
+
+        var SaveCurr_CB = function (currSetIndex) {
+            //  alert('save... ' + currSetIndex);
+
+            var currFormData = $("#currForm_CB").serialize();
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+                url: "/AppVenAdmin/AddOrEdit_CB",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+                        //  var _valChk = $("#_hdnChuBodyId").val();
+
+                        $.alert({
+                            title: 'Success!',
+                            content: res.userMess,
+                            type: 'green',
+                            typeAnimated: true,
+                            action: function () {
+                                document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+                                AddEditCurrData_CNFG(res.oCurrId, currSetIndex);
+                                ReloadCurrPage_CNFG(currChuBodyId, currSetIndex);
+                            }
+                        });
+                    }
+                    else {
+                        $.alert({
+                            title: 'Saving failed!',
+                            content: res.userMess,
+                            type: 'orange',
+                            typeAnimated: true,
+                        });
+                    }
+                }
+            })
+        }
+
+        var DeleteCurrData_CB = function (currId, currChuBodyId, currSetIndex, delConfirm = false, msg = '') {
+            // alert('del 2');  // alert('DEL.. ' + currId + ' :: delConfirm: ' + delConfirm + ' :: CB: ' + currChuBodyId+ ' :: ?: ' );
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified congregation' : msg) + ' ?', // + (strDelChuBody != '' ? ', ' + strDelChuBody : '') + '?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: "/AppVenAdmin/Delete_CB",
+                                data: { id: currId, setIndex: currSetIndex, delConfirmed: delConfirm },
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {
+                                        $.alert({
+                                            title: '',
+                                            type: 'green',
+                                            typeAnimated: true,
+                                            content: 'Deleted!',
+                                            //closeIcon: true,
+                                            //closeIconClass: 'fa fa-close'
+                                            //buttons: {
+                                            //    ok: function () {
+                                            //        alert('refreshing...');
+                                            //        ReloadCurrPage_CNFG(currChuBodyId, currSetIndex);
+                                            //    }
+                                            //}
+                                        });
+                                    }
+                                    else {
+                                        if (!delConfirm && res.userMess.toString().indexOf("connections") >= 0) {
+                                            DeleteCurrData_CB(currId, currChuBodyId, currSetIndex, true, res.userMess);
+                                        }
+                                        else {
+                                            $.alert({
+                                                title: 'Delete failed!',
+                                                content: res.userMess,
+                                                type: 'orange',
+                                                typeAnimated: true,
+                                            });
+                                        }
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+                    //,
+                }
+            });
+
+        }
+
+
+
+    </script>
+
+
+
+}

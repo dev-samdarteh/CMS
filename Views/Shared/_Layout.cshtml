@@ -1,0 +1,1441 @@
+﻿
+@{
+    /// headers
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Home";
+
+    var _oAppGloOwnId_Logged = @ViewData["oAppGloOwnId_Logged"] as int?;
+    var _oChurchBodyId_Logged = @ViewData["oChurchBodyId_Logged"] as int?;
+    var _oChurchBodyOrgType_Logged = @ViewData["oChurchBodyOrgType_Logged"] as string;
+    var _strClientChurchName = @ViewData["strClientChurchName"] as string;
+    var _strClientBranchName = @ViewData["strClientBranchName"] as string;
+    var _strClientChurchLevel = @ViewData["strClientChurchLevel"] as string;
+    var _strAppNameMod = @ViewData["strAppNameMod"] as string;
+    var _strAppCurrUser = @ViewData["strAppCurrUser"] as string;
+    var _strAppCurrUser_ChRole = @ViewData["strAppCurrUser_ChRole"] as string;
+    var _strAppCurrUser_RoleCateg = @ViewData["strAppCurrUser_RoleCateg"] as string;
+    ///
+    /// dashboard values
+    var _CB_SubCongCount = @ViewData["CB_SubCongCount"] as string;
+    var _CB_MemListCount = @ViewData["CB_MemListCount"] as string;
+    var _CBWeek_NewMemListCount = @ViewData["CBWeek_NewMemListCount"] as string;
+    var _CBWeek_NewConvertsCount = @ViewData["CBWeek_NewConvertsCount"] as string;
+    var _CBWeek_VisitorsCount = @ViewData["CBWeek_VisitorsCount"] as string;
+    var _CBWeek_ReceiptsAmt = @ViewData["CBWeek_ReceiptsAmt"] as string;
+    var _CBWeek_PaymentsAmt = @ViewData["CBWeek_PaymentsAmt"] as string;
+    var _TodaysAuditCount = @ViewData["TodaysAuditCount"] as string;
+    ///
+    var _img = ViewData["strAppCurrUserPhoto_Filename"] as string;
+    var imgUrl_LogUser = "~/img_db/" + (@_img ?? "df_user_p.png");
+    ///
+    var _imgAppLogo = ViewData["strAppLogo_Filename"] as string;  // 
+    var imgUrl_AppLogo = "~/img_db/" + (@_imgAppLogo ?? "df_user_p.png");
+    ///
+    var _imgAGO = ViewData["strClientLogo_Filename"] as string;  //  
+    var imgUrl_ClientLogo = "~/img_db/" + (@_imgAGO ?? "df_user_p.png");
+
+    var @_strVendorEmail = "https://rhemasystems.com/";// var imgUrl = "~/frontend/dist/img/2020_dev_sam.jpg";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> @_pageTitle </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+    <environment include="Development">
+        <link href="~/frontend/plugins/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/fontawesome-free/css/all.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/jqvmap/jqvmap.css" rel="stylesheet" />
+        <!-- DataTables -->
+        <link href="~/frontend/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/datatables-responsive/css/responsive.bootstrap4.css" rel="stylesheet" />
+        <link href="~/frontend/dist/css/adminlte.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/overlayScrollbars/css/OverlayScrollbars.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/summernote/summernote-bs4.css" rel="stylesheet" />
+
+    </environment>
+
+    <environment exclude="Development">
+        <link href="~/frontend/plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link href="~/frontend/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+        <!-- Tempusdominus Bbootstrap 4 -->
+        <link href="~/frontend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+        <!-- iCheck -->
+        <link href="~/frontend/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+        <!-- JQVMap -->
+        <link href="~/frontend/plugins/jqvmap/jqvmap.min.css" rel="stylesheet" />
+        <!-- DataTables -->
+        <link href="~/frontend/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+        <!-- Theme style -->
+        <link href="~/frontend/dist/css/adminlte.min.css" rel="stylesheet" />
+        <!-- overlayScrollbars -->
+        <link href="~/frontend/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" rel="stylesheet" />
+        <!-- summernote -->
+        <link href="~/frontend/plugins/summernote/summernote-bs4.min.css" rel="stylesheet" />
+
+    </environment>
+
+
+    <!-- Bootstrap CSS -->
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    *@
+
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/frontend/plugins/daterangepicker/daterangepicker.css" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    @* <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"> *@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css" />*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" />
+
+    <link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1581152092/smartwizard/smart_wizard.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1581152092/smartwizard/smart_wizard_theme_dots.min.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+<!--sidebar-mini-md layout-fixed  "-->
+<body class="hold-transition sidebar-mini-md layout-fixed">
+    <div class="wrapper">
+
+        <!-- Navbar  main-header navbar navbar-expand navbar-white navbar-light-->
+        <nav id="nav-main-header" class="main-header navbar navbar-expand navbar-dark navbar-cyan">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav" style="z-index: 1040 !important;">
+                <li class="nav-item">
+                    <a class="nav-link " data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link ">
+                        <i class="fas fa-home "></i>
+                    </a>
+                </li>
+                <!-- Messages Dropdown Menu -->
+                <li class="nav-item d-none d-sm-inline-block ">
+                    <a asp-controller="ClientSetupParameters" asp-action="Index" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block ">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- SEARCH FORM -->
+            <form class="form-inline ml-3">
+                <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item dropdown ">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-comments"></i>
+                        <span class="badge badge-danger navbar-badge">3</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="~/frontend/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        Brad Diesel
+                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">Call me whenever you can...</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="~/frontend/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        John Pierce
+                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">I got your message bro</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="~/frontend/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        Nora Silvester
+                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">The subject goes here</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                    </div>
+                </li>
+
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link " data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-envelope mr-2"></i> 4 new messages
+                            <span class="float-right text-muted text-sm">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-file mr-2"></i> 3 new reports
+                            <span class="float-right text-muted text-sm">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link " data-toggle="dropdown" href="#">
+                        <i class="far fa-user "></i>
+                        @*<span class="badge badge-danger navbar-badge">3</span>*@
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                @*<img src="@Url.Content(imgUrl_LogUser)" alt="Current User" class="img-size-50 mr-3 img-circle">*@
+                                <img src="@Url.Content(imgUrl_LogUser)" alt="Current user" class="img-size-50 img-circle mr-3">
+                                @*<img src="~/frontend/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">*@
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        @_strAppCurrUser
+                                        @*<span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>*@
+                                    </h3>
+                                    <p class="text-sm">@_strAppCurrUser_ChRole</p>
+                                    @*<p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @ViewBag.strUserSessionDura</p>*@
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item btn bg-gradient-gray text-center rounded-0" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-arrow-left fa-fw"></i>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link " data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <nav id="nav-sub-header" class="main-header navbar navbar-expand navbar-dark navbar-cyan ">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+
+                <li class="nav-item dropdown d-none d-sm-inline-block">
+                    <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-friends fa-sm mr-2 text-teal"></i> Member Register
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                        @*<span class="dropdown-item dropdown-header"> sub-modules </span>*@
+                        <a asp-area="" asp-controller="MemberPane" asp-action="Index" class="dropdown-item text-sm">
+                            <i class="fas fa-users fa-sm mr-2"></i> Member Explorer
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-search fa-sm mr-2"></i> Lookup Member
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-user-plus fa-sm mr-2"></i> New Members
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-user-lock fa-sm mr-2"></i> New Converts
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-sim-card fa-sm mr-2"></i> Member Profile Card
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-arrow-left fa-sm mr-2"></i> Past Membership
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-history fa-sm mr-2"></i> Member History
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown d-none d-sm-inline-block">
+                    <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-church fa-sm mr-2 text-purple"></i>  Church-life
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                        @*<span class="dropdown-item dropdown-header"> sub-modules </span>*@
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-calendar fa-sm mr-2"></i> Church Calendar
+                            @*<span class="float-right text-muted text-sm">3 mins</span>*@
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-bell fa-sm mr-2"></i> Events Countdown
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-check-double fa-sm mr-2"></i> Church Roster
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-place-of-worship fa-sm mr-2"></i> Core Church Activities
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-user-check fa-sm mr-2"></i> Member Activity Checklist
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-place-of-worship fa-sm mr-2"></i> Worship Service Line-up
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-ellipsis-v fa-sm mr-2"></i> Order of Service
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-calendar-check fa-sm mr-2"></i> Preaching Plan
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-user-tie fa-sm mr-2"></i> Minister's Schedule
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-calendar-day fa-sm mr-2"></i> My Custom Calendar
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-clipboard-check fa-sm mr-2"></i> To-Do List Tracker
+                        </a>
+                    </div>
+
+                </li>
+
+                <li class="nav-item dropdown d-none d-sm-inline-block">
+                    <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-building fa-sm mr-2 text-orange"></i> Manage
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                        @if (@_oChurchBodyOrgType_Logged != "CN")
+                        {
+                            <a href="#" class="dropdown-item text-sm">
+                                <i class="fas fa-church fa-sm mr-2"></i> Congregations
+                            </a>
+                        }
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-layer-group fa-sm mr-2"></i> Church Units
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-users fa-sm mr-2"></i> Leadership Pool
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-user-check fa-sm mr-2"></i> Church Attendance
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-user-clock fa-sm mr-2"></i>
+                            Church Visitors
+                            <span class="right badge badge-info">@_CBWeek_VisitorsCount</span>
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-location-arrow fa-sm mr-2"></i>Church Transfers
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-arrows-alt-h fa-sm mr-2"></i> Promotions &amp; Demotions
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-microphone-alt fa-sm mr-2"></i> Notices &amp; Announcements
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-sms fa-sm mr-2"></i> Church Intercom
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-briefcase fa-sm mr-2"></i> Church Projects
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fa fa-book fa-sm mr-2"></i> Assets Register
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown d-none d-sm-inline-block">
+                    <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-coins fa-sm mr-2"></i> Finance
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                        <a href="#" class="dropdown-item text-sm">  <i class="fas fa-arrow-left fa-sm mr-2 text-success"></i> Receipts (Income)  </a>
+                        <a href="#" class="dropdown-item text-sm"> <i class="fas fa-layer-group fa-sm mr-2"></i> Subsidiary Ledgers </a>
+                        <a href="#" class="dropdown-item text-sm">  <i class="fas fa-cog fa-sm mr-2"></i> Control Accounts </a>
+                        <div class="dropdown-divider"></div>
+
+                        <a href="#" id="dropdownSubMenu2" class="dropdown-item text-sm"> <i class="fas fa-ellipsis-h fa-sm mr-2"></i> Finance Modules </a>
+                        <div aria-labelledby="dropdownSubMenu2" class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Offertory (Collection) </a>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Tithes </a>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Donations</a>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Levies &amp; Dues </a>
+
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Suppliers</a>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Capitalized Assets</a>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Asset Depreciation</a>
+
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Pledges &amp; Fundraisings</a>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Disbursements (Apportionments)</a>
+                            <a href="#" class="dropdown-item text-sm"><i class="fas fa-arrow-right fa-sm mr-2"></i> Member Welfare Distribution</a>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm"><i class="fas fa-layer-group fa-sm mr-2"></i> Account Categorization  </a>
+                        <a href="#" class="dropdown-item text-sm"> <i class="fas fa-cog fa-sm mr-2"></i> Accounting Year &amp; Period </a>
+
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">  <i class="fa fa-balance-scale fa-sm mr-2"></i> Trial Balance</a>
+                        <a href="#" class="dropdown-item text-sm"><i class="fa fa-chart-pie fa-sm mr-2"></i> Financial Reports</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown d-none d-sm-inline-block">
+                    <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-chart-line fa-sm mr-2"></i> Reporting
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-chart-bar fa-sm mr-2"></i> Church Statistics
+                        </a>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-table fa-sm mr-2"></i> Pre-built Reports
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-sm">
+                            <i class="fas fa-ellipsis-h fa-sm mr-2"></i> Adhoc Analysis
+                        </a>
+                    </div>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container sidebar-dark-fuchsia -->
+        <aside class="main-sidebar elevation-4 sidebar-light-fuchsia">
+            <!-- Brand Logo -->
+            <a asp-controller="Home" asp-action="Index" class="brand-link">
+                <img src="~/frontend/dist/img/rhema_logo.png" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-normal text-lg-center"> @_strAppName </span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar pt-2">
+                <!-- Sidebar user panel (optional)  -->
+                <div class="user-panel mt-2 pb-1 d-flex">
+                    <div class="image">
+                        <img src="@Url.Content(imgUrl_ClientLogo)" class="img-circle elevation-2" alt="Church logo">
+                    </div>
+                    <div class="info pr-2">
+                        <h3 class="text-sm">
+                            @_strClientChurchName
+                        </h3>
+                        <p class="text-sm pr-1"><i class="fas fa-map-marker-alt fa-sm"></i>&nbsp;@_strClientBranchName</p>
+                    </div>
+                </div>
+                @*<div class="dropdown-divider"></div>*@
+                <div class="user-panel mt-2 pb-1 d-flex">
+                    <div class="image">
+                        <img src="@Url.Content(imgUrl_LogUser)" class="img-circle elevation-2" alt="User photo">
+                    </div>
+                    <div class="info ">
+                        <a href="#" class="d-block">@_strAppCurrUser</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                        with font-awesome or any other icon font library -->
+                        <li class="nav-item has-treeview ">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                    <i class="right fas fa-angle-up"></i>
+                                </p>
+                            </a>
+                        </li>
+                        @*<li class="nav-item">
+                                <a asp-controller="Home" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon fas fa-user-clock"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>*@
+                        <li class="nav-item text-sm">
+                            <a href="pages/widgets.html" class="nav-link">
+                                &nbsp;&nbsp;&nbsp;<i class="fas fa-user-plus fa-sm text-secondary"></i>
+                                <p>
+                                    &nbsp; New Members
+                                    <span class="right badge badge-success">@_CBWeek_NewMemListCount</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item text-sm">
+                            <a href="pages/widgets.html" class="nav-link">
+                                &nbsp;&nbsp;&nbsp;<i class="fas fa-user-lock fa-sm text-secondary"></i>
+                                <p>
+                                    &nbsp; New Converts
+                                    <span class="right badge badge-warning">@_CBWeek_NewConvertsCount</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item text-sm">
+                            <a href="pages/widgets.html" class="nav-link">
+                                &nbsp;&nbsp;&nbsp;<i class="fas fa-user-clock fa-sm text-secondary" "></i>
+                                <p>
+                                    &nbsp; Church Visitors
+                                    <span class="right badge badge-info">@_CBWeek_VisitorsCount</span>
+                                </p>
+                            </a>
+                        </li>
+
+                        <li> <div class="dropdown-divider mt-5"></div></li>
+
+                        <li class="nav-item has-treeview mt-1 mb-1">
+                            <a href="#" class="nav-link">
+                                &nbsp;<i class="fas fa-user-friends text-teal "></i>
+                                <p>
+                                    &nbsp;
+                                    Member Register
+                                    <i class="fas fa-angle-right right"></i>
+                                    @*<span class="badge badge-info right">@ViewBag.MemListCount</span>*@
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview text-sm">
+                                <li class="nav-item ">
+                                    <a asp-controller="MemberPane" asp-action="Index" class="nav-link text-black-50">
+                                        <i class="fa fa-user nav-icon"></i>
+                                        <p>Member Explorer</p>
+                                    </a>
+
+                                    <a asp-controller="AppVenAdmin" asp-action="Index" asp-route-setIndex="1" asp-route-subSetIndex="3" class="nav-link">
+                                        &nbsp;&nbsp;&nbsp;<i class="fas fa-user-cog fa-sm"></i>
+                                        <p>
+                                            &nbsp; Member Explorer
+                                            <span class="right badge badge-success">@_CB_MemListCount</span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a href="pages/layout/top-nav.html" class="nav-link text-black-50">
+                                        <i class="fas fa-user-alt nav-icon"></i>
+                                        <p>Member Profile</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                                        <i class="fas fa-church nav-icon"></i>
+                                        <p>Member Church-life</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/layout/boxed.html" class="nav-link">
+                                        <i class="fas fa-user-plus nav-icon"></i>
+                                        <p>New Members</p>
+                                        <span class="right badge badge-success">@_CBWeek_NewMemListCount</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/layout/boxed.html" class="nav-link">
+                                        <i class="fas fa-user-check nav-icon"></i>
+                                        <p>New Converts</p>
+                                        <span class="right badge badge-warning">@_CBWeek_NewConvertsCount</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/layout/fixed-sidebar.html" class="nav-link">
+                                        <i class="fa fa-arrow-left nav-icon"></i>
+                                        <p>Past Membership</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/layout/fixed-topnav.html" class="nav-link">
+                                        <i class="fa fa-table nav-icon"></i>
+                                        <p>Profile Card</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/layout/fixed-footer.html" class="nav-link">
+                                        <i class="fas fa-search-location nav-icon"></i>
+                                        <p>Lookup Member</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
+                                        <i class="fas fa-history nav-icon"></i>
+                                        <p>Member History</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <div class="dropdown-divider mt-1"></div></li>
+                        <li class="nav-item has-treeview mt-1 mb-1">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-church text-purple"></i>
+                                <p>
+                                    Church-life &amp; Events
+                                    <i class="right fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview text-black-50 text-sm">
+                                <li class="nav-item">
+                                    <a href="pages/charts/chartjs.html" class="nav-link">
+                                        &nbsp;&nbsp;<i class="fas fa-calendar-day"></i> &nbsp;
+                                        <p>Church Calendar (Almanac) </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-bell nav-icon"></i>
+                                        <p> Events Countdown</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/flot.html" class="nav-link">
+                                        <i class="fas fa-place-of-worship nav-icon"></i>
+                                        <p>Church Service Line-up</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-ellipsis-h nav-icon"></i>
+                                        <p>Order of Service</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-calendar-day nav-icon"></i>
+                                        <p>Preaching Plan</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-check-double nav-icon"></i>
+                                        <p>Church Activity Roster</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-user-tie nav-icon"></i>
+                                        <p>Minister's Schedule</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-church nav-icon"></i>
+                                        <p>Church Core Activities</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-user-check nav-icon"></i>
+                                        <p>Member-Activity Checklist</p>
+                                    </a>
+                                </li>
+                                <li><div class="dropdown-divider"></div></li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/chartjs.html" class="nav-link">
+                                        &nbsp;<i class="fas fa-calendar-check"></i> &nbsp;
+                                        <p> My Calendar </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link ">
+                                        <i class="fas fa-clipboard-list fa-lg nav-icon"></i>
+                                        <p>To-Do List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <div class="dropdown-divider mt-1"></div></li>
+
+                        <li class="nav-item has-treeview mt-1 mb-1">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-building text-orange"></i>
+                                <p>
+                                    Church Administration
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview text-sm">
+                                @if (@_oChurchBodyOrgType_Logged != "CN")
+                                {
+                                    <li class="nav-item">
+                                        <a href="pages/UI/general.html" class="nav-link">
+                                            <i class="fas fa-church nav-icon"></i>
+                                            <p>Congregations</p>
+                                        </a>
+                                    </li>
+                                }
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-layer-group nav-icon"></i>
+                                        <p>Church Units</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-user-tie nav-icon"></i>
+                                        <p>Leadership Pool</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/UI/icons.html" class="nav-link">
+                                        <i class="fas fa-briefcase nav-icon"></i>
+                                        <p>Church Projects</p>
+                                    </a>
+                                </li>
+                                <li> <div class="dropdown-divider"></div></li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-user-check nav-icon"></i>
+                                        <p>Church Attendance</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-user-clock nav-icon"></i>
+                                        <p>
+                                            Church Visitors
+                                            <span class="right badge badge-info">@_CBWeek_VisitorsCount</span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-location-arrow nav-icon"></i>
+                                        <p>Church Transfers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-arrows-alt-h nav-icon"></i>
+                                        <p>Promotions &amp; Demotions </p>
+                                    </a>
+                                </li>
+                                <li> <div class="dropdown-divider"></div></li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-microphone nav-icon"></i>
+                                        <p>Notices &amp; Announcements</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/UI/sliders.html" class="nav-link">
+                                        <i class="fas fa-sms fa-lg nav-icon"></i>
+                                        <p>Internal-Communication</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/UI/buttons.html" class="nav-link">
+                                        <i class="fa fa-book nav-icon"></i>
+                                        <p>Assets Register</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <div class="dropdown-divider mt-1"></div></li>
+                        <li class="nav-item has-treeview mt-1 mb-1">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-coins text-yellow"></i>
+                                <p>
+                                    Finance Management
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview text-sm">
+                                <li class="nav-item">
+                                    <a href="pages/forms/general.html" class="nav-link">
+                                        <i class="fa fa-arrow-left nav-icon"></i>
+                                        <p>Receipts (Income)</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/forms/advanced.html" class="nav-link">
+                                        <i class="fa fa-arrow-right nav-icon"></i>
+                                        <p>Payments (Expense)</p>
+                                    </a>
+                                </li>
+                                <li> <div class="dropdown-divider"></div></li>
+                                <li class="nav-item">
+                                    <a href="pages/forms/validation.html" class="nav-link">
+                                        <i class="fas fa-coins nav-icon"></i>
+                                        <p>GL</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/forms/validation.html" class="nav-link">
+                                        <i class="fas fa-layer-group nav-icon"></i>
+                                        <p>Subsidiary Ledgers</p>
+                                    </a>
+                                </li>
+                                <li> <div class="dropdown-divider"></div></li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="OffertoryTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-coins nav-icon"></i>
+                                        <p>Offertory (Collection)</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TitheTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-user-tag nav-icon"></i>
+                                        <p>Tithes </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TitheTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-hands-helping nav-icon"></i>
+                                        <p>Donations </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TitheTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-coins nav-icon"></i>
+                                        <p>Voluntary Thanks-Offerings </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TitheTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-coins nav-icon"></i>
+                                        <p> Celebrations &amp; Anniversaries </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TitheTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-coins nav-icon"></i>
+                                        <p> Levies &amp; Dues </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TitheTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-coins nav-icon"></i>
+                                        <p> Pledges </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TitheTrans" asp-action="Index" asp-route-oAppGloOwnId=@_oAppGloOwnId_Logged asp-route-oCurrChuBodyId=@_oChurchBodyId_Logged asp-route-setIndex="1">
+                                        <i class="fas fa-coins nav-icon"></i>
+                                        <p> Budget </p>
+                                    </a>
+                                </li>
+                                <li> <div class="dropdown-divider"></div></li>
+                                <li class="nav-item">
+                                    <a href="pages/forms/validation.html" class="nav-link">
+                                        <i class="fa fa-balance-scale nav-icon"></i>
+                                        <p>Trial Balance</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/forms/validation.html" class="nav-link">
+                                        <i class="fa fa-chart-pie nav-icon"></i>
+                                        <p>Financial Reports</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <div class="dropdown-divider mt-1"></div></li>
+
+                        <li class="nav-item has-treeview mt-1 mb-1">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-chart-line"></i>
+                                <p>
+                                    Reports &amp; Analytics
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview text-sm">
+                                <li class="nav-item">
+                                    <a href="pages/tables/simple.html" class="nav-link">
+                                        <i class="fa fa-table nav-icon"></i>
+                                        <p>Church Statistics</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/tables/data.html" class="nav-link">
+                                        <i class="fa fa-chart-line nav-icon"></i>
+                                        <p>Growth Trends</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/tables/jsgrid.html" class="nav-link">
+                                        <i class="fa fa-ellipsis-h nav-icon"></i>
+                                        <p>Adhoc Analysis</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+
+                        @*<li class="nav-header">EXAMPLES</li>
+                            <li class="nav-item">
+                                <a href="pages/calendar.html" class="nav-link">
+                                    <i class="nav-icon far fa-calendar-alt"></i>
+                                    <p>
+                                        Calendar
+                                        <span class="badge badge-info right">2</span>
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/gallery.html" class="nav-link">
+                                    <i class="nav-icon far fa-image"></i>
+                                    <p>
+                                        Gallery
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon far fa-envelope"></i>
+                                    <p>
+                                        Mailbox
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="pages/mailbox/mailbox.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Inbox</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/mailbox/compose.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Compose</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/mailbox/read-mail.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Read</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        Pages
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="pages/examples/invoice.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Invoice</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/profile.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Profile</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/e-commerce.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>E-commerce</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/projects.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Projects</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/project-add.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Project Add</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/project-edit.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Project Edit</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/project-detail.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Project Detail</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/contacts.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Contacts</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon far fa-plus-square"></i>
+                                    <p>
+                                        Extras
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="pages/examples/login.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Login</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/register.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Register</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/forgot-password.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Forgot Password</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/recover-password.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Recover Password</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/lockscreen.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Lockscreen</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/legacy-user-menu.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Legacy User Menu</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/language-menu.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Language Menu</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/404.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Error 404</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/500.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Error 500</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/pace.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Pace</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/examples/blank.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Blank Page</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="starter.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Starter Page</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-header">MISCELLANEOUS</li>
+                            <li class="nav-item">
+                                <a href="https://adminlte.io/docs/3.0" class="nav-link">
+                                    <i class="nav-icon fas fa-file"></i>
+                                    <p>Documentation</p>
+                                </a>
+                            </li>
+                            <li class="nav-header">MULTI LEVEL EXAMPLE</li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-circle nav-icon"></i>
+                                    <p>Level 1</p>
+                                </a>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Level 1
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Level 2</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-treeview">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Level 2
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-dot-circle nav-icon"></i>
+                                                    <p>Level 3</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-dot-circle nav-icon"></i>
+                                                    <p>Level 3</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-dot-circle nav-icon"></i>
+                                                    <p>Level 3</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Level 2</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-circle nav-icon"></i>
+                                    <p>Level 1</p>
+                                </a>
+                            </li>
+                            <li class="nav-header">LABELS</li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-danger"></i>
+                                    <p class="text">Important</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-warning"></i>
+                                    <p>Warning</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon far fa-circle text-info"></i>
+                                    <p>Informational</p>
+                                </a>
+                            </li>*@
+
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper bg-white ">
+            <!-- Navbar 2-->
+            <!-- Content Header (Page header) -->
+            @*<div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 ">Dashboard</h1>
+                            </div> /.col
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                    <li class="breadcrumb-item active">Dashboard</li>
+                                </ol>
+                            </div> /.col
+                        </div> /.row
+                    </div> /.container-fluid
+                </div>*@
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content bg-transparent  m-2 pt-2">
+                @*<div class="container-fluid">*@
+                @RenderBody()
+                @*</div>*@<!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+
+
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2020 <a href="@_strVendorEmail">Rhema Systems &amp; Associates Limited - Ghana </a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.5
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-light ">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+
+    </div>
+
+
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="changePwdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-gray">
+                    <h5 class="modal-title" id="exampleModalLabel"> Change User Password</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @{ await Html.RenderPartialAsync("_ChangeUserPwd"); }
+                </div>
+                <div class="modal-footer bg-gradient-gray">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc"> Save Password </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <environment include="Development">
+        <script src="~/frontend/plugins/jquery/jquery.js"></script>
+        <script src="~/frontend/plugins/jquery-ui/jquery-ui.js"></script>
+        <script src="~/frontend/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="~/frontend/plugins/chart.js/Chart.js"></script>
+        <script src="~/frontend/plugins/jqvmap/jquery.vmap.js"></script>
+        <!-- DataTables -->
+        <script src="~/frontend/plugins/datatables/jquery.dataTables.js"></script>
+        <script src="~/frontend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+        <script src="~/frontend/plugins/datatables-responsive/js/dataTables.responsive.js"></script>
+        <script src="~/frontend/plugins/datatables-responsive/js/responsive.bootstrap4.js"></script>
+
+        <script src="~/frontend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
+        <script src="~/frontend/plugins/summernote/summernote-bs4.js"></script>
+        <script src="~/frontend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.js"></script>
+        <script src="~/frontend/dist/js/adminlte.js"></script>
+
+
+    </environment>
+
+    <environment exclude="Development">
+        <!-- jQuery -->
+        <script src="~/frontend/plugins/jquery/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/frontend/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="~/frontend/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- ChartJS -->
+        <script src="~/frontend/plugins/chart.js/Chart.min.js"></script>
+        <!-- JQVMap -->
+        <script src="~/frontend/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <!-- DataTables -->
+        <script src="~/frontend/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/frontend/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/frontend/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/frontend/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="~/frontend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Summernote -->
+        <script src="~/frontend/plugins/summernote/summernote-bs4.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/frontend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/frontend/dist/js/adminlte.min.js"></script>
+
+
+    </environment>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>*@
+
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Sparkline -->
+    <script src="~/frontend/plugins/sparklines/sparkline.js"></script>
+    <script src="~/frontend/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/frontend/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/frontend/plugins/moment/moment.min.js"></script>
+    <script src="~/frontend/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/frontend/dist/js/pages/dashboard.js"></script>
+    <script src="~/frontend/dist/js/pages/dashboard2.js"></script>
+    <script src="~/frontend/dist/js/pages/dashboard3.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/frontend/dist/js/demo.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script type="text/javascript" src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1581152197/smartwizard/jquery.smartWizard.min.js"></script>
+
+    <!-- ./wrapper -->
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+    <!-- Page level plugin JavaScript-->
+    @*<script src="~/content/vendor/chart.js/Chart.min.js"></script>*@
+    @*<script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>*@
+
+
+
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>*@
+
+
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

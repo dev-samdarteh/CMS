@@ -1,0 +1,800 @@
+﻿
+
+@{ 
+    /// headers
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Home";
+
+    var _oAppGloOwnId_Logged = ViewData["oAppGloOwnId_Logged"] as int?;
+    //var _strAppNameMod = @ViewData["strClientName"] as string;
+    var _strAppNameMod = @ViewData["strAppNameMod"] as string;
+    var _strAppCurrUser = @ViewData["strAppCurrUser"] as string;
+    var _strAppCurrUser_ChRole = @ViewData["strAppCurrUser_ChRole"] as string;
+    var _strAppCurrUser_RoleCateg = @ViewData["strAppCurrUser_RoleCateg"] as string;
+    ///
+    /// dashboard values
+    var _TotalSubsDenom = @ViewData["TotalSubsDenom"] as string;
+    var _TotalSubsCong = @ViewData["TotalSubsCong"] as string;
+    var _TotalSysPriv = @ViewData["TotalSysPriv"] as string;
+    var _TotalSysRoles = @ViewData["TotalSysRoles"] as string;
+    var _TotSysProfiles = @ViewData["TotSysProfiles"] as string;
+    var _TotSubscribers = @ViewData["TotSubscribers"] as string;
+    var _TotDbaseCount = @ViewData["TotDbaseCount"] as string;
+    var _TodaysAuditCount = @ViewData["TodaysAuditCount"] as string;
+    var _TotClientProfiles = @ViewData["TotClientProfiles"] as string;
+    var _TotClientProfiles_Admins = @ViewData["TotClientProfiles_Admins"] as string;
+    ///
+    var _img = ViewData["strAppCurrUser_PhotoFilename"] as string;
+    var imgUrl_LogUser = "~/img_db/" + (@_img ?? "df_user_p.png");
+    ///
+    var _imgAppLogo = ViewData["strAppCurrUser_AppPhotoFilename"] as string;  // ~/frontend/dist/img/rhema_logo.png
+    var imgUrl_AppLogo = "~/img_db/" + (@_imgAppLogo ?? "df_user_p.png");
+    ///
+    var _imgAGO = ViewData["strAppCurrUser_ClientLogoFilename"] as string;  //  
+    var imgUrl_ClientLogo = "~/img_db/" + (@_imgAGO ?? "df_user_p.png");
+
+    var @_strVendorEmail = "https://rhemasystems.com/";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> @_pageTitle </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <environment include="Development">
+        <link href="~/frontend/plugins/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/fontawesome-free/css/all.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/jqvmap/jqvmap.css" rel="stylesheet" />
+        <link href="~/frontend/dist/css/adminlte.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/overlayScrollbars/css/OverlayScrollbars.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/summernote/summernote-bs4.css" rel="stylesheet" />
+
+
+    </environment>
+
+    <environment exclude="Development">
+        <link href="~/frontend/plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link href="~/frontend/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+        <!-- Tempusdominus Bbootstrap 4 -->
+        <link href="~/frontend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+        <!-- iCheck -->
+        <link href="~/frontend/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+        <!-- JQVMap -->
+        <link href="~/frontend/plugins/jqvmap/jqvmap.min.css" rel="stylesheet" />
+        <!-- Theme style -->
+        <link href="~/frontend/dist/css/adminlte.min.css" rel="stylesheet" />
+        <!-- overlayScrollbars -->
+        <link href="~/frontend/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" rel="stylesheet" />
+        <!-- summernote -->
+        <link href="~/frontend/plugins/summernote/summernote-bs4.min.css" rel="stylesheet" />
+
+    </environment>
+
+
+    <!-- Bootstrap CSS -->
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    *@
+
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/frontend/plugins/daterangepicker/daterangepicker.css" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    @* <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"> *@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" />
+
+
+</head>
+
+<body class="hold-transition sidebar-mini-md sidebar-toggled layout-fixed">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-dark navbar-gray">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link " data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-controller="Home" asp-action="Index_sa" class="nav-link ">
+                        <i class="fas fa-home "></i>
+                    </a>
+                </li>
+
+                <li class="nav-item d-none d-sm-inline-block ">
+                    <a href="#" class="nav-link  ">  <i class="fas fa-question-circle"></i>  </a>
+                </li>
+            </ul>
+
+            <!-- SEARCH FORM -->
+            <form class="form-inline ml-3">
+                <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item d-none d-sm-inline-block ">
+                    <a href="#" class="nav-link "> <i class="fas fa-cog "></i> </a>
+                </li>
+                @*
+                      <li class="nav-item dropdown ">
+                          <a class="nav-link" data-toggle="dropdown" href="#">
+                              <i class="far fa-comments"></i>
+                              <span class="badge badge-danger navbar-badge">3</span>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                              <a href="#" class="dropdown-item">
+                                  <div class="media">
+                                      <img src="~/frontend/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                      <div class="media-body">
+                                          <h3 class="dropdown-item-title">
+                                              Brad Diesel
+                                              <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                          </h3>
+                                          <p class="text-sm">Call me whenever you can...</p>
+                                          <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                      </div>
+                                  </div>
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item">
+                                  <div class="media">
+                                      <img src="~/frontend/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                      <div class="media-body">
+                                          <h3 class="dropdown-item-title">
+                                              John Pierce
+                                              <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                          </h3>
+                                          <p class="text-sm">I got your message bro</p>
+                                          <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                      </div>
+                                  </div>
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item">
+                                  <div class="media">
+                                      <img src="~/frontend/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                      <div class="media-body">
+                                          <h3 class="dropdown-item-title">
+                                              Nora Silvester
+                                              <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                          </h3>
+                                          <p class="text-sm">The subject goes here</p>
+                                          <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                      </div>
+                                  </div>
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                          </div>
+                      </li>
+
+                      <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                          <a class="nav-link " data-toggle="dropdown" href="#">
+                              <i class="far fa-bell"></i>
+                              <span class="badge badge-warning navbar-badge">15</span>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                              <span class="dropdown-item dropdown-header">15 Notifications</span>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item">
+                                  <i class="fas fa-envelope mr-2"></i> 4 new messages
+                                  <span class="float-right text-muted text-sm">3 mins</span>
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item">
+                                  <i class="fas fa-users mr-2"></i> 8 friend requests
+                                  <span class="float-right text-muted text-sm">12 hours</span>
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item">
+                                  <i class="fas fa-file mr-2"></i> 3 new reports
+                                  <span class="float-right text-muted text-sm">2 days</span>
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                          </div>
+                      </li>*@
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link " data-toggle="dropdown" href="#">
+                        <i class="far fa-user "></i>
+                        @*<span class="badge badge-danger navbar-badge">3</span>*@
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                @*<img src="@Url.Content(imgUrl_LogUser)" alt="Current User" class="img-size-50 mr-3 img-circle">*@
+                                <img src="@Url.Content(imgUrl_LogUser)" alt="Current user" class="img-size-50 img-circle mr-3">
+                                @*<img src="~/frontend/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">*@
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        @_strAppCurrUser
+                                        @*<span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>*@
+                                    </h3>
+                                    <p class="text-sm">@_strAppCurrUser_ChRole</p>
+                                    @*<p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @ViewData["strUserSessionDura"]</p>*@
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        @*    public IActionResult AddOrEdit_ChangeUserPwd(string churchCode, string username, int setIndex, int pageIndex = 1)*@
+                        <a class="dropdown-item btn bg-gradient-light text-center text-sm rounded-0" data-toggle="modal" data-target="#changePwdModal"
+                           asp-controller="UserLogin" asp-action="AddOrEdit_ChangeUserPwd">
+                            <i class="fas fa-lock-open fa-fw"></i>
+                            Change Password
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item btn bg-gradient-gray text-center tex-sm rounded-0" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-arrow-left fa-fw"></i>
+                            Logout
+                        </a>
+                    </div>
+                </li>
+
+                @*<li class="nav-item">
+                        <a class="nav-link " data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                            <i class="fas fa-th-large"></i>
+                        </a>
+                    </li>*@
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-light elevation-2 ">
+
+            <!-- Brand Logo -->
+            <a asp-controller="Home" asp-action="Index_sa" class="brand-link bg-transparent"> 
+                <img src="@Url.Content(imgUrl_AppLogo)" alt="Church logo" class="brand-image img-circle elevation-1 shadow-sm" style="opacity: .8">
+                <span class="brand-text font-weight-normal text-lg-center"> @_strAppName </span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar ">
+                <!-- Sidebar user panel (optional)  -->
+                @*
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="@Url.Content(imgUrl_Logo)" class="img-circle elevation-2" alt="User Image">
+                        </div>
+                        <div class="info">
+                            <h3 class="dropdown-item-title text-cyan font-weight-bold">
+                                @ViewData["strChuBodyDenomLogged"]
+                            </h3>
+                            <p class=" text-sm font-weight-normal pr-1"><i class="fas fa-map-marker-alt fa-sm"></i>&nbsp;@ViewData["strChuBodyLogged"]</p>
+                        </div>
+                    </div>
+                *@
+
+                @*<div class="dropdown-divider"></div>*@
+
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex text-center">
+                    <div class="image">
+                        <img src="@Url.Content(imgUrl_ClientLogo)" class="img-circle elevation-2" alt="User Image">
+                        @*<i class="fas fa-cog fa-lg text-light img-circle elevation-2"></i>*@
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">@_strAppNameMod</a>
+                    </div>
+                </div>
+
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex text-center">
+                    <div class="image">
+                        <img src="@Url.Content(imgUrl_LogUser)" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">@_strAppCurrUser</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="z-index: 1040 !important;">
+                        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                        <li class="nav-item has-treeview mb-2">
+                            <a asp-controller="Home" asp-action="Index_sa" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Admin Dashboard
+                                    <i class="right fas fa-angle-up"></i>
+                                </p>
+                            </a>
+                        </li>
+
+                        @if (@_strAppCurrUser_RoleCateg == "SYS")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="AppVenAdmin" asp-action="Index_UP" asp-route-setIndex="1" class="nav-link">
+                                    <i class="fas fa-user-cog fa-sm"></i>
+                                    <p>
+                                        System Accounts
+                                        <span class="right badge badge-info">@_TotSysProfiles</span>
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (@_strAppCurrUser_RoleCateg != "SYS")@*|| (ViewData["strAppCurrUser_RoleCateg"] == "SYS" && int.Parse(@ViewData["TotSysProfiles"]) <= 1))*@
+                        {
+                            <li class="nav-item has-treeview menu-open">
+                                <a href="#" class="nav-link bg-gradient-cyan">
+                                    <i class="nav-icon fas fa-cog "></i>
+                                    <p>
+                                        General Dimensions
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview text-sm">
+
+                                    @*@if (ViewData["strAppCurrUser_RoleCateg"] == "SYS")
+                                    {
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index" asp-route-subSetIndex="2" class="nav-link">
+                                                <i class="fas fa-plus nav-icon"></i>
+                                                <p> Create Super Admin Account </p>
+                                            </a>
+                                        </li>
+                                    }*@
+
+                                    @if (@_strAppCurrUser_RoleCateg == "SUP_ADMN")
+                                    {
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_UP" asp-route-setIndex="6" class="nav-link">
+                                                <i class="fas fa-user-cog nav-icon"></i>
+                                                <p>
+                                                    System Roles
+                                                    <span class="right badge badge-success">@_TotalSysRoles</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_UP" asp-route-setIndex="7" class="nav-link">
+                                                <i class="fas fa-user-cog nav-icon"></i>
+                                                <p>
+                                                    System Privileges
+                                                    <span class="right badge badge-success">@_TotalSysPriv</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (@_strAppCurrUser_RoleCateg == "SUP_ADMN")@*|| (ViewData["strAppCurrUser_RoleCateg"] == "SYS" && int.Parse(@ViewData["TotSysProfiles"]) <= 1))*@
+                                    {
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_UP" asp-route-setIndex="1" class="nav-link">
+                                                <i class="fas fa-user-cog nav-icon"></i>
+                                                <p>
+                                                    System Accounts
+                                                    <span class="right badge badge-info">@_TotSysProfiles</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (@_strAppCurrUser_RoleCateg != "SYS")
+                                    {
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="fas fa-user-tag nav-icon"></i>
+                                                <p>
+                                                    Client Subscriptions
+                                                    <span class="right badge badge-light">@_TotSubscribers</span>
+                                                </p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item ">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_UP" asp-route-setIndex="8" class="nav-link">
+                                                <i class="fas fa-user-clock nav-icon"></i>
+                                                <p>
+                                                    User Trails &amp; Logs
+                                                    <span class="right badge badge-warning">@_TodaysAuditCount</span>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    <li class="dropdown-divider"></li>
+                                    <li class="nav-item">
+                                        @*<a asp-controller="AppVenAdmin" asp-action="Index_CFT" asp-route-subSetIndex="1" class="nav-link">*@
+                                        <a href="#" class="nav-link">
+                                            <i class="fas fa-flag-checkered nav-icon"></i>
+                                            <p> Countries &amp; Currencies </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*<a asp-controller="AppVenAdmin" asp-action="Index_CFT" asp-route-subSetIndex="2" class="nav-link">*@
+                                        <a href="#" class="nav-link">
+                                            <i class="fas fa-map nav-icon"></i>
+                                            <p>Country Regions </p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                             
+
+                            @if (@_strAppCurrUser_RoleCateg != "SYS")
+                            {
+                                <li class="nav-item has-treeview menu-open">
+                                    <a href="#" class="nav-link bg-gradient-red">
+                                        <i class="nav-icon fas fa-handshake" style="color:#f2f2e9"></i>
+                                        <p>
+                                            Client Dimensions
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview text-sm">
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_CFT" asp-route-subSetIndex="1" class="nav-link">
+                                                <i class="fas fa-plus nav-icon"></i>
+                                                <p>Faith Streams </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_CFT" asp-route-subSetIndex="2" class="nav-link">
+                                                <i class="fas fa-plus-circle nav-icon"></i>
+                                                <p>Faith Categories </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_AGO" class="nav-link">
+                                                <i class="fas fa-church nav-icon"></i>
+                                                <p>Denominations </p>
+                                                <span class="right badge badge-warning">@_TotalSubsDenom</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_CL" asp-route-oAppGloOwnId="@_oAppGloOwnId_Logged" class="nav-link">
+                                                <i class="fas fa-layer-group nav-icon"></i>
+                                                <p>Church Levels </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_CASC" asp-route-oAppGloOwnId="@_oAppGloOwnId_Logged" asp-route-pageIndex="2" class="nav-link">
+                                                <i class="fas fa-database nav-icon"></i>
+                                                <p>Clients Databases </p>
+                                                <span class="right badge badge-warning">@_TotDbaseCount</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_CB" asp-route-oAppGloOwnId="@_oAppGloOwnId_Logged" class="nav-link">
+                                                <i class="fas fa-place-of-worship nav-icon"></i>
+                                                <p>Congregations </p>
+                                                <span class="right badge badge-warning">@_TotalSubsCong</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            @*<a asp-controller="AppVenAdmin" asp-action="Index_CS" asp-route-oAppGloOwnId="@oAGOId_Logged" class="nav-link">*@
+                                            <a href="#" class="nav-link">
+                                                <i class="fas fa-tree nav-icon"></i>
+                                                <p> Church Structure </p>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_UP" asp-route-setIndex="2" class="nav-link">
+                                                @*asp-route-subSetIndex="3" *@
+                                                <i class="fas fa-user-tag nav-icon"></i>
+                                                <p>Church Admin Profiles </p>
+                                                <span class="right badge badge-warning">@_TotClientProfiles_Admins</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="AppVenAdmin" asp-action="Index_UP" asp-route-setIndex="3" class="nav-link">
+                                                <i class="fas fa-users nav-icon"></i>
+                                                <p>Church User Profiles (All) </p>
+                                                <span class="right badge badge-warning">@_TotClientProfiles</span>
+                                            </a>
+                                        </li>
+
+
+                                        @*<li class="nav-item">
+                            <a href="pages/forms/validation.html" class="nav-link">
+                                <i class="fas fa-user-cog nav-icon"></i>
+                                <p>Church Subscriptions </p>
+                                <span class="right badge badge-warning">@ViewData["TotSubscribers"]</span>
+                            </a>
+                        </li>*@
+                                    </ul>
+                                </li>
+                            }
+
+                        }
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper bg-white ">
+            <!-- Navbar 2-->
+            <!-- Content Header (Page header) -->
+            @*<div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 ">Dashboard</h1>
+                            </div> /.col
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                    <li class="breadcrumb-item active">Dashboard</li>
+                                </ol>
+                            </div> /.col
+                        </div> /.row
+                    </div> /.container-fluid
+                </div>*@
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content bg-transparent  m-2 pt-2">
+                @*<div class="container-fluid">*@
+
+                @RenderBody()
+
+                @*</div>*@<!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2020 <a href="http://rhema-systems.com">Rhema Systems &amp; Associates Limited - Ghana </a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.5
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark ">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="changePwdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-gray">
+                    <h5 class="modal-title" id="exampleModalLabel"> Change User Password</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @{ await Html.RenderPartialAsync("_ChangeUserPwd"); }
+                </div>
+                <div class="modal-footer bg-gradient-gray">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc"> Save Password </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <environment include="Development">
+        <script src="~/frontend/plugins/jquery/jquery.js"></script>
+        <script src="~/frontend/plugins/jquery-ui/jquery-ui.js"></script>
+        <script src="~/frontend/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="~/frontend/plugins/chart.js/Chart.js"></script>
+        <script src="~/frontend/plugins/jqvmap/jquery.vmap.js"></script>
+        <script src="~/frontend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
+        <script src="~/frontend/plugins/summernote/summernote-bs4.js"></script>
+        <script src="~/frontend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.js"></script>
+        <script src="~/frontend/dist/js/adminlte.js"></script>
+
+
+
+    </environment>
+
+    <environment exclude="Development">
+        <!-- jQuery -->
+        <script src="~/frontend/plugins/jquery/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/frontend/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="~/frontend/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- ChartJS -->
+        <script src="~/frontend/plugins/chart.js/Chart.min.js"></script>
+        <!-- JQVMap -->
+        <script src="~/frontend/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="~/frontend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Summernote -->
+        <script src="~/frontend/plugins/summernote/summernote-bs4.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/frontend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/frontend/dist/js/adminlte.min.js"></script>
+
+
+
+    </environment>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>*@
+
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Sparkline -->
+    <script src="~/frontend/plugins/sparklines/sparkline.js"></script>
+    <script src="~/frontend/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/frontend/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/frontend/plugins/moment/moment.min.js"></script>
+    <script src="~/frontend/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/frontend/dist/js/pages/dashboard.js"></script>
+    <script src="~/frontend/dist/js/pages/dashboard2.js"></script>
+    <script src="~/frontend/dist/js/pages/dashboard3.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/frontend/dist/js/demo.js"></script>
+
+
+    <script src="~/frontend/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/frontend/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+
+    <!-- ./wrapper -->
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+    <!-- Page level plugin JavaScript-->
+    @*<script src="~/content/vendor/chart.js/Chart.min.js"></script>*@
+    @*<script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>*@
+
+
+
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>*@
+
+
+
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

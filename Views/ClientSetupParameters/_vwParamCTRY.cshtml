@@ -1,0 +1,218 @@
+﻿@model RhemaCMS.Models.ViewModels.vm_cl.CountryModel
+
+
+@if (Model != null)
+{
+    if (Model.pageIndex == 1)
+    {
+        <table id="tabData_CTRY" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>ISO3</th>
+                    <th>ISO2</th>
+                    <th class="text-center"><i class="fa fa-location-arrow fa-sm"></i> </th> @* Scoped*@
+                    <th class="text-center"><i class="fas fa-church fa-sm"></i> </th>  @* Church-scoped*@
+                    <th class="text-center"><i class="fas fa-check-double fa-sm"></i> </th> @*Default*@ 
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.lsCountryModels)
+                {
+                    if (item.oCountry != null)
+                    {
+                        var strDesc = "'" + item.strCountry + "'";
+                        <tr>
+                            <td>
+                                @item.strCountry  
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @item.oCountry.CtryAlpha3Code
+                            </td >
+                            <td style="text-align:center; vertical-align: middle">
+                                @item.oCountry.CtryAlpha2Code
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @if (item.isCustomDisplay)
+                                {<i class="fa fa-check fa-primary"></i> }
+                                else
+                                { <i class="fa fa-times fa-secondary"></i>}
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @if (item.isCustomChurchCountry)
+                                {<i class="fa fa-check fa-primary"></i> }
+                                else
+                                { <i class="fa fa-times fa-secondary"></i>}
+                            </td>
+                            <td style="text-align:center; vertical-align: middle"> 
+                                @if(item.isCustomDefaultCountry)  
+                                { <span class="badge badge-info text-center"> <i class="far fa-check-double fa-sm"></i> Default </span> }
+                            </td> 
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+
+    else
+    {
+        @if (Model.pageIndex == 2)
+        {
+            var _oAGOId = -1; if (Model.oAppGlobalOwn_Logged != null) { _oAGOId = (int)Model.oAppGloOwnId_Logged; };
+            using (Html.BeginForm("AddOrEditBLK_CTRY", "ClientSetupParameters", FormMethod.Post, new { @id = "currFormBLK_CTRY" }))
+            {
+                // var test = Model.oAppGloOwnId;
+                <input type="hidden" asp-for="oAppGloOwnId" id="_hdnAppGloOwnId_BLK" />
+                // var strL = "'" + Model.strAttnLongevity + "'";
+
+                <div class="p-3 rounded justify-content-center card-footer clearfix" >
+                    <table id="tabData_CTRY_BLK" class="table table-bordered table-striped" style="border: 1px solid #2c2f5b">
+                        <thead>
+                            <tr style="text-align: left;">
+                                <th width="0" hidden></th>
+                                <th width="0" hidden></th>
+                                <th width="0" hidden></th>
+                                <th width="0" hidden></th>
+
+                                <th class="text-center">Country</th>
+                                <th class="text-center">ISO3</th>
+                                <th class="text-center">ISO2</th>
+                                <th class="text-center"><i class="fa fa-location-arrow fa-sm"></i></th>
+                                <th class="text-center"><i class="fas fa-church fa-sm"></i>  </th>
+                                <th class="text-center"><i class="fas fa-check-double fa-sm"></i>  </th>
+                                @*<th width="100px" style="vertical-align: middle; text-align:center"> 
+                                    <button type="button" class="btn btn-light btn-sm "  onclick="ReloadCurrPage_CTRY(7, 1, 1, 1)">
+                                        <i class="fa fa-arrow-left fa-sm fa-primary"></i> Back
+                                    </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v text-gray text-lg"></i>
+                                    </button> 
+                                    <div class="dropdown-menu p-1 pt-0" sty>
+                                        <div class="card-header card-primary card-outline">
+                                            <h3 class="card-subtitle"> Filters </h3>
+                                        </div>
+                                        <div class="card-body p-0 content-trim ">
+                                            <ul class="nav nav-pills flex-column">
+                                                <li class="nav-item active">
+                                                    <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 2, 1)">
+                                                        <i class="fas fa-flag fa-sm"></i> All Countries
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 2, 2)">
+                                                        <i class="far fa-flag-checkered fa-sm"></i> Custom Countries
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 2, 3)">
+                                                        <i class="fas fa-flag-o fa-sm"></i> Church Countries
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 2, 4)">
+                                                        <i class="far fa-check-double fa-sm"></i> Default Country
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div> 
+                                </th>*@
+                            </tr>
+                        </thead>
+                        <tbody id="tabIdCTRYBody_BLK">
+                            @for (int i = 0; i < Model.lsCountryModels.Count; i++)
+                            {   //   var strDesc = "'" + (!string.IsNullOrEmpty(Model.lsCountryModels[i].oCountry.ServerName) ? Model.lsCountryModels[i].oCountry.CustomName : Model.lsCountryModels[i].oCountry.Name) + "'";
+
+                            <tr id="row_template_CTRY" style="text-align:left">
+                                @*<td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCountryModels[i].oCountry.Id)</td>
+        <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCountryModels[i].oCountry.AppGlobalOwnerId, new { @id = "_AppGlobalOwnerId" })</td>*@
+
+                                <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCountryModels[i].oCountry.Created)</td>
+                                <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCountryModels[i].oCountry.LastMod)</td>
+                                <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCountryModels[i].oCountry.CreatedByUserId)</td>
+                                <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsCountryModels[i].oCountry.LastModByUserId)</td>
+
+                                @*<td class="p-2 text-center" style="vertical-align: middle">
+                                    @Html.DropDownList("lsCountryModels[" + i + "].oCountry_AppGlobalOwnerId", new SelectList(Model.lkpAppGlobalOwns, "Value", "Text", Model.lsCountryModels[i].oCountry.AppGlobalOwnerId), new { @class = "form-control" })
+                                </td>*@
+
+                            <td style="vertical-align: middle">
+                                @Html.DisplayFor(modelItem => Model.lsCountryModels[i].strCountry, new { @class = "form-control text-center font-weight-normal" }) 
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @Html.DisplayFor(modelItem => Model.lsCountryModels[i].oCountry.CtryAlpha3Code, new { @class = "form-control font-weight-normal" }) 
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @Html.DisplayFor(modelItem => Model.lsCountryModels[i].oCountry.CtryAlpha2Code, new { @class = "form-control font-weight-normal" }) 
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @Html.CheckBoxFor(modelItem => Model.lsCountryModels[i].isCustomDisplay, new { @class = "text-sm" })
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @Html.CheckBoxFor(modelItem => Model.lsCountryModels[i].isCustomChurchCountry, new { @class = "text-sm" })
+                            </td>
+                            <td style="text-align:center; vertical-align: middle">
+                                @Html.CheckBoxFor(modelItem => Model.lsCountryModels[i].isCustomDefaultCountry, new { @class = "text-sm" })
+                            </td>
+                            @*<td style="vertical-align: middle; text-align:center">
+                                <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-gray text-lg"></i>
+                                </button>
+                                <div class="dropdown-menu p-1">
+                                    <a href="#" class="btn btn-light btn-sm text-danger small" dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                       onclick="DeleteCurrData_CTRY(@Model.lsCountryModels[i].oCountry.CtryAlpha3Code, @Model.pageIndex, false, '')">
+                                        <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                                    </a>
+                                </div> 
+                            </td>*@
+                            </tr>
+                            }
+
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-white " style="font-weight: bold ">
+                                <th width="0" hidden></th>
+                                <th width="0" hidden></th>
+                                <th width="0" hidden></th>
+                                <th width="0" hidden></th>
+
+                                <th style="vertical-align: middle"> @* EngName *@  </th>
+                                <th align="right" style="vertical-align: middle">  @* CtryAlpha3Code *@  </th>
+                                <th align="right" style="vertical-align: middle">  @* CtryAlpha2Code *@  </th>
+                                <th align="right" style="vertical-align: middle">  @* isCustomDisplay *@  </th> 
+                                <th align="right" style="vertical-align: middle">  @* Church-scoped *@  </th> 
+                                <th align="right" style="vertical-align: middle">
+
+                                    @* Default 
+                                    @if (Model.PageIndex == 2)
+                                    {
+                                        <button type="button" class="btn btn-info btn-sm float-sm-right" onclick="AddEditCurrData_CTRY(0, '[New] Custom Country')">
+                                            <i class="fas fa-edit fa-sm fa-plus"></i> <span class="text-sm"> Add New </span>
+                                        </button>
+
+                                        @*<a href="#" data-remote="false" class="btn btn-light text-primary" data-backdrop="static" onclick="AddEditCurrData_CTRY(0, @_oAGOId, @Model.PageIndex, '[New] Custom Country')">
+                                            <i class="fa fa-plus fa-primary fa-sm "></i> &nbsp; Add New
+                                        </a>
+                                    }*@
+                                    </th> 
+                                 
+                                @*<th align="right" style="vertical-align: middle"> 
+                                    @if (Model.pageIndex == 2)
+                                    {
+                                        <button id="btnSaveChanges_CTRY_BLK" type="button" class="btn btn-primary w-100">
+                                            <i class="fas fa-edit fa-save"></i> Save
+                                        </button> 
+                                    }
+                                </th>*@
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            } 
+        }
+
+    }
+}

@@ -1,0 +1,878 @@
+﻿
+@model RhemaCMS.Models.ViewModels.MSTRChurchLevelModel
+
+@{
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Church Levels";
+    ///
+    ViewData["Title"] = @_pageTitle;
+    //ViewData["Title"] = Model.strAppName + " - Church Levels";
+    Layout = "_Layout_sa";
+}
+
+
+    <body id="page-top" class="w-100">
+        @{
+            var _oAGOId = -1; if (Model.oAppGloOwnId != null) { _oAGOId = (int)Model.oAppGloOwnId; };
+            //var _oCBId = -1; if (Model.oChurchBodyId != null) { _oCBId = (int)Model.oChurchBodyId; }
+        }
+
+        @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />*@
+
+
+        @*<input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+            <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+            <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+            <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+        <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oSubSetIndex" data-value="@Model.subSetIndex" />*@
+
+        <input type="hidden" asp-for="oAppGloOwnId" id="_oAppGloOwnId" /> 
+        <input type="hidden" asp-for="PageIndex" id="_PageIndex" /> 
+
+
+        <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+        <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+        @*<input type="hidden" id="_pageIndex" data-value="@Model.pageIndex" />*@
+        <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+
+
+        <div class="card bg-gradient-light">
+            <div class="card-header border-bottom">
+                <h3 class="card-title text-primary">
+                    <i class="fas fa-th mr-1"></i>
+                    @Model.strCurrTask
+                </h3>
+                <div class="card-tools">
+                    @*<ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index_sa">Home</a></li>
+                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                    </ol>*@
+                    <button type="button" class="btn btn-sm bg-light" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm bg-danger text-light" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="wrapper">
+                    @*<div class="content-header pb-0">
+            <div class="container-fluid pb-0">
+                <div class="row mb-0">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+                    @*@if (Model.setIndex == 1)
+        {
+            //var _strDesc = "'" + (Model.subSetIndex == 1 ? "Church level" : "Faith Category") + "'";*@
+                    <div class="card-body bg-transparent w-50" style="margin: 0 auto 0 auto ; padding:0; ">
+                        <div class="col-md mb-3" style="">
+                            <small class="font-weight-normal" asp-for="strAppGlobalOwn"><i class="fa fa-filter fa-sm text-gray"></i> &nbsp; Denomination (Church)</small>
+                            @*<label class="font-weight-normal" asp-for="oAppGloOwnId"> <i class="fa fa-filter fa-sm text-gray"></i> &nbsp; Denomination (Church) </label>*@
+                            <select id="_AppGlobalOwnerId" class="form-control" asp-for="oAppGloOwnId" asp-items="Model.lkpAppGlobalOwns" placeholder="Denomination (Church)" aria-describedby="fd_AppGlobalOwnerId" required>
+                                <option selected disabled value="">Select denomination (church)...</option>
+                            </select>
+                            <div class="invalid-feedback" id="fd_AppGlobalOwnerId">
+                                Select the denomination (church)
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="cus-div" style="width:100%; border: 1px inset #000;" />
+                    <br />
+                    @if (Model.PageIndex == 1)
+                    {
+                        <table id="tbId_ChurchLevel" class="table table-sm  table-bordered table-striped table-responsive-sm table-hover bg-white  pl-0 " cellspacing="0" style="border: 1px solid #2c2f5b">
+                            <thead>
+                                <tr>
+                                    <th class="pl-2" style="vertical-align: middle">
+                                        Level
+                                    </th>
+                                    <th style="vertical-align: middle">
+                                        Level Name
+                                    </th>
+                                    <th style="vertical-align: middle">
+                                        Custom Name
+                                    </th>
+                                    <th style="vertical-align: middle">
+                                        Acronym
+                                    </th>
+                                    <th width="100px" style="vertical-align: middle; text-align:center">
+                                        <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CL" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="1" data-backdrop="static" data-keyboard="false">
+                                            <i class="fa fa-refresh fa-sm text-success"></i>
+                                        </a>
+
+                                        @if (Model.oAppGloOwnId != null)
+                                        {
+                                            <div class="btn-group dropright">
+                                                <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v text-gray text-lg"></i>
+                                                </button>
+                                                <div class="dropdown-menu p-1">
+                                                    <a href="#" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                       onclick="AddEditCurrData_CL(0, @Model.oAppGloOwnId, @Model.PageIndex, '[New] Church level')">
+                                                        <i class="fa fa-plus fa-primary fa-sm "></i> &nbsp; Add New
+                                                    </a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                        asp-controller="AppVenAdmin" asp-action="Index_CL" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="2"  >
+                                                        <i class="fa fa-pencil fa-sm text-dark"></i> &nbsp; Bulk Edit
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            @*<a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                               onclick="AddEditCurrData_CL(0, @Model.oAppGloOwnId, '[New] Church level')">
+                                                <i class="fa fa-plus fa-sm fa-primary"></i>
+                                            </a>
+                                            <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CL" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="2" data-backdrop="static" data-keyboard="false">
+                                                <i class="fa fa-pencil fa-sm text-primary"></i>
+                                            </a>*@
+                                        }
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.lsChurchLevelModels)
+                                {
+                                    var strDesc = "'" + (!string.IsNullOrEmpty(item.oChurchLevel.CustomName) ? item.oChurchLevel.CustomName : item.oChurchLevel.Name) + "'";
+
+                                    <tr>
+                                        <td class="pl-2 text-center"  style="vertical-align: middle">
+                                            @Html.DisplayFor(modelItem => item.oChurchLevel.LevelIndex)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.oChurchLevel.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.oChurchLevel.CustomName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.oChurchLevel.Acronym)
+                                        </td>
+                                        <td style=" vertical-align: middle ; text-align:center">
+                                            <div class="btn-group dropright ">
+                                                <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-h text-gray text-lg"></i>
+                                                </button>
+                                                <div class="dropdown-menu p-1">
+                                                    <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                       onclick="AddEditCurrData_CL(@item.oChurchLevel.Id, @item.oChurchLevel.AppGlobalOwnerId, @Model.PageIndex, @strDesc)">
+                                                        <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                    </a>
+                                                    <a href="#" class="btn btn-light btn-sm text-danger small" onclick="DeleteCurrData_CL(@item.oChurchLevel.Id, @Model.PageIndex, false, '')">
+                                                        <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    }
+                    else if (Model.PageIndex == 2 && @Model.oAppGloOwnId != null)
+                    {
+                        @using (Html.BeginForm("AddOrEditBLK_CL", "AppVenAdmin", FormMethod.Post, new { @id = "currFormBLK_CL" }))
+                        {
+                           // var test = Model.oAppGloOwnId;
+                            <input type="hidden" asp-for="oAppGloOwnId" id="_hdnAppGloOwnId_BLK" />
+                            // var strL = "'" + Model.strAttnLongevity + "'";
+
+                            <div class="p-3 rounded justify-content-center" style="background-color:gainsboro">
+
+                                <table id="tbId_ChurchLevel_BLK" class="table table-sm  table-bordered table-striped table-responsive-sm table-hover bg-white  pl-0 " cellspacing="0" style="border: 1px solid #2c2f5b">
+                                    <thead>
+                                        <tr style="text-align: left;">
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="100px" class="pl-2"   style="vertical-align: middle">
+                                                Level Index
+                                            </th>
+                                            <th width="150px" style="vertical-align: middle">
+                                                Level Name
+                                            </th>
+                                            <th style="vertical-align: middle">
+                                                Custom Name
+                                            </th>
+                                            <th width="120px" style="text-align:center; vertical-align: middle">
+                                                Level Code
+                                            </th>
+                                            <th width="120px" style="vertical-align: middle; text-align:center">
+                                                <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CL" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="1" data-backdrop="static" data-keyboard="false">
+                                                    <i class="fa fa-arrow-left fa-sm text-primary"></i>
+                                                </a>
+                                                
+                                                <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CL" asp-route-oAppGloOwnId="@Model.oAppGloOwnId" asp-route-pageIndex="2" data-backdrop="static" data-keyboard="false">
+                                                    <i class="fa fa-refresh fa-sm text-success"></i>
+                                                </a>
+                                                @*<a href="#" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static" onclick="AddEditCurrData_CL(0, @Model.oAppGloOwnId, @Model.PageIndex, '[New] Church level')">
+                                                    <i class="fa fa-plus fa-primary fa-sm "></i> &nbsp; Add New
+                                                </a>*@
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbId_ChurchLevelBody_BLK">
+                                        @for (int i = 0; i < Model.lsChurchLevelModels.Count; i++)
+                                        {
+                                            var strDesc = "'" + (!string.IsNullOrEmpty(Model.lsChurchLevelModels[i].oChurchLevel.CustomName) ? Model.lsChurchLevelModels[i].oChurchLevel.CustomName : Model.lsChurchLevelModels[i].oChurchLevel.Name) + "'";
+                                        <tr id="row_template_CL" style="text-align:left">
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.Id)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.AppGlobalOwnerId, new { @id = "_AppGlobalOwnerId" })</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.SharingStatus)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.Created)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.LastMod)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.CreatedByUserId)</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.LastModByUserId)</td>
+
+                                            @*label values not committed.. hide them*@
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.LevelIndex, new { @id = "_LevelIndex" })</td>
+                                            <td width="0" hidden>@Html.HiddenFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.Name, new { @id = "_Name" })</td> 
+
+                                            <td width="100px" class="p-2 text-center" style="vertical-align: middle">
+                                                @Html.DisplayFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.LevelIndex, new { @class = "form-control font-weight-normal" })
+                                            </td>
+                                            <td width="150px" style="vertical-align: middle">
+                                                @Html.DisplayFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.Name, new { @class = "form-control font-weight-normal" })
+                                            </td>
+                                            <td style="vertical-align: middle">
+                                                @Html.TextBoxFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.CustomName, new { @class = "form-control" })
+                                            </td>
+                                            <td width="120px" style="vertical-align: middle">
+                                                @Html.TextBoxFor(modelItem => Model.lsChurchLevelModels[i].oChurchLevel.Acronym, new { @class = "form-control text-center" })
+                                            </td>
+                                            <td width="120px" style="vertical-align: middle; text-align:center">
+                                                <a href="#" class="btn btn-outline-danger border-0 btn-sm " onclick="DeleteCurrData_CL(@Model.lsChurchLevelModels[i].oChurchLevel.Id, @Model.PageIndex, false, '')">
+                                                    <i class="fa fa-trash "></i>
+                                                </a>
+
+                                                @*<div class="btn-group dropright">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu p-1">
+                                                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                           onclick="AddEditCurrData_CL(@Model.lsChurchLevelModels[i].oChurchLevel.Id, @Model.lsChurchLevelModels[i].oChurchLevel.AppGlobalOwnerId, @Model.PageIndex, @strDesc)">
+                                                            <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                        </a>
+                                                        <a href="#" class="btn btn-light btn-sm text-danger small"
+                                                           onclick="DeleteCurrData_CL(@Model.lsChurchLevelModels[i].oChurchLevel.Id, @Model.PageIndex, false, '')">
+                                                            <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                                                        </a>
+                                                    </div>
+                                                </div>*@
+                                            </td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="bg-white " style="font-weight: bold ">
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th width="0" hidden></th>
+                                            <th style=" vertical-align: middle"> @* Level index *@  </th>
+                                            <th align="right" style="vertical-align: middle">  @* Level name *@  </th>
+                                            <th align="right" style="vertical-align: middle">  @* Custom Name *@  </th>
+                                            <th align="right" style="vertical-align: middle">
+                                                @if (Model.oAppGloOwnId != null)
+                                                {
+                                                    <a href="#" data-remote="false" class="btn btn-light text-primary w-100" data-backdrop="static" onclick="AddEditCurrData_CL(0, @Model.oAppGloOwnId, @Model.PageIndex, '[New] Church level')">
+                                                        <i class="fa fa-plus fa-primary fa-sm "></i> &nbsp; Add New
+                                                    </a>
+                                                }
+                                            </th>
+                                            <th style="vertical-align: middle; text-align:center">
+                                                @if (Model.oAppGloOwnId != null && Model.PageIndex == 2)
+                                                {
+                                                    <button id="btnSaveChanges_BLK" type="button" class="btn btn-outline-dark save-data w-100" data-toggle="tooltip" data-placement="top" title="Add new church level">
+                                                        <i class="fa fa-database"></i> &nbsp; Save
+                                                    </button>
+                                                }
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        }
+
+                    }
+
+
+                    @*}*@
+                    <!-- /.content-wrapper -->
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center; display:none" id="divLoader">
+            <img src="~/css/images/load.gif" width="100" />
+        </div>
+
+        <!-- /#wrapper -->
+        <!-- Scroll to Top Button-->
+        @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+
+
+        <div id="loaderr">
+
+        </div>
+
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="_modalLabel">Logout!</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"> Logout to end your current session. Sure?</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-teal text-light">
+                        <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                    </div>
+                    <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                        <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                        <button id="btnSaveChanges" type="submit" class="btn btn-outline-primary save-data font-weight-bold"><i class="fa fa-database fa-sm"></i> Save changes </button>
+
+                        @*<button id="btnSaveChanges" class="btn btn-primary" type="submit" >Submit form</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal-->
+        <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+            <div class="modal-dialog modal-sm bg-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h5 style="color: white; font-weight:bold"> Done! </h5>
+                    </div>
+                    <div class="modal-body bg-white" style="align-items:center">
+                        <label id="lblUserMessage" class="text-sm font-weight-normal text-center"></label>
+                    </div>
+
+                    <div class="modal-footer bg-white">
+                        <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*<partial name="_CookieConsentPartial" />   *@
+
+
+    </body>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+ 
+
+<script>
+            $(document).ready(function () {
+                //for table row
+                $("tr:even").css("background-color", "#fff");
+                $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+                $('#tbId_ChurchLevel').DataTable({
+                    "processing": true,
+                    "columnDefs": [
+                        { "searchable": false, "orderable": false, "targets": [4] },
+                    ],
+                });
+
+                $('#tbId_ChurchLevel_BLK').DataTable({
+                    "processing": true,
+                    "columnDefs": [
+                        { "searchable": false, "orderable": false, "targets": [13] },
+                    ],
+                });
+
+            });
+
+    var AddEditCurrData_CL = function (currId, currDenomId, _pageIndex, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+            //     alert('addORedit...');
+            //alert('addORedit.. ' + currId + ' ..currDenomId: ' + currDenomId + ' .._pageIndex: ' + _pageIndex + ' .._strItemName: ' + _strItemName);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+           // var currParBodyId = null;
+
+            if (currId < 0) currId = null;
+            if (currDenomId < 0) currDenomId = null;
+
+            //if (currChuBodyId < 0) currChuBodyId = null;
+            // if (currSetIndex < 0) currSetIndex = null;
+            //if (currSubSetIndex < 0) currSubSetIndex = null;
+
+               //  public IActionResult AddOrEdit_CL(int id = 0, int? oAppGloOwnId = null, int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null)
+
+                var url = "@Url.Action("AddOrEdit_CL", "AppVenAdmin")?id=" + currId + "&oAppGloOwnId=" + currDenomId + "&pageIndex=" + _pageIndex +
+                                            "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                     //   alert(url)
+
+                       // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                      //  alert(url)
+
+                        $('#divPopModal_AddEdit_lg').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit_lg').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit_lg .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+
+                        //alert('loading modal...')
+                        //$("#_setIndex").val(setIndex);
+                        //$('#divModalBody_AddEdit_lg').load(url, function () {
+                        $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit_lg").modal('show');
+                        });
+
+        };
+
+
+
+    var DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='') {   //currSubSetIndex,  proScope, subScope,
+
+            if (reload == false) {
+                if (newItemId != null ) {
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close',
+                        buttons: {
+                            ok: {
+                                btnClass: 'btn-info',
+                                action: function () {
+                                    AddEditCurrData_CL(newItemId, currDenomId, pageIndex, _hdrdesc);
+                                }
+                            }
+                        }
+                    });
+
+                }
+                else {
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close',
+                        btnClass: 'btn-info'
+                    });
+                }
+            
+            }
+
+            else {
+                $.alert({
+                    title: 'Done!',
+                    type: 'green',
+                    typeAnimated: true,
+                    content: msg,
+                    closeIcon: true,
+                    closeIconClass: 'fa fa-close',                    
+                    buttons: {
+                        ok: {
+                            btnClass: 'btn-info',
+                            action: function () {
+                                ReloadCurrPage_CL(currDenomId, pageIndex);
+                            }
+                        }
+                    }
+                }); 
+            }
+        };
+
+
+            //public ActionResult Index(int? oDenomId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 1, int? oParentId = null)
+        var ReloadCurrPage_CL = function (currDenomId = null, _pageIndex = 1) { //, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+                        //alert('load..');
+                      //  alert('load.. ' + currDenomId);
+
+                        //    public ActionResult Index_CL(int? oAppGloOwnId = null, int pageIndex = 1)
+            window.location.href = '@Url.Action("Index_CL", "AppVenAdmin")?oAppGloOwnId=' + currDenomId + '&pageIndex=' + _pageIndex; //+ '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+                        //if (parId == '') {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        //}
+                        //else {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+                        //}
+                    }
+</script>
+
+
+    <script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+           // alert('click..'); 
+
+            const form = document.getElementById("currForm_CL");
+             
+            if (form.checkValidity() === true) {
+
+                SaveCurr_CL(); //currSetIndex, currSubSetIndex);
+            }
+            else {
+               // alert('val 5')
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+
+           // }, false);
+        })
+          
+        var SaveCurr_CL = function () { // (currSetIndex, currSubSetIndex) {
+            // alert('saving CL... ');
+
+            var currFormData = new FormData($("#currForm_CL").get(0));
+            // var currFormData = $("#currForm_CL").serialize();
+
+            
+          //  alert('save... submitting...');
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEdit_CL", "AppVenAdmin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_CL",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                      //  var currChuBodyId = $("#_hdnChuBodyId").val();
+
+                        //var currId = $("#_hdnCurrId_CL").val();
+                      //  var _pageIndex = $("#_hdnPageIndex").val();
+                        //alert("saving currId: " + currId + " ...page: " + res.pageIndex);
+
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+                         
+                        var _desc = "'[New] Church level'";
+                        if (res.resetNew == true) {
+                            //DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='')
+                            DisplaySuccessInfo(res.userMess, currDenomId, res.pageIndex, false, 0, _desc);
+
+                            // AddEditCurrData_CL = function (currId, currDenomId, _pageIndex, _strItemName)
+                           // AddEditCurrData_CL(0, currDenomId, _pageIndex, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                        }
+                        else {
+                            DisplaySuccessInfo(res.userMess, currDenomId, 1, true);
+
+                            //$("#btnSaveChanges").prop();
+                           // alert('closing...')
+
+                           // $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+
+        $(document).on('click', '#btnSaveChanges_BLK', function (e) {
+            e.preventDefault();
+
+           // alert('save.. BLK? ');
+
+            const form = document.getElementById("currFormBLK_CL");
+
+            if (form.checkValidity() === true) {
+
+                SaveCurrBLK_CL(); //currSetIndex, currSubSetIndex);
+            }
+            else {
+                // alert('val 5')
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+            //   alert('save.. cb: ' + currChuBodyId + '.. id: ' + currVisitorId + '.. isMigratedVis: ' + isMigratedVis);
+            // SaveCurrBLK_CL(); //currVisitorId, currChuBodyId, _strAttendee, _strLongevity);
+        })
+
+        var SaveCurrBLK_CL = function () { // (currSetIndex, currSubSetIndex) {
+           //  alert('saving BLK CL... ');
+
+           // var currFormData = new FormData($("#currForm_CL").get(0));
+
+            var currFormData = $("#currFormBLK_CL").serialize();
+ 
+          //  alert('save... submitting...');
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEditBLK_CL", "AppVenAdmin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_CL",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                //contentType: false,
+               // processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                      //  var currChuBodyId = $("#_hdnChuBodyId").val();
+                        //var _PageIndex = $("#_PageIndex").val();
+                        var currDenomId = $("#_oAppGloOwnId").val(); 
+
+                        var _desc = "'[New] Church Level'";
+                        if (res.resetNew == true) {
+                            //DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='')
+                            DisplaySuccessInfo(res.userMess, currDenomId, res.pageIndex, false, 0, _desc);
+
+                            // AddEditCurrData_CL = function (currId, currDenomId, _pageIndex, _strItemName)
+                           // AddEditCurrData_CL(0, currDenomId, _pageIndex, _desc);
+                        }
+
+                        else {
+                            DisplaySuccessInfo(res.userMess, currDenomId, 2, true);
+
+                            //ReloadCurrPage_CL(currDenomId, pageIndex);
+                            
+                            //$("#btnSaveChanges").prop();
+                           // alert('closing...')
+                           // $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+
+
+        var DeleteCurrData_CL = function (currId, _pageIndex, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting') 
+
+       // var currUserId = $("#_oUserId_Logged").val();
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+      //  var currDenomId = $("#_hdnAppGloOwnId").val();
+        var currDenomId = $("#_oAppGloOwnId").val();
+
+       // var _pageIndex = $("#_hdnPageIndex").val();
+
+     //  alert('currDenomId: ' + currDenomId)
+     //  alert('currUserId: ' + currUserId_Logged)
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified church level' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_CL", "AppVenAdmin")',
+                               // url: "/AppVenAdmin/Delete_CL",
+                                // public IActionResult Delete_CL(int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                data: { loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, currDenomId, _pageIndex, true); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                      //  ReloadCurrPage_CL(currDenomId, _pageIndex); //(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);                  // (oAppGloId, currChuBodyId, currSetIndex);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_CL(currId, _pageIndex, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+    <script>
+        $(document).on('change', '#_AppGlobalOwnerId', function (e) {
+            e.preventDefault();
+
+            var appOwnId = $("#_AppGlobalOwnerId").val();
+
+           // var _pageIndex = $("#_hdnPageIndex").val();
+            var _pageIndex = $("#_PageIndex").val();
+
+          //    alert('mainId: ' + mainId); 
+
+            ReloadCurrPage_CL(appOwnId, _pageIndex);
+
+                
+        
+
+             @*var url = '@Url.Action("GetFaithStreamByCategory", "AppVenAdmin")'; // '@Url.Content("~/")' + 'AppVenAdmin/GetFaithStreamByCategory';
+
+             document.getElementById('_strChurchStream').value = '';
+             $.getJSON(url, { categoryId: mainId }, function (res) {
+                 if (res != null) {  // alert(res.taskSuccess);  alert(res.strRes);
+                     document.getElementById('_strChurchStream').value = res.strRes;
+                 }
+            });*@
+              
+
+         }); 
+
+    </script>
+
+}

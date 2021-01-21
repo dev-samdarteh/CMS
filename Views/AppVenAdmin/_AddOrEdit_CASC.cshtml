@@ -1,0 +1,92 @@
+﻿@model RhemaCMS.Models.ViewModels.ClientAppServerConfigModel
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center w-75" style="margin: 0 auto 0 auto ; padding:0;  ">
+
+    @if (Model.oCASConfig != null)
+    {
+        //var photoPath = "~/img_db/" + (Model.oCASConfig.ChurchLogo ?? "df_user_p.png");
+
+    <form class="needs-validation bg-transparent p-2" novalidate id="currForm_CASC" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_CASC">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oCASConfig.Id" id="_hdnCurrId_CASC" />
+        @*<input type="hidden" asp-for="oCASConfig.AppGlobalOwnerId" id="_hdnAppGloOwnId" />*@
+        <input type="hidden" asp-for="PageIndex" id="_hdnPageIndex" />
+
+        <input type="hidden" asp-for="oCASConfig.Created" />
+        <input type="hidden" asp-for="oCASConfig.LastMod" />
+        <input type="hidden" asp-for="oCASConfig.CreatedByUserId" />
+        <input type="hidden" asp-for="oCASConfig.LastModByUserId" />
+
+        @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.subSetIndex" id="_subSetIndex" />*@
+
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oCurrUserId_Logged" />
+
+
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="oCASConfig.AppGlobalOwnerId"> Subscriber (Church) </small>
+                <select   class="form-control text-sm" asp-for="oCASConfig.AppGlobalOwnerId" asp-items="Model.lkpAppGlobalOwns" aria-describedby="fd_AppGlobalOwnerId" required>
+                    @*<option selected disabled value="">Select...</option>*@
+                </select>
+                <div class="invalid-feedback" id="fd_AppGlobalOwnerId">
+                    Select the subscriber (Church)
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="oCASConfig.ServerName">Database Server</small>
+                <input type="text" class="form-control text-sm" asp-for="oCASConfig.ServerName" placeholder="Server Name" aria-describedby="fd_ServerName" required>
+                <div class="invalid-feedback" id="fd_ServerName">
+                    Specify database server
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="oCASConfig.DbaseName">Database</small>
+                <input type="text" class="form-control text-sm" asp-for="oCASConfig.DbaseName" placeholder="Database Name" aria-describedby="fd_DbaseName" required>
+                <div class="invalid-feedback" id="fd_DbaseName">
+                    Specify database
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oCASConfig.SvrUserId"> User Id  </small>
+                <input type="text" class="form-control text-sm" asp-for="oCASConfig.SvrUserId" placeholder="Database Server User" aria-describedby="fd_SvrUserId" required>
+                <div class="invalid-feedback" id="fd_SvrUserId">
+                    Specify login-in user
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oCASConfig.SvrPassword"> Password  </small>
+                <input type="password" class="form-control text-sm" asp-for="oCASConfig.SvrPassword" placeholder="User Password" aria-describedby="fd_SvrPassword" required>
+                <div class="invalid-feedback" id="fd_SvrPassword">
+                    Specify user password
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oCASConfig.ConfigDate"> Date Configured </small>
+                <input type="date" class="form-control text-sm" asp-for="oCASConfig.ConfigDate" placeholder="Database Server User">
+            </div>
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oCASConfig.Status"> Status  </small>
+                <select id="_Status" class="form-control text-sm" asp-for="oCASConfig.Status" asp-items="Model.lkpStatuses"  >
+                    @*<option selected disabled value="">Select...</option>*@
+                </select> 
+            </div>
+        </div>
+
+    </form>
+    }
+
+</div>

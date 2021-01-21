@@ -1,0 +1,3012 @@
+﻿@model RhemaCMS.Models.ViewModels.vm_cl.ClientSetupParametersModel
+@*<pages maintainScrollPositionOnPostBack="true" />*@
+
+@{
+    ViewData["Title"] = ViewBag.AppName + " - Dashboard";
+}
+
+<body id="page-top" class="w-100 small">
+    <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+    <input type="hidden" id="_oSubSetIndex" data-value="@Model.subSetIndex" />
+
+    @*<input type="hidden" id="_oChurchBody_Logged" data-value="@Model.oChurchBody_Logged" />*@
+    @*<input type="hidden" id="_pageIndex" data-value="@Model.pageIndex" />*@
+
+    <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+    <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+    <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper m-0 p-0">
+        <!-- Content Header (Page header) -->
+        <div class="content-header clearfix">
+            <div class="container-fluid">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <h4 class="m-0 text-dark"> <i class="fas fa-cog fa-sm fa-secondary"></i> Church Setup Parameters </h4>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard v1</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid ">
+                <!-- Main row -->
+                <div class="row justify-content-center" style=" margin: 0 auto 0 auto ; padding:0;">
+                    <!-- Left col -->
+                    <section class="col-lg-6 connectedSortable">
+                        <!-- AGO  1  ... -->
+                        <div class="card">
+                            <h6 class="card-header card-title ">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed1" aria-expanded="true" aria-controls="collapse-collapsed1" id="heading-collapsed">
+                                    <i class="fas fa-church pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down pull-right"></i>
+                                    Denomination (Church) Preview
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed1" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @{ await Html.RenderPartialAsync("_vwParamAGO", Model.oAppGlobalOwnModel); }
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_AGO(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CL   2  ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title ">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed2" aria-expanded="true" aria-controls="collapse-collapsed2" id="heading-collapsed">
+                                    <i class="fas fa-object-group pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down pull-right"></i>
+                                    Church Levels
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed2" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @{ await Html.RenderPartialAsync("_vwParamCL", Model.lsChurchLevelModels); }
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc2 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_AGO(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc2)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CB   3  -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed3" aria-expanded="true" aria-controls="collapse-collapsed3" id="heading-collapsed">
+                                    <i class="fas fa-layer-group pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down pull-right"></i>
+                                    Congregation (Church Unit)
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed3" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @{
+                                        if (Model.oChurchBodyModel != null)
+                                        {
+                                            await Html.RenderPartialAsync("_vwParamCB", Model.oChurchBodyModel);
+                                        }
+                                    }
+                                </div>
+                                <!-- ONLY CB subscriber access -->
+                                <div class="card-footer clearfix">
+                                    @{ if (Model.oChurchBodyModel != null)
+                                        {
+                                            if (Model.oChurchBodyModel.oChurchBody != null)
+                                            {
+                                                var strDesc_CB = "'" + Model.oChurchBodyModel.oChurchBody.Name + "'";
+                                                if (Model.oChurchBodyModel.oChurchBody.Id == Model.oChurchBodyId_Logged)
+                                                {
+                                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CB(@Model.oChurchBodyModel.oChurchBody.Id, @Model.oChurchBodyModel.oChurchBody.AppGlobalOwnerId, @strDesc_CB)">
+                                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                                    </button>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CSTR   4  ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title ">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed4" aria-expanded="true" aria-controls="collapse-collapsed4" id="heading-collapsed">
+                                    <i class="fas fa-object-group pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down pull-right"></i>
+                                    Church Structure (Organisation)
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed4" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCL", Model.lsChurchLevelModels); }*@
+                                </div>
+                                <!-- ONLY show CBs equal and below in level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc4 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_AGO(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc4)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- NVP  6  ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title ">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed6" aria-expanded="true" aria-controls="collapse-collapsed6" id="heading-collapsed">
+                                    <i class="fas fa-cogs pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down pull-right"></i>
+                                    General App Settings
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed6" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body card-info card-outline ">
+                                    <div id="tabSectionData_NVP" class="overlay-wrapper">
+                                        <div id="spinner_NVP" class="overlay dark" style="display: none"><i class="fas fa-3x fa-sync-alt fa-sm fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
+                                        @{ await Html.RenderPartialAsync("_vwParamNVP", Model.lsAppUtilityNVPModels); }
+                                    </div>
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc6 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_NVP(0, '[New Lookup Parameter]')">
+                                        <i class="fas fa-plus fa-sm"></i> <span class="text-sm"> Add New </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CRC  7  ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed7" aria-expanded="true" aria-controls="collapse-collapsed7" id="heading-collapsed">
+                                    <i class="fas fa-flag pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Countries, Regions &amp; Currencies
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed7" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body card-info card-outline ">
+                                    <div class="card-primary card-outline card-outline-tabs border-0">
+                                        <div class="card-header p-0 border-bottom-0">
+                                            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="custom-tabs-four-country-tab" data-toggle="pill" href="#custom-tabs-four-country" role="tab" aria-controls="custom-tabs-four-country" aria-selected="true"> Countries </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="custom-tabs-four-region-tab" data-toggle="pill" href="#custom-tabs-four-region" role="tab" aria-controls="custom-tabs-four-region" aria-selected="false"> Regions </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="custom-tabs-four-currency-tab" data-toggle="pill" href="#custom-tabs-four-currency" role="tab" aria-controls="custom-tabs-four-currency" aria-selected="false"> Currencies </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="tab-content" id="custom-tabs-four-tabContent"> 
+                                                <div id="custom-tabs-four-country" class="tab-pane fade show active" role="tabpanel" aria-labelledby="custom-tabs-four-country-tab">
+                                                    <div id="tabSectionData_CTRY" class="overlay-wrapper mb-1">
+                                                        @{ await Html.RenderPartialAsync("_vwParamCTRY", Model.oCountryModel); }
+                                                    </div>
+                                                    <!-- ONLY HQ level access   -->
+                                                    @*@if (Model.oCountryModel.pageIndex == 1)
+                                                    { }*@
+
+                                                    <div id="tabSectionMod_CTRY" class="card-footer clearfix">
+                                                        <button type="button" class="btn btn-light btn-sm float-right" onclick="ReloadCurrPage_CTRY(7, 1, 1, 1)">
+                                                            <i class="fa fa-refresh fa-primary"></i>
+                                                        </button>
+
+                                                        @{ var strDesc7 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                                        <button type="button" class="btn btn-info  btn-sm  float-right" onclick="ReloadCurrPage_CTRY(7, 1, 2)">
+                                                            <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                                        </button>
+
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0 float-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fa fa-ellipsis-v text-gray text-lg"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu p-1 pt-0" sty>
+                                                                <div class="card-header card-primary card-outline">
+                                                                    <h3 class="card-subtitle"> Filters </h3>
+                                                                </div>
+                                                                <div class="card-body p-0 content-trim ">
+                                                                    <ul class="nav nav-pills flex-column">
+                                                                        <li class="nav-item active">
+                                                                            <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 2, 1)">
+                                                                                <i class="fas fa-flag fa-sm"></i> All Countries
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 1, 2)">
+                                                                                <i class="far fa-flag-checkered fa-sm"></i> Custom Countries
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 1, 3)">
+                                                                                <i class="fas fa-flag-o fa-sm"></i> Church Countries
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="#" class="nav-link text-sm font-weight-normal" onclick="ReloadCurrPage_CTRY(7, 1, 1, 4)">
+                                                                                <i class="far fa-check-double fa-sm"></i> Default Country
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+
+                                                            @if (Model.pageIndex == 2)
+                                                            {
+                                                                <button id="btnSaveChanges_CTRY_BLK" type="button" class="btn btn-primary w-100">
+                                                                    <i class="fas fa-edit fa-save"></i> Save
+                                                                </button>
+
+                                                                @*<button id="btnSaveChanges_BLK" type="button" class="btn btn-outline-dark save-data " data-toggle="tooltip" data-placement="top" title="Add new Custom Country">
+                                                                    <i class="fa fa-database"></i> &nbsp; Save
+                                                                </button>*@
+                                                            } 
+
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                </div>
+                                                <div class="tab-pane fade" id="custom-tabs-four-region" role="tabpanel" aria-labelledby="custom-tabs-four-region-tab">
+                                                    @{ await Html.RenderPartialAsync("_vwParamCTRY_RGN", Model.lsCountryRegionCustomModels); }
+                                                </div>
+                                                <div class="tab-pane fade" id="custom-tabs-four-currency" role="tabpanel" aria-labelledby="custom-tabs-four-currency-tab">
+                                                    @{ await Html.RenderPartialAsync("_vwParamCURR", Model.lsCountryCustomModels); }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+
+                        <!-- LSPK 8  ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed8" aria-expanded="true" aria-controls="collapse-collapsed8" id="heading-collapsed">
+                                    <i class="fas fa-microphone pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Languages Spoken
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed8" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamLSPK", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc8 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_LSPK(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc8)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CPR  9  ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed9" aria-expanded="true" aria-controls="collapse-collapsed9" id="heading-collapsed">
+                                    <i class="fas fa-calendar-day pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church Periods
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed9" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCPR", Model.oAppGlobalOwnModel); }*@
+                                    <div class="card-tools">
+                                        <ul class="nav nav-pills ml-auto">
+                                            <li class="nav-item ">
+                                                <a class="nav-link active" href="#church-year" data-toggle="tab"> Church Year </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#finance-year" data-toggle="tab"> Financial Year </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content p-0">
+                                        <!-- Morris chart - Sales -->
+                                        <div class="chart tab-pane active" id="church-year"
+                                             style="position: relative; height: 300px;">
+                                            <canvas id="church-year-canvas" height="300" style="height: 300px;"></canvas>
+                                        </div>
+                                        <div class="chart tab-pane bg-teal" id="finance-year" style="position: relative; height: 300px;">
+                                            <canvas id="finance-year-canvas" height="300" style="height: 300px;"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc9 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CPR(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc9)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NIDT 10 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed10" aria-expanded="true" aria-controls="collapse-collapsed10" id="heading-collapsed">
+                                    <i class="fas fa-fingerprint pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    National ID Types
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed10" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamNIDT", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc10 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_NIDT(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc10)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INT 10 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed11" aria-expanded="true" aria-controls="collapse-collapsed11" id="heading-collapsed">
+                                    <i class="fas fa-graduation-cap pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Institution Types
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed11" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamINT", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc11 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_INT(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc11)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTT 12 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed12" aria-expanded="true" aria-controls="collapse-collapsed12" id="heading-collapsed">
+                                    <i class="fas fa-user-graduate pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Certificate Types
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed12" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCTT", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc12 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CTT(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc12)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RLT 13 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed13" aria-expanded="true" aria-controls="collapse-collapsed13" id="heading-collapsed">
+                                    <i class="fas fa-handshake pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Relationship Types
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed13" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamRLT", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc13 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_RLT(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc13)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CSU 14 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed14" aria-expanded="true" aria-controls="collapse-collapsed14" id="heading-collapsed">
+                                    <i class="fas fa-layer-group pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church Sector Units
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed14" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCSU", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc14 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CSU(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc14)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CR 15 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed15" aria-expanded="true" aria-controls="collapse-collapsed15" id="heading-collapsed">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                    <i class="fas fa-ellipsis-v pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church Ranks
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed15" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCR", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc15 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CR(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc15)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CRL 16 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed16" aria-expanded="true" aria-controls="collapse-collapsed16" id="heading-collapsed">
+                                    <i class="fas fa-user-tie pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church Roles &amp; Positions
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed16" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCRL", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc16 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CRL(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc16)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CLA 17 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed17" aria-expanded="true" aria-controls="collapse-collapsed17" id="heading-collapsed">
+                                    <i class="fas fa-place-of-worship pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church-life Activities &amp; Requirements
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed17" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCLA", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc17 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CLA(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc17)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CLARD 18 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed18" aria-expanded="true" aria-controls="collapse-collapsed18" id="heading-collapsed">
+                                    <i class="fas fa-place-of-worship pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church-life Activity Requirements
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed18" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCLARD", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc18 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CLARD(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc18)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CMT 19 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed19" aria-expanded="true" aria-controls="collapse-collapsed19" id="heading-collapsed">
+                                    <i class="fas fa-user-alt-slash pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church Member Types
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed19" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCMT", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc19 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CMT(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc19)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CMS 20 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed20" aria-expanded="true" aria-controls="collapse-collapsed20" id="heading-collapsed">
+                                    <i class="fas fa-traffic-light pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church Member Statuses
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed20" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCMS", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc20 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CMS(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc20)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTS 21 ... TO DO List -->
+                        <div class="card">
+                            <h6 class="card-header card-title">
+                                <a class="collapsed d-block" data-toggle="collapse" href="#collapse-collapsed21" aria-expanded="true" aria-controls="collapse-collapsed21" id="heading-collapsed">
+                                    <i class="fas fa-user-cog pr-2" style="width:30px"></i>
+                                    <i class="fa fa-chevron-down fa-sm pull-right"></i>
+                                    Church Transfer Settings
+                                </a>
+                            </h6>
+                            <div id="collapse-collapsed21" class="collapse" aria-labelledby="heading-collapsed">
+                                <div class="card-body">
+                                    @*@{ await Html.RenderPartialAsync("_vwParamCTS", Model.oAppGlobalOwnModel); }*@
+                                </div>
+                                <!-- ONLY HQ level access -->
+                                <div class="card-footer clearfix">
+                                    @{ var strDesc21 = "'" + Model.oAppGlobalOwnModel.oAppGlobalOwn.OwnerName + "'"; }
+                                    <button type="button" class="btn btn-info btn-sm float-right" onclick="AddEditCurrData_CTS(@Model.oAppGlobalOwnModel.oAppGlobalOwn.Id, @strDesc21)">
+                                        <i class="fas fa-edit fa-sm"></i> <span class="text-sm">Modify</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table id="example2" class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Rendering engine</th>
+                                                        <th>Browser</th>
+                                                        <th>Platform(s)</th>
+                                                        <th>Engine version</th>
+                                                        <th>CSS grade</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 4.0
+                                                        </td>
+                                                        <td>Win 95+</td>
+                                                        <td> 4</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 5.0
+                                                        </td>
+                                                        <td>Win 95+</td>
+                                                        <td>5</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 5.5
+                                                        </td>
+                                                        <td>Win 95+</td>
+                                                        <td>5.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 6
+                                                        </td>
+                                                        <td>Win 98+</td>
+                                                        <td>6</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>Internet Explorer 7</td>
+                                                        <td>Win XP SP2+</td>
+                                                        <td>7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>AOL browser (AOL desktop)</td>
+                                                        <td>Win XP</td>
+                                                        <td>6</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 1.0</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 1.5</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 2.0</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 3.0</td>
+                                                        <td>Win 2k+ / OSX.3+</td>
+                                                        <td>1.9</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Camino 1.0</td>
+                                                        <td>OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Camino 1.5</td>
+                                                        <td>OSX.3+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Netscape 7.2</td>
+                                                        <td>Win 95+ / Mac OS 8.6-9.2</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Netscape Browser 8</td>
+                                                        <td>Win 98SE+</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Netscape Navigator 9</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.0</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.1</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.2</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.2</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.3</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.3</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.4</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.4</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.5</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.6</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.6</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.7</td>
+                                                        <td>Win 98+ / OSX.1+</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.8</td>
+                                                        <td>Win 98+ / OSX.1+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Seamonkey 1.1</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Epiphany 2.20</td>
+                                                        <td>Gnome</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 1.2</td>
+                                                        <td>OSX.3</td>
+                                                        <td>125.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 1.3</td>
+                                                        <td>OSX.3</td>
+                                                        <td>312.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 2.0</td>
+                                                        <td>OSX.4+</td>
+                                                        <td>419.3</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 3.0</td>
+                                                        <td>OSX.4+</td>
+                                                        <td>522.1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>OmniWeb 5.5</td>
+                                                        <td>OSX.4+</td>
+                                                        <td>420</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>iPod Touch / iPhone</td>
+                                                        <td>iPod</td>
+                                                        <td>420.1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>S60</td>
+                                                        <td>S60</td>
+                                                        <td>413</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 7.0</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 7.5</td>
+                                                        <td>Win 95+ / OSX.2+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 8.0</td>
+                                                        <td>Win 95+ / OSX.2+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 8.5</td>
+                                                        <td>Win 95+ / OSX.2+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 9.0</td>
+                                                        <td>Win 95+ / OSX.3+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 9.2</td>
+                                                        <td>Win 88+ / OSX.3+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 9.5</td>
+                                                        <td>Win 88+ / OSX.3+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera for Wii</td>
+                                                        <td>Wii</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Nokia N800</td>
+                                                        <td>N800</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Nintendo DS browser</td>
+                                                        <td>Nintendo DS</td>
+                                                        <td>8.5</td>
+                                                        <td>C/A<sup>1</sup></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KHTML</td>
+                                                        <td>Konqureror 3.1</td>
+                                                        <td>KDE 3.1</td>
+                                                        <td>3.1</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KHTML</td>
+                                                        <td>Konqureror 3.3</td>
+                                                        <td>KDE 3.3</td>
+                                                        <td>3.3</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KHTML</td>
+                                                        <td>Konqureror 3.5</td>
+                                                        <td>KDE 3.5</td>
+                                                        <td>3.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tasman</td>
+                                                        <td>Internet Explorer 4.5</td>
+                                                        <td>Mac OS 8-9</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tasman</td>
+                                                        <td>Internet Explorer 5.1</td>
+                                                        <td>Mac OS 7.6-9</td>
+                                                        <td>1</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tasman</td>
+                                                        <td>Internet Explorer 5.2</td>
+                                                        <td>Mac OS 8-X</td>
+                                                        <td>1</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>NetFront 3.1</td>
+                                                        <td>Embedded devices</td>
+                                                        <td>-</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>NetFront 3.4</td>
+                                                        <td>Embedded devices</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>Dillo 0.8</td>
+                                                        <td>Embedded devices</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>Links</td>
+                                                        <td>Text only</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>Lynx</td>
+                                                        <td>Text only</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>IE Mobile</td>
+                                                        <td>Windows Mobile 6</td>
+                                                        <td>-</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>PSP browser</td>
+                                                        <td>PSP</td>
+                                                        <td>-</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Other browsers</td>
+                                                        <td>All others</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td>U</td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Rendering engine</th>
+                                                        <th>Browser</th>
+                                                        <th>Platform(s)</th>
+                                                        <th>Engine version</th>
+                                                        <th>CSS grade</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                    <!-- /.card -->
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">DataTable with default features</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table id="example1" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Rendering engine</th>
+                                                        <th>Browser</th>
+                                                        <th>Platform(s)</th>
+                                                        <th>Engine version</th>
+                                                        <th>CSS grade</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 4.0
+                                                        </td>
+                                                        <td>Win 95+</td>
+                                                        <td> 4</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 5.0
+                                                        </td>
+                                                        <td>Win 95+</td>
+                                                        <td>5</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 5.5
+                                                        </td>
+                                                        <td>Win 95+</td>
+                                                        <td>5.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>
+                                                            Internet
+                                                            Explorer 6
+                                                        </td>
+                                                        <td>Win 98+</td>
+                                                        <td>6</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>Internet Explorer 7</td>
+                                                        <td>Win XP SP2+</td>
+                                                        <td>7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Trident</td>
+                                                        <td>AOL browser (AOL desktop)</td>
+                                                        <td>Win XP</td>
+                                                        <td>6</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 1.0</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 1.5</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 2.0</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Firefox 3.0</td>
+                                                        <td>Win 2k+ / OSX.3+</td>
+                                                        <td>1.9</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Camino 1.0</td>
+                                                        <td>OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Camino 1.5</td>
+                                                        <td>OSX.3+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Netscape 7.2</td>
+                                                        <td>Win 95+ / Mac OS 8.6-9.2</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Netscape Browser 8</td>
+                                                        <td>Win 98SE+</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Netscape Navigator 9</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.0</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.1</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.2</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.2</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.3</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.3</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.4</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.4</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.5</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.6</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>1.6</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.7</td>
+                                                        <td>Win 98+ / OSX.1+</td>
+                                                        <td>1.7</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Mozilla 1.8</td>
+                                                        <td>Win 98+ / OSX.1+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Seamonkey 1.1</td>
+                                                        <td>Win 98+ / OSX.2+</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gecko</td>
+                                                        <td>Epiphany 2.20</td>
+                                                        <td>Gnome</td>
+                                                        <td>1.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 1.2</td>
+                                                        <td>OSX.3</td>
+                                                        <td>125.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 1.3</td>
+                                                        <td>OSX.3</td>
+                                                        <td>312.8</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 2.0</td>
+                                                        <td>OSX.4+</td>
+                                                        <td>419.3</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>Safari 3.0</td>
+                                                        <td>OSX.4+</td>
+                                                        <td>522.1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>OmniWeb 5.5</td>
+                                                        <td>OSX.4+</td>
+                                                        <td>420</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>iPod Touch / iPhone</td>
+                                                        <td>iPod</td>
+                                                        <td>420.1</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Webkit</td>
+                                                        <td>S60</td>
+                                                        <td>S60</td>
+                                                        <td>413</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 7.0</td>
+                                                        <td>Win 95+ / OSX.1+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 7.5</td>
+                                                        <td>Win 95+ / OSX.2+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 8.0</td>
+                                                        <td>Win 95+ / OSX.2+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 8.5</td>
+                                                        <td>Win 95+ / OSX.2+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 9.0</td>
+                                                        <td>Win 95+ / OSX.3+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 9.2</td>
+                                                        <td>Win 88+ / OSX.3+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera 9.5</td>
+                                                        <td>Win 88+ / OSX.3+</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Opera for Wii</td>
+                                                        <td>Wii</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Nokia N800</td>
+                                                        <td>N800</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Presto</td>
+                                                        <td>Nintendo DS browser</td>
+                                                        <td>Nintendo DS</td>
+                                                        <td>8.5</td>
+                                                        <td>C/A<sup>1</sup></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KHTML</td>
+                                                        <td>Konqureror 3.1</td>
+                                                        <td>KDE 3.1</td>
+                                                        <td>3.1</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KHTML</td>
+                                                        <td>Konqureror 3.3</td>
+                                                        <td>KDE 3.3</td>
+                                                        <td>3.3</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KHTML</td>
+                                                        <td>Konqureror 3.5</td>
+                                                        <td>KDE 3.5</td>
+                                                        <td>3.5</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tasman</td>
+                                                        <td>Internet Explorer 4.5</td>
+                                                        <td>Mac OS 8-9</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tasman</td>
+                                                        <td>Internet Explorer 5.1</td>
+                                                        <td>Mac OS 7.6-9</td>
+                                                        <td>1</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tasman</td>
+                                                        <td>Internet Explorer 5.2</td>
+                                                        <td>Mac OS 8-X</td>
+                                                        <td>1</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>NetFront 3.1</td>
+                                                        <td>Embedded devices</td>
+                                                        <td>-</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>NetFront 3.4</td>
+                                                        <td>Embedded devices</td>
+                                                        <td>-</td>
+                                                        <td>A</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>Dillo 0.8</td>
+                                                        <td>Embedded devices</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>Links</td>
+                                                        <td>Text only</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>Lynx</td>
+                                                        <td>Text only</td>
+                                                        <td>-</td>
+                                                        <td>X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>IE Mobile</td>
+                                                        <td>Windows Mobile 6</td>
+                                                        <td>-</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Misc</td>
+                                                        <td>PSP browser</td>
+                                                        <td>PSP</td>
+                                                        <td>-</td>
+                                                        <td>C</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Other browsers</td>
+                                                        <td>All others</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td>U</td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Rendering engine</th>
+                                                        <th>Browser</th>
+                                                        <th>Platform(s)</th>
+                                                        <th>Engine version</th>
+                                                        <th>CSS grade</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+
+
+
+                    </section>
+                </div>
+                <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+
+    <div class="modal fade" id="divPopModal_AddEdit" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-teal text-light">
+                    <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                </div>
+                <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                    <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                    @*<button id="btnSaveChanges" type="submit" class="btn btn-primary save-data font-weight-bold"><i class="fa fa-database fa-sm"></i> Save changes </button>*@
+
+                    <button id="btnSaveChanges" type="submit" class="btn btn-info float-right">
+                        <i class="fas fa-database fa-sm"></i> Save changes
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-teal text-light">
+                    <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                </div>
+                <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                    <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                    <button id="btnSaveChanges" type="submit" class="btn btn-light  save-data font-weight-bold"><i class="fa fa-database fa-sm"></i> Save changes </button>
+
+                    @*<button id="btnSaveChanges" class="btn btn-primary" type="submit" >Submit form</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal-->
+    <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+        <div class="modal-dialog modal-sm bg-info" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 style="color: white; font-weight:bold"> Done! </h5>
+                </div>
+                <div class="modal-body bg-white" style="align-items:center">
+                    <label id="lblUserMessage" class="text-sm font-weight-normal text-center"></label>
+                </div>
+
+                <div class="modal-footer bg-white">
+                    <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#smartwizard').smartWizard({
+                selected: 0,
+                theme: 'dots',
+                autoAdjustHeight: true,
+                transitionEffect: 'fade',
+                showStepURLhash: false,
+
+            });
+
+        });
+
+        var DisplaySuccessInfo = function (msg, reload = false) {   //currSubSetIndex,  proScope, subScope,
+
+            $.alert({
+                title: 'Done!',
+                type: 'green',
+                typeAnimated: true,
+                content: msg,
+                closeIcon: true,
+                closeIconClass: 'fa fa-close'
+            });
+
+            //if (reload) {
+            //    ReloadCurrPage_AGO();   //, currSubSetIndex , proScope, subScope
+            //}
+        };
+
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+            //   var currSetIndex = $("#_oSetIndex").data("value");
+            var currSetIndex = $("#_setIndex").val();
+
+            alert('currSetIndex: ' + currSetIndex);
+            switch (parseInt(currSetIndex)) {
+                case 1: SaveCurr_AGO(); break;
+                case 2: SaveCurr_CL(); break;
+                case 3: SaveCurr_CB(); break;
+
+                case 6: SaveCurr_NVP(); break;
+            }
+
+            //switch (new Date().getDay()) {
+            //    case 6:
+            //        text = "Today is Saturday";
+            //        break;
+            //    case 0:
+            //        text = "Today is Sunday";
+            //        break;
+            //    default:
+            //        text = "Looking forward to the Weekend";
+            //}
+
+            //if (currSetIndex==1) {  SaveCurr_AGO(); }
+            //else if (currSetIndex == 1) { SaveCurr_CL(); }
+
+            // }, false);
+        })
+
+
+
+
+
+
+        //// API url
+        //const api_url =
+        //    "https://mygfgapi.free.beeceptor.com/my/api/path";
+
+        //// Defining async function
+        //async function getapi(url) {
+
+        //    // Storing response
+        //    const response = await fetch(url);
+
+        //    // Storing data in form of JSON
+        //    var apidata = await response.json();
+        //    console.log(apidata);
+        //    if (response) {
+        //        hideSpinner();
+        //    }
+        //    document.getElementById("data").innerHTML
+        //        = `<h1>${apidata.data}</h1>`;
+        //}
+
+        //// Calling that async function
+        //getapi(api_url);
+
+        // Function to hide the Spinner
+        //function hideSpinner() {
+        //    document.getElementById('spinner_NVP')
+        //        .style.display = 'none';
+        //}
+
+
+
+
+    </script>
+
+
+    <!-- AGO no ADD, no DEL, only EDIT -->
+    <script>
+        var AddEditCurrData_AGO = function (currId, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+              //  alert('addORedit...');
+               // alert('addORedit.. ' + currId )  //+ ' __indx: ' + currSetIndex);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+           // var currParBodyId = null;
+
+                if (currId < 0) currId = null;
+               //  public IActionResult AddOrEdit_AGO(int id = 0, int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null)
+
+                var url = "@Url.Action("AddOrEdit_AGO", "ClientSetupParameters")?id=" + currId +
+                                            "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                     //   alert(url)  // if (currId > 0) { document.querySelector('#btnSaveChanges_AGO').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges_AGO').html('Update'); }
+                        $('#divPopModal_AddEdit').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+
+                        //alert('loading modal...')
+                        $('#divPopModal_AddEdit .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit").modal('show');
+                        });
+
+        };
+
+        var ReloadCurrPage_AGO = function (currSetIndex, currSubSetIndex) {
+                // public ActionResult Index(int? setIndex = 0, int? subSetIndex = 0)
+                window.location.href = '@Url.Action("Index", "ClientSetupParameters")?setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+        }
+
+        //$(document).on('click', '#btnSaveChanges_AGO_AGO', function (e) {
+        //    e.preventDefault();
+
+        //   // alert('click..');
+        //    const form = document.getElementById("currForm_AGO");
+        //    //alert('val 4 .. ' + form.checkValidity())
+
+        //    if (form.checkValidity() === true) {
+
+        //        SaveCurr_AGO(); //currSetIndex, currSubSetIndex);
+        //    }
+        //    else {
+        //       // alert('val 5')
+        //        event.preventDefault();
+        //        event.stopPropagation();
+
+        //        form.classList.add('was-validated');
+        //    }
+
+
+        //   // }, false);
+        //})
+
+        var SaveCurr_AGO = function () { // (currSetIndex, currSubSetIndex) {
+            // alert('save... ');
+
+            const form = document.getElementById("currForm_AGO");
+            //alert('val 4 .. ' + form.checkValidity())
+
+            if (!form.checkValidity() === true) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+            else {
+                var currFormData = new FormData($("#currForm_AGO").get(0));
+                // var currFormData = $("#currForm_AGO").serialize();
+              //  alert('save... submitting...');
+
+                $.ajax({
+                    type: 'POST',
+                    // data: formdata,
+                    // processData: false,
+
+                    url: '@Url.Action("AddOrEdit_AGO", "ClientSetupParameters")',
+
+                   // url: "/ClientSetupParameters/AddOrEdit_AGO",
+                    data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                    //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+
+                        if (res.taskSuccess == true) {
+                          //  var currChuBodyId = $("#_hdnChuBodyId").val(); // var currDenomId = $("#_hdnAppGloOwnId").val();  // var currId = $("#_hdnCurrId_AGO").val();
+                         //   alert(res.userMess)
+                            DisplaySuccessInfo(res.userMess); //(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/ClientSetupParameters/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+
+                            // document.querySelector('#btnSaveChanges_AGO').innerHTML = 'Update';  // $('#btnSaveChanges_AGO').html('Update'); //var AddEditCurrData_AGO = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+                            var _desc = "'[New] Denomination (Church)'";
+                            if (res.resetNew == true) {
+                                AddEditCurrData_AGO(0, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                            }
+                            else {
+                                //$("#btnSaveChanges_AGO").prop();
+                               // alert('closing...')
+                                $("#divPopModal_AddEdit .close").click();
+                            }
+
+                            //window.location.href = '/ClientSetupParameters/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        }
+
+                        else //if (res.taskSuccess == false)
+                        {
+                            $.alert({
+                                title: 'Oops!',
+                                content: res.userMess,
+                                type: 'red',
+                                typeAnimated: true,
+                            });
+
+                           // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                            // $("#lblUserMessage").text(msg);
+                        }
+                    }
+                })
+            }
+        }
+
+    </script>
+
+
+    <!-- CB no ADD, no DEL, only EDIT -->
+    <script>
+        var AddEditCurrData_CB = function (currId, currDenomId, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+            //     alert('addORedit...');
+            //alert('addORedit.. ' + currId + ' ..currDenomId: ' + currDenomId + ' .._pageIndex: ' + _pageIndex + ' .._strItemName: ' + _strItemName);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+
+           // var currParBodyId = null;
+
+            if (currId < 0) currId = null;
+            if (currDenomId < 0) currDenomId = null;
+
+            //if (currChuBodyId < 0) currChuBodyId = null;
+            // if (currSetIndex < 0) currSetIndex = null;
+            //if (currSubSetIndex < 0) currSubSetIndex = null;
+
+               //  public IActionResult AddOrEdit_CB(int id = 0, int? oAppGloOwnId = null, int? oAGOId_Logged = null, int? oCBId_Logged = null, int? oUserId_Logged = null)
+
+                var url = "@Url.Action("AddOrEdit_CB", "ClientSetupParameters")?id=" + currId + "&oAppGloOwnId=" + currDenomId + //"&pageIndex=" + _pageIndex +
+                                            "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                     //   alert(url)
+
+                       // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                      //  alert(url)
+
+                        $('#divPopModal_AddEdit').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+
+                        //alert('loading modal...')
+                        //$("#_setIndex").val(setIndex);
+                        //$('#divModalBody_AddEdit').load(url, function () {
+                        $('#divPopModal_AddEdit .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit .modal-title').html(_strItemName);
+                           // alert('load level..')
+                            $('#_ChurchLevelId').change();
+
+                            $("#divPopModal_AddEdit").modal('show');
+                        });
+
+        };
+
+        var ReloadCurrPage_CB = function (currSetIndex, currSubSetIndex) {
+                // public ActionResult Index(int? setIndex = 0, int? subSetIndex = 0)
+                window.location.href = '@Url.Action("Index", "ClientSetupParameters")?setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+        }
+
+        //$(document).on('click', '#btnSaveChanges', function (e) {
+        //    e.preventDefault();
+
+        //    alert('click..');
+
+        //    const form = document.getElementById("currForm_CB");
+
+        //    if (form.checkValidity() === true) {
+
+        //        SaveCurr_CB(); //currSetIndex, currSubSetIndex);
+        //    }
+        //    else {
+        //       // alert('val 5')+*
+
+        //        event.preventDefault();
+        //        event.stopPropagation();
+
+        //        form.classList.add('was-validated');
+        //    }
+
+
+        //   // }, false);
+        //})
+
+        var SaveCurr_CB = function () { // (currSetIndex, currSubSetIndex) {
+            alert('saving CL... ');
+
+            var currFormData = new FormData($("#currForm_CB").get(0));
+            // var currFormData = $("#currForm_CB").serialize();
+
+
+            alert('save... submitting...');
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEdit_CB", "ClientSetupParameters")',
+
+               // url: "/ClientSetupParameters/AddOrEdit_CB",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                      //  var currChuBodyId = $("#_hdnChuBodyId").val();
+
+                        //var currId = $("#_hdnCurrId_CB").val();
+                      //  var _pageIndex = $("#_hdnPageIndex").val();
+                        //alert("saving currId: " + currId + " ...page: " + res.pageIndex);
+
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+
+                        var _desc = "'[New] Church unit'";
+                        if (res.resetNew == true) {
+                            //DisplaySuccessInfo = function (msg, currDenomId, pageIndex, reload = false, newItemId = null, _hdrdesc='')
+                            DisplaySuccessInfo(res.userMess, currDenomId, res.pageIndex, false, 0, _desc);
+
+                            // AddEditCurrData_CB = function (currId, currDenomId, _pageIndex, _strItemName)
+                           // AddEditCurrData_CB(0, currDenomId, _pageIndex, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                        }
+                            DisplaySuccessInfo(res.userMess, currDenomId, 1, true);
+                        else {
+                        967\=-09876543ew2q``qAz 0.
+
+                        .0
+?>mASQ!`42890-\/`
+                            //$("#btnSaveChanges").prop();
+                           // alert('closing...')
+
+                           // $("#divPopModal_AddEdit .close").click();
+                        }
+
+                        //window.location.href = '/ClientSetupParameters/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                      //  alert('err: ' + res.userMess);
+
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+    </script>
+
+
+
+    <!-- NVP no ADD, no DEL, only EDIT -->
+    <script>
+        $(function () {
+            $("#tabData_NVP").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                //"columnDefs": [{ "searching": false, "ordering": false, "targets": [5] }],
+                "columnDefs": [{
+                    "targets": [5],
+                    "orderable": false,
+                }]
+            });
+            //$('#tabData_NVP').DataTable({
+            //    "paging": true,
+            //    "lengthChange": false,
+            //    "searching": false,
+            //    "ordering": true,
+            //    "info": true,
+            //    "autoWidth": false,
+            //    "responsive": true,
+            //});
+        });
+
+        var AddEditCurrData_NVP = function (currId, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+              //  alert('addORedit...');
+               // alert('addORedit.. ' + currId )  //+ ' __indx: ' + currSetIndex);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+           // var currParBodyId = null;
+
+                if (currId < 0) currId = null;
+               //   public IActionResult AddOrEdit_NVP(int id = 0, int? oAppGloOwnId = null, int? oChurchBodyId = null, int? oUserId = null)
+
+                var url = "@Url.Action("AddOrEdit_NVP", "ClientSetupParameters")?id=" + currId +
+                                            "&oAppGloOwnId=" + currAGOId_Logged + "&oChurchBodyId=" + currCBId_Logged + "&oUserId=" + currUserId_Logged;
+
+                     //   alert(url)  // if (currId > 0) { document.querySelector('#btnSaveChanges_NVP').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges_NVP').html('Update'); }
+                        $('#divPopModal_AddEdit').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+
+                        //alert('loading modal...')
+                        $('#divPopModal_AddEdit .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit").modal('show');
+                        });
+
+        };
+
+        var ReloadCurrPage_NVP = function (currSetIndex = 6, currSubSetIndex = 1) {
+
+                // public ActionResult Index(int? setIndex = 0, int? subSetIndex = 0)
+            $("#spinner_NVP").show();
+              //  window.location.href = '@Url.Action("Index", "ClientSetupParameters")?setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+            // public ActionResult Index(int? setIndex = 0, int? subSetIndex = 0, bool loadSectionOnly = false)
+            var url = '@Url.Action("Index", "ClientSetupParameters")?setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&loadSectionOnly=true';
+           // $('#_tabData_NVP').load(url);
+
+           // var $sectionData = $("#tab-section-data-NVP");
+           //// var url=$productList.data("url");
+            // alert(url);
+           // $sectionData.load(url);
+
+            //$(window).scroll(function () {
+            //    sessionStorage.scrollTop = $(this).scrollTop();
+            //});
+
+            $('#tabSectionData_NVP').load(url, function () {
+
+                $("#tabData_NVP").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                    //"columnDefs": [{ "searching": false, "ordering": false, "targets": [5] }],
+                    "columnDefs": [{
+                        "targets": [5],
+                        "orderable": false,
+                    }]
+                });
+
+                //if (sessionStorage.scrollTop != "undefined") {
+                //    $(window).scrollTop(sessionStorage.scrollTop);
+                //}
+
+                //$('#divPopModal_AddEdit .modal-title').html(_strItemName);
+                // $("#divPopModal_AddEdit").modal('show');
+            });
+
+            //$.ajax({
+            //    url: url,
+            //    type:get,
+            //    success: function (data) {
+            //        alert('done')
+            //        $("#tabSectionData_NVP").html(data);
+            //    },
+            //    error: function () {
+            //        alert("Error occured while loading data");
+            //    }
+            //})
+
+            $("#spinner_NVP").hide();
+        }
+
+        //$(document).on('click', '#btnSaveChanges_NVP', function (e) {
+        //    e.preventDefault();
+
+        //   // alert('click..');
+        //    const form = document.getElementById("currForm_NVP");
+        //    //alert('val 4 .. ' + form.checkValidity())
+
+        //    if (form.checkValidity() === true) {
+
+        //        SaveCurr_NVP(); //currSetIndex, currSubSetIndex);
+        //    }
+        //    else {
+        //       // alert('val 5')
+        //        event.preventDefault();
+        //        event.stopPropagation();
+
+        //        form.classList.add('was-validated');
+        //    }
+
+
+        //   // }, false);
+        //})
+
+        var SaveCurr_NVP = function () { // (currSetIndex, currSubSetIndex) {
+             //alert('save... ');
+
+            const form = document.getElementById("currForm_NVP");
+            //alert('val 4 .. ' + form.checkValidity())
+
+            if (!form.checkValidity() === true) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+            else {
+                var currFormData = new FormData($("#currForm_NVP").get(0));
+                // var currFormData = $("#currForm_NVP").serialize();
+              //  alert('save... submitting...');
+
+                $.ajax({
+                    type: 'POST',
+                    // data: formdata,
+                    // processData: false,
+
+                    url: '@Url.Action("AddOrEdit_NVP", "ClientSetupParameters")',
+
+                   // url: "/ClientSetupParameters/AddOrEdit_NVP",
+                    data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                    //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+
+                        if (res.taskSuccess == true) {
+                          //  var currChuBodyId = $("#_hdnChuBodyId").val(); // var currDenomId = $("#_hdnAppGloOwnId").val();  // var currId = $("#_hdnCurrId_NVP").val();
+                         //   alert(res.userMess)
+                            DisplaySuccessInfo(res.userMess); //(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/ClientSetupParameters/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                            ReloadCurrPage_NVP(6, 1);   //via AJAX...
+
+                            // document.querySelector('#btnSaveChanges_NVP').innerHTML = 'Update';  // $('#btnSaveChanges_NVP').html('Update'); //var AddEditCurrData_NVP = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+                            var _desc = "'[New] Lookup Parameter'";
+                            if (res.resetNew == true) {
+                                AddEditCurrData_NVP(0, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                            }
+                            else {
+                                //$("#btnSaveChanges_NVP").prop();
+                               // alert('closing...')
+                                $("#divPopModal_AddEdit .close").click();
+                            }
+
+                            //window.location.href = '/ClientSetupParameters/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        }
+
+                        else //if (res.taskSuccess == false)
+                        {
+                            $.alert({
+                                title: 'Oops!',
+                                content: res.userMess,
+                                type: 'red',
+                                typeAnimated: true,
+                            });
+
+                           // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                            // $("#lblUserMessage").text(msg);
+                        }
+                    }
+                })
+            }
+        }
+
+        var DeleteCurrData_NVP = function (currId, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+       // alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + ' .. forceDeleteConfirm: ' + forceDeleteConfirm);
+
+            //  if (delConfirm == null) { delConfirm = false; }
+
+            //alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+           // var oAppGloId = null;
+
+       // var currUserId = $("#_oUserId_Logged").val();
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+        var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+        var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+
+            // var currDenomId = $("#_hdnAppGloOwnId").val();
+       // alert('currUserId: ' + currUserId)
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified lookup parameter' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_NVP", "ClientSetupParameters")',
+                               // url: "/ClientSetupParameters/Delete_NVP",
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                // public IActionResult Delete_NVP(int? oAppGloOwnId, int? oChurchBodyId, int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                                data: { oAppGloOwnId: currAGOId_Logged, oChurchBodyId: currCBId_Logged, loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_NVP(6, 1);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_NVP(currId, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+
+    <!-- CTRY no ADD, no DEL, only EDIT -->
+    <script>
+
+        $(function () { 
+            $("#tabData_CTRY").DataTable({
+                "responsive": true,
+                "autoWidth": false, 
+                "columnDefs": [{
+                    "targets": [3, 4, 5],
+                    "orderable": false,
+                }]
+            }); 
+            $("#tabData_CTRY_BLK").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "columnDefs": [{
+                    "targets": [7, 8, 9],
+                    "orderable": false,-+*
+                }]
+            });
+        });
+
+
+        //LoadTable_CTRY();
+
+        //var LoadTable_CTRY = function () {        
+        //    $("#tabData_CTRY").DataTable({
+        //        "responsive": true,
+        //        "autoWidth": false,
+        //        "columnDefs": [{
+        //            "targets": [4],
+        //            "orderable": false,
+        //        }]
+        //    });
+        //}
+
+        var AddEditCurrData_CTRY = function (currId, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+              //  alert('addORedit...');
+               // alert('addORedit.. ' + currId )  //+ ' __indx: ' + currSetIndex);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+           // var currParBodyId = null;
+
+                if (currId < 0) currId = null;
+               //   public IActionResult AddOrEdit_CTRY(int id = 0, int? oAppGloOwnId = null, int? oChurchBodyId = null, int? oUserId = null)
+
+                var url = "@Url.Action("AddOrEdit_CTRY", "ClientSetupParameters")?id=" + currId +
+                                            "&oAppGloOwnId=" + currAGOId_Logged + "&oChurchBodyId=" + currCBId_Logged + "&oUserId=" + currUserId_Logged;
+
+                     //   alert(url)  // if (currId > 0) { document.querySelector('#btnSaveChanges_CTRY').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges_CTRY').html('Update'); }
+                        $('#divPopModal_AddEdit').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+                        //alert('loading modal...')
+                        $('#divPopModal_AddEdit .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit").modal('show');
+                        });
+
+        };
+
+        var ReloadCurrPage_CTRY = function (currSetIndex = 7, currSubSetIndex = 1, currPageIndex = 1, currFilterIndex = 1, currLoadSectionOnly = true) { 
+            // alert('currSetIndex: ' + currSetIndex)
+            //  public ActionResult Index(int? setIndex = 0, int? subSetIndex = 0, bool loadSectionOnly = false, int filterIndex = 1, int pageIndex = 1) 
+            var url = '@Url.Action("Index", "ClientSetupParameters")?setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&loadSectionOnly=' + currLoadSectionOnly + '&filterIndex=' + currFilterIndex + '&pageIndex=' + currPageIndex;
+
+            $('#tabSectionData_CTRY').load(url, function () {
+                $(function () {
+                    $("#tabData_CTRY").DataTable({
+                        "responsive": true,
+                        "autoWidth": false,
+                        "columnDefs": [{
+                            "targets": [3, 4, 5],
+                            "orderable": false,
+                        }]
+                    });
+                    $("#tabData_CTRY_BLK").DataTable({
+                        "responsive": true,
+                        "autoWidth": false,
+                        "columnDefs": [{
+                            "targets": [7, 8, 9],
+                            "orderable": false,
+                        }]
+                    });
+                                       
+                });
+            }); 
+
+            //if (currPageIndex != 1) {
+            //    $('#tabSectionMod_CTRY').hide();
+            //}
+        }
+
+          $(document).on('click', '#btnSaveChanges_CTRY_BLK', function (e) {
+            e.preventDefault();
+
+            alert('click..');
+              SaveCurr_CTRY();
+        })
+
+
+        var SaveCurr_CTRY = function () { // (currSetIndex, currSubSetIndex) {
+             alert('save... ');
+
+            const form = document.getElementById("currForm_CTRY");
+            //alert('val 4 .. ' + form.checkValidity())
+
+            alert('saving... ');
+
+            if (!form.checkValidity() === true) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+            else {
+                var currFormData = new FormData($("#currForm_CTRY").get(0));
+                // var currFormData = $("#currForm_CTRY").serialize();
+              //  alert('save... submitting...');
+
+                $.ajax({
+                    type: 'POST',
+                    // data: formdata,
+                    // processData: false,
+
+                    url: '@Url.Action("AddOrEdit_CTRY", "ClientSetupParameters")',
+
+                   // url: "/ClientSetupParameters/AddOrEdit_CTRY",
+                    data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                    //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+
+                        if (res.taskSuccess == true) {
+                            DisplaySuccessInfo(res.userMess); //(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/ClientSetupParameters/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                            ReloadCurrPage_CTRY(7, 1, 2);   //via AJAX...
+                            var _desc = "'[New] Country'";
+
+                            if (res.resetNew == true) {
+                                AddEditCurrData_CTRY(0, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                            }
+                            else {
+                                $("#divPopModal_AddEdit .close").click();
+                            }
+
+                            //window.location.href = '/ClientSetupParameters/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        }
+
+                        else //if (res.taskSuccess == false)
+                        {
+                            $.alert({
+                                title: 'Oops!',
+                                content: res.userMess,
+                                type: 'red',
+                                typeAnimated: true,
+                            });
+                        }
+                    }
+                })
+            }
+        }
+
+        var DeleteCurrData_CTRY = function (currId, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+        var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+        var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified country' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_CTRY", "ClientSetupParameters")',
+                               // url: "/ClientSetupParameters/Delete_CTRY",
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                // public IActionResult Delete_CTRY(int? oAppGloOwnId, int? oChurchBodyId, int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                                data: { oAppGloOwnId: currAGOId_Logged, oChurchBodyId: currCBId_Logged, loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_CTRY(7, 1, 1);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_CTRY(currId, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+
+    <!-- CTRY_RGN no ADD, no DEL, only EDIT -->
+    <script>
+        LoadTable_CTRY_RGN();
+
+        var LoadTable_CTRY_RGN = function (currId, _strItemName) {
+            $("#tabData_CTRY_RGN").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "columnDefs": [{
+                    "targets": [6],
+                    "orderable": false,
+                }]
+            });
+        }
+
+        var AddEditCurrData_CTRY_RGN = function (currId, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+              //  alert('addORedit...');
+               // alert('addORedit.. ' + currId )  //+ ' __indx: ' + currSetIndex);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+           // var currParBodyId = null;
+
+                if (currId < 0) currId = null;
+               //   public IActionResult AddOrEdit_CTRY_RGN(int id = 0, int? oAppGloOwnId = null, int? oChurchBodyId = null, int? oUserId = null)
+
+                var url = "@Url.Action("AddOrEdit_CTRY_RGN", "ClientSetupParameters")?id=" + currId +
+                                            "&oAppGloOwnId=" + currAGOId_Logged + "&oChurchBodyId=" + currCBId_Logged + "&oUserId=" + currUserId_Logged;
+
+                     //   alert(url)  // if (currId > 0) { document.querySelector('#btnSaveChanges_CTRY_RGN').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges_CTRY_RGN').html('Update'); }
+                        $('#divPopModal_AddEdit').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+                        //alert('loading modal...')
+                        $('#divPopModal_AddEdit .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit").modal('show');
+                        });
+
+        };
+
+        var ReloadCurrPage_CTRY_RGN = function (currSetIndex = 7, currSubSetIndex = 3) {
+
+            // public ActionResult Index(int? setIndex = 0, int? subSetIndex = 0, bool loadSectionOnly = false)
+            var url = '@Url.Action("Index", "ClientSetupParameters")?setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&loadSectionOnly=true';
+
+            $('#tabSectionData_CTRY_RGN').load(url, function () {
+
+                LoadTable_CTRY_RGN();
+            });
+
+        }
+
+        var SaveCurr_CTRY_RGN = function () { // (currSetIndex, currSubSetIndex) {
+             //alert('save... ');
+
+            const form = document.getElementById("currForm_CTRY_RGN");
+            //alert('val 4 .. ' + form.checkValidity())
+
+            if (!form.checkValidity() === true) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+            else {
+                var currFormData = new FormData($("#currForm_CTRY_RGN").get(0));
+                // var currFormData = $("#currForm_CTRY_RGN").serialize();
+              //  alert('save... submitting...');
+
+                $.ajax({
+                    type: 'POST',
+                    // data: formdata,
+                    // processData: false,
+
+                    url: '@Url.Action("AddOrEdit_CTRY_RGN", "ClientSetupParameters")',
+
+                   // url: "/ClientSetupParameters/AddOrEdit_CTRY_RGN",
+                    data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                    //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+
+                        if (res.taskSuccess == true) {
+                            DisplaySuccessInfo(res.userMess); //(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/ClientSetupParameters/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                            ReloadCurrPage_CTRY_RGN(7, 3);   //via AJAX...
+                            var _desc = "'[New] Country Region'";
+
+                            if (res.resetNew == true) {
+                                AddEditCurrData_CTRY_RGN(0, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                            }
+                            else {
+                                $("#divPopModal_AddEdit .close").click();
+                            }
+
+                            //window.location.href = '/ClientSetupParameters/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        }
+
+                        else //if (res.taskSuccess == false)
+                        {
+                            $.alert({
+                                title: 'Oops!',
+                                content: res.userMess,
+                                type: 'red',
+                                typeAnimated: true,
+                            });
+                        }
+                    }
+                })
+            }
+        }
+
+        var DeleteCurrData_CTRY_RGN = function (currId, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+        var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+        var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified country region' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_CTRY_RGN", "ClientSetupParameters")',
+                               // url: "/ClientSetupParameters/Delete_CTRY_RGN",
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                // public IActionResult Delete_CTRY_RGN(int? oAppGloOwnId, int? oChurchBodyId, int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                                data: { oAppGloOwnId: currAGOId_Logged, oChurchBodyId: currCBId_Logged, loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_CTRY_RGN(7, 3);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_CTRY_RGN(currId, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+
+    <!-- CURR no ADD, no DEL, only EDIT -->
+    <script>
+        LoadTable_CURR();
+
+        var LoadTable_CURR = function (currId, _strItemName) {
+            $("#tabData_CURR").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "columnDefs": [{
+                    "targets": [7],
+                    "orderable": false,
+                }]
+            });
+        }
+
+        var AddEditCurrData_CURR = function (currId, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+              //  alert('addORedit...');
+               // alert('addORedit.. ' + currId )  //+ ' __indx: ' + currSetIndex);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+           // var currParBodyId = null;
+
+                if (currId < 0) currId = null;
+               //   public IActionResult AddOrEdit_CURR(int id = 0, int? oAppGloOwnId = null, int? oChurchBodyId = null, int? oUserId = null)
+
+                var url = "@Url.Action("AddOrEdit_CURR", "ClientSetupParameters")?id=" + currId +
+                                            "&oAppGloOwnId=" + currAGOId_Logged + "&oChurchBodyId=" + currCBId_Logged + "&oUserId=" + currUserId_Logged;
+
+                     //   alert(url)  // if (currId > 0) { document.querySelector('#btnSaveChanges_CURR').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges_CURR').html('Update'); }
+                        $('#divPopModal_AddEdit').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+                        //alert('loading modal...')
+                        $('#divPopModal_AddEdit .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit").modal('show');
+                        });
+
+        };
+
+        var ReloadCurrPage_CURR = function (currSetIndex = 7, currSubSetIndex = 5) {
+
+            // public ActionResult Index(int? setIndex = 0, int? subSetIndex = 0, bool loadSectionOnly = false)
+            var url = '@Url.Action("Index", "ClientSetupParameters")?setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&loadSectionOnly=true';
+
+            $('#tabSectionData_CURR').load(url, function () {
+
+                LoadTable_CURR();
+            });
+
+        }
+
+        var SaveCurr_CURR = function () { // (currSetIndex, currSubSetIndex) {
+             //alert('save... ');
+
+            const form = document.getElementById("currForm_CURR");
+            //alert('val 4 .. ' + form.checkValidity())
+
+            if (!form.checkValidity() === true) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+            else {
+                var currFormData = new FormData($("#currForm_CURR").get(0));
+                // var currFormData = $("#currForm_CURR").serialize();
+              //  alert('save... submitting...');
+
+                $.ajax({
+                    type: 'POST',
+                    // data: formdata,
+                    // processData: false,
+
+                    url: '@Url.Action("AddOrEdit_CURR", "ClientSetupParameters")',
+
+                   // url: "/ClientSetupParameters/AddOrEdit_CURR",
+                    data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                    //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+
+                        if (res.taskSuccess == true) {
+                            DisplaySuccessInfo(res.userMess); //(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/ClientSetupParameters/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                            ReloadCurrPage_CURR(7, 5);   //via AJAX...
+                            var _desc = "'[New] Currency'";
+
+                            if (res.resetNew == true) {
+                                AddEditCurrData_CURR(0, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                            }
+                            else {
+                                $("#divPopModal_AddEdit .close").click();
+                            }
+
+                            //window.location.href = '/ClientSetupParameters/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        }
+
+                        else //if (res.taskSuccess == false)
+                        {
+                            $.alert({
+                                title: 'Oops!',
+                                content: res.userMess,
+                                type: 'red',
+                                typeAnimated: true,
+                            });
+                        }
+                    }
+                })
+            }
+        }
+
+        var DeleteCurrData_CURR = function (currId, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+        var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+        var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified currency' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_CURR", "ClientSetupParameters")',
+                               // url: "/ClientSetupParameters/Delete_CURR",
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                // public IActionResult Delete_CURR(int? oAppGloOwnId, int? oChurchBodyId, int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                                data: { oAppGloOwnId: currAGOId_Logged, oChurchBodyId: currCBId_Logged, loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_CURR(7, 5);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_CURR(currId, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+}

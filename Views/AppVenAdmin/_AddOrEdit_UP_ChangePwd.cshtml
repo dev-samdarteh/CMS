@@ -1,0 +1,87 @@
+﻿@model RhemaCMS.Models.ViewModels.ResetUserPasswordModel
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center"
+     style="width: 60%; margin: 0px auto 10px auto ; padding:0;  ">
+
+    <form id="currForm_UP" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_UP" class=" form-group bg-transparent mt-0 pl-1 pr-1" >
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oUserProfile.Id" id="_hdnCurrId_UP" />
+        <input type="hidden" asp-for="oUserProfile.ChurchBodyId" id="_hdnChuBodyId" />
+        <input type="hidden" asp-for="oUserProfile.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+        <input type="hidden" asp-for="oUserProfile.ProfileScope" />
+        <input type="hidden" asp-for="oUserProfile.UserScope" />
+        <input type="hidden" asp-for="oUserProfile.IsChurchMember" />
+        @*<input type="hidden" asp-for="oUserProfile.UserId" />*@
+        <input type="hidden" asp-for="oUserProfile.OwnerUserId" />
+
+        @* retain details ... pwd stuff has diff view *@
+        <input type="hidden" asp-for="oUserProfile.ChurchMemberId" />
+        <input type="hidden" asp-for="oUserProfile.ContactInfoId" />
+        <input type="hidden" asp-for="oUserProfile.Email" />
+        <input type="hidden" asp-for="oUserProfile.ProfileScope" />
+        <input type="hidden" asp-for="oUserProfile.UserPhoto" />
+        <input type="hidden" asp-for="oUserProfile.Username" />
+
+        <input type="hidden" asp-for="oUserProfile.Created" />
+        <input type="hidden" asp-for="oUserProfile.LastMod" />
+        <input type="hidden" asp-for="oUserProfile.CreatedByUserId" />
+        <input type="hidden" asp-for="oUserProfile.LastModByUserId" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.subSetIndex" id="_subSetIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oCurrUserId_Logged" id="_oCurrUserId_Logged" />
+
+        <br />
+
+        @if (Model.oUserProfile != null)
+        {
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="ChurchCode" class="control-label"></label>
+                    <input asp-for="ChurchCode" class="form-control text-sm" autocomplete="off" />
+                    <span asp-validation-for="ChurchCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control text-sm" autocomplete="off" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="CurrentPassword" class="control-label"></label>
+                    <input asp-for="CurrentPassword" class="form-control text-sm" autocomplete="off" />
+                    <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="AuthTypeUsed" class="control-label"></label>
+                    <select class="form-control text-sm" asp-for="AuthTypeUsed" asp-items="Model.lkpAuthTypes"></select>
+                    <span asp-validation-for="AuthTypeUsed" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="NewPassword" class="control-label"></label>
+                    <input asp-for="NewPassword" type="password" class="form-control text-sm" autocomplete="off" />
+                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="RepeatPassword" class="control-label"></label>
+                    <input asp-for="RepeatPassword" type="password" class="form-control text-sm" autocomplete="off" />
+                    <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+                </div>
+            </div>
+        }
+
+        <br />
+    </form>
+</div>

@@ -1,0 +1,103 @@
+﻿@model RhemaCMS.Models.ViewModels.TransControlAccountModel
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center"
+     style="width: 80%; margin: 0px auto 10px auto ; padding:0;  ">
+
+    <form id="currForm_AM" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_AM" class=" form-group bg-transparent"
+          style="margin-top:0px; padding-left: 3px; padding-right:3px;   ">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oTransControlAccount.Id" id="_hdnCurrId_AM" />
+        <input type="hidden" asp-for="oTransControlAccount.AccountNo" id="_hdnAccountNo_AM" />
+        <input type="hidden" asp-for="oTransControlAccount.ChurchBodyId" id="_hdnChuBodyId" />
+        <input type="hidden" asp-for="oTransControlAccount.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+
+        <input type="hidden" asp-for="oTransControlAccount.Status" />
+        @*<input type="hidden" asp-for="oTransControlAccount.MainAccountNo " />
+        <input type="hidden" asp-for="oTransControlAccount.SubAccountNo " />*@
+
+        <input type="hidden" asp-for="oTransControlAccount.Created" />
+        <input type="hidden" asp-for="oTransControlAccount.LastMod" />
+        <input type="hidden" asp-for="oTransControlAccount.CreatedByUserId" />
+        <input type="hidden" asp-for="oTransControlAccount.LastModByUserId" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />
+
+        <br />
+        <br />
+        @if (Model.oTransControlAccount != null)
+        {
+            <div class="form-row col-sm">
+                <div class="form-group col-sm-6">
+                    <label asp-for="oTransControlAccount.Id " class="control-label"> Trans. # </label>
+                    @if (Model.oTransControlAccount.Id != 0)
+                    {<input asp-for="oTransControlAccount.Id" class="form-control text-sm" autocomplete="off" disabled /> }
+                    else
+                    { <input value="- NEW -" class="form-control text-sm text-center text-light bg-teal small" autocomplete="off" disabled />}
+                    <span asp-validation-for="oTransControlAccount.Id" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm ">
+                <div class="form-group col-sm">
+                    <label asp-for="oTransControlAccount.TransModuleCode" class="control-label"></label>
+                    <select class="form-control text-sm" asp-for="oTransControlAccount.TransModuleCode" asp-items="Model.lkpTransModules"></select>
+                    <span asp-validation-for="oTransControlAccount.TransModuleCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="vertical-input-group">
+                <div class="input-group">
+                    <input type="text" asp-for="oTransControlAccount.ControlAccountId" class="form-control" id="sao" placeholder="Control Account">
+                </div>
+                <div class="input-group">
+                    <select id="_strAccountTypeCode" class="form-control text-sm" asp-for="strAccountTypeCode" asp-items="Model.lkpAccountTypes"></select> 
+                </div>
+                <div class="input-group">
+                    <select id="_AccountCategoryId" class="form-control text-sm" asp-for="AccountCategoryId" asp-items="Model.lkpAccountCategories"></select>
+                </div>
+                <div class="input-group">
+                    <select id="_ControlAccountId" class="form-control text-sm" asp-for="oTransControlAccount.ControlAccountId" asp-items="Model.lkpGLAccounts"></select>
+                    <span asp-validation-for="oTransControlAccount.ControlAccountId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="oTransControlAccount.ControlAccountId" class="control-label"></label>
+                    <select id="_ControlAccountId" class="form-control text-sm" asp-for="oTransControlAccount.ControlAccountId" asp-items="Model.lkpGLAccounts"></select>
+                    <span asp-validation-for="oTransControlAccount.ControlAccountId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="oTransControlAccount.ContraAccountId" class="control-label"></label>
+                    <select id="_ControlAccountId" class="form-control text-sm" asp-for="oTransControlAccount.ContraAccountId" asp-items="Model.lkpContraGLAccounts"></select>
+                    <span asp-validation-for="oTransControlAccount.ContraAccountId" class="text-danger"></span>
+                </div>
+            </div>
+
+            @*<div class="form-row col-sm" id="_divAccountCategoryId" hidden>
+                <div class="form-group col-sm">
+                    <label asp-for="oTransControlAccount.AccountCategoryId" class="control-label"></label>
+                    <select id="_AccountCategoryId" class="form-control text-sm" asp-for="oTransControlAccount.AccountCategoryId" asp-items="Model.lkpGLAccounts"></select>
+                    <span asp-validation-for="oTransControlAccount.AccountCategoryId" class="text-danger"></span>
+                </div>
+            </div>*@
+            <hr />
+            <div class="form-row col-sm" id="_divStatus">
+                <div class="form-group col-sm">
+                    <label asp-for="oTransControlAccount.Status" class="control-label"></label>
+                    <select id="_Status" class="form-control text-sm" asp-for="oTransControlAccount.Status" asp-items="Model.lkpStatuses"></select>
+                    <span asp-validation-for="oTransControlAccount.Status" class="text-danger"></span>
+                </div>
+            </div>
+        }
+
+        <br />
+    </form>
+</div>

@@ -1,0 +1,78 @@
+﻿@model RhemaCMS.Models.ViewModels.AccountCategoryModel
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center"
+     style="width: 80%; margin: 0px auto 10px auto ; padding:0;  ">
+
+    <form id="currForm_AC" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_AC" class=" form-group bg-transparent"
+          style="margin-top:0px; padding-left: 3px; padding-right:3px;   ">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oAccountCategory.Id" id="_hdnCurrId_AC" />
+        <input type="hidden" asp-for="oAccountCategory.ChurchBodyId" id="_hdnChuBodyId" />
+        <input type="hidden" asp-for="oAccountCategory.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+
+        <input type="hidden" asp-for="oAccountCategory.AccountType" />
+        <input type="hidden" asp-for="oAccountCategory.ReportArea" />
+        <input type="hidden" asp-for="oAccountCategory.BalanceType" />
+        <input type="hidden" asp-for="oAccountCategory.Status" />
+
+        <input type="hidden" asp-for="oAccountCategory.Created" />
+        <input type="hidden" asp-for="oAccountCategory.LastMod" />
+        <input type="hidden" asp-for="oAccountCategory.CreatedByUserId" />
+        <input type="hidden" asp-for="oAccountCategory.LastModByUserId" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />
+
+
+        <br />
+        <br />
+        @if (Model.oAccountCategory != null)
+        {
+            <div class="form-row col-sm">
+                <div class="form-group col-sm-6">
+                    <label asp-for="oAccountCategory.Id " class="control-label"> Trans. # </label>
+                    @if (Model.oAccountCategory.Id != 0)
+                    {<input asp-for="oAccountCategory.Id" class="form-control text-sm" autocomplete="off" disabled /> }
+                    else
+                    { <input value="- NEW -" class="form-control text-sm text-center text-light bg-teal small" autocomplete="off" disabled />}
+                    <span asp-validation-for="oAccountCategory.Id" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="oAccountCategory.CategoryDesc " class="control-label"></label>
+                    <input asp-for="oAccountCategory.CategoryDesc" class="form-control text-sm" />
+                    <span asp-validation-for="oAccountCategory.CategoryDesc" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    @*<label asp-for="strAccountType" class="form-control">@Model.strAccountType</label>*@
+                    <input asp-for="strAccountType" class="form-control text-sm" disabled/>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    @*<label asp-for="strReportArea " class="form-control">@Model.strReportArea</label>*@
+                    <input asp-for="strReportArea" class="form-control text-sm" disabled />
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    @*<label asp-for="strBalanceType" class="form-control">@Model.strBalanceType</label>*@
+                    <input asp-for="strBalanceType" class="form-control text-sm" disabled />
+                </div>
+                <div class="form-group col-sm">
+                    @*<label asp-for="strStatus" class="form-control">@Model.strStatus</label>*@
+                    <input asp-for="strStatus" class="form-control text-sm" disabled />
+                </div>
+            </div>
+        }
+
+        <br />
+    </form>
+</div>

@@ -1,0 +1,187 @@
+﻿@model RhemaCMS.Models.ViewModels.LogOnVM
+
+@*@model ChurchProData.Models.Authentication.UserProfile*@
+@*@model IEnumerable<ChurchProData.Models.Authentication.UserProfile>
+
+    @using GridMvc.Html*@
+
+@{
+    ViewData["Title"] = "RHEMA-CMS";
+    Layout = "_LayoutLogin";
+
+    var strIsValid = "F";
+    if (Model != null) { strIsValid = Model.IsValidated; }
+
+
+}
+
+
+
+<div class="form-group justify-content-center mt-2 " style=" width:400px;  margin: 75px auto auto auto; vertical-align: middle ">
+    <form asp-action="LoginUserAcc" asp-route-strIsValidated="@strIsValid">
+        @*class="w3ls-login box box--big ">*@
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger text-sm text-light p-1 mb-1" role="alert">
+        </div>
+
+        <div class="card shadow-sm small p-5" style="color: darkgrey;  height:auto; min-height: 400px; ">
+
+            <input type="hidden" asp-for="IsValidated" id="_basicVerif" />
+
+            @{
+                var strSalutation = "";
+                if (string.IsNullOrEmpty(strSalutation))
+                {
+                    var ts = DateTime.Now.TimeOfDay;
+                    if (ts.Hours >= 0 && ts.Hours < 12) { strSalutation = "Good morning"; }
+                    else if (ts.Hours <= 16) { strSalutation = "Good afternoon"; }
+                    else if (ts.Hours < 24) { strSalutation = "Good evening"; }
+                }
+
+                <h5 class="text-center pb-1" style="
+                                        font-family:Verdana, sans-serif, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva">
+                    <span style="margin:auto; color: darkcyan ;">
+                        @strSalutation.
+                    </span>
+                </h5>
+
+
+                <hr class="w-100" style="border: 1px solid grey" /> @*<i class="fa fa-key fa-lg" style="font-size:30px; margin: 0px auto 0px auto ; padding:5px; color: whitesmoke ; "></i>*@
+
+                <br /><br />
+
+                <div class="alert alert-info" role="alert">
+                    @{
+                        var desc = @ViewBag.strAppName + ": Setting up system... Please wait!";
+                    }
+
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                </div>
+
+
+                <br /><br /> 
+            }
+
+            <hr class="w-50" style="border: 1px solid grey" />
+            @{
+                if (ViewBag.VerificationCodeEnabled == true)
+                {
+                    <div style=" margin:auto; font-family:Verdana, Geneva, Tahoma, sans-serif;">
+                        <button asp-controller="UserLogin" asp-action="LoginUserAcc" asp-route-navBack="true" asp-route-strIsValidated="@Model.IsValidated" class="btn btn-link btn-lg " style="position:absolute; left:0; top:0">
+                            <i class="fas fa-arrow-left fa-sm" style="color: #52b4d9"></i>
+                        </button>
+
+                        <br />
+
+                        <div class="panel panel-info" style="border-bottom: 3px solid #52b4d9; text-align:center ">
+                            @*<i class="fa fa-user fa-lg" style="color: grey"></i>*@
+                            <h5 style="color: #52b4d9"> Hi, @Model.strLogUserDesc</h5>
+                        </div>
+
+                        <br />
+
+                        @* <div class="breadcrumb breadcrumb-item  shadow-sm bg-light " style=" left: auto; right: auto; background-color:lightgrey; min-height:50px">
+                            <i class="fas fa-user fa-sm" style="color: grey"></i>
+                            <span> </span>
+                        </div>
+                      <a class="navbar-brand mr-1" asp-controller="UserLogin" asp-action="LoginUserAcc">
+                        <h3>RHEMACLOUD</h3>
+                    </a>*@
+
+                        <br />
+                        <br />
+                        <h6 style="text-align:center; color:dimgrey ; font-weight:bold">Please authenticate...</h6>
+                        <h6 style="text-align:center; color:dimgrey ">
+                            Enter 8-digit verification code sent via email /sms:
+                        </h6>
+                        <br />
+
+
+                        @*<div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color:#52b4d9 ; border: 1px" id="basic-addon1"><i class="fa fa-key fa-lg" style="color: whitesmoke; width: 25px" aria-hidden="true"></i></span>
+                        </div>
+                        <input asp-for="VerificationCode" class="form-control" type="text" placeholder="Enter verification code" aria-label="Username" aria-describedby="basic-addon1"
+                               style=" color :black  ; font-size:small; font-family:Verdana, Geneva, Tahoma, sans-serif; border: 1px solid #52b4d9 ">
+
+                        <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="background-color: lightgrey ; border: 1px solid lightgrey" id="basic-addon1"><i class="fa fa-key fa-lg" style="color: whitesmoke; width: 25px" aria-hidden="true"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Enter verification code" aria-label="Search" aria-describedby="basic-addon2"
+                               style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
+
+                        <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                    </div>*@
+
+                        <input asp-for="VerificationCode" type="text" autocomplete="off" class="form-control" placeholder="verification code" aria-label="" aria-describedby="basic-addon2"
+                               style=" text-align:center">
+                        <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                        <br />
+                        <br />
+
+                        @*<div class="agile-field-txt col-sm">
+                        <input asp-for="VerificationCode" class="form-control" type="text" placeholder="Verification code" required="" style="background-color:white ; color :black  ; font-size:small;font-family:Verdana, Geneva, Tahoma, sans-serif" />
+                        <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                    </div>*@
+
+                        <br />
+                        <br />
+
+                        <div class="panel panel-info" style="bottom:0; border: 0px solid #52b4d9; text-align: center">
+                            @*<i class="fa fa-location-arrow fa-lg" style="color: grey"></i>*@
+                            <input type="submit" value=" Login" class="btn btn-outline-info" style="font-weight:bold; width: 150px " />  @*position:absolute; bottom:2px;*@
+
+                            @*<a asp-controller="UserLogin" asp-action="LoginUserAcc" class="btn btn-outline-info" style="font-weight:bold; width: 150px ">
+                            Login &nbsp; <i class="fas fa-arrow-right fa-sm"></i>
+                        </a>*@
+                        </div>
+
+
+
+                        @*<div class="container">
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">Line 1</li>
+                                <li class="list-group-item">Line 2</li>
+                            </ul>
+                        </div>
+                    </div>*@
+                    </div>
+                }
+            }
+        </div>
+    </form>
+
+
+
+
+    @if (ViewBag.VerificationCodeEnabled == false)
+    {
+        <div class="jumbotron-fluid text-center pb-2 pt-1 text-white text-sm ">
+            <br />
+            <div class="">
+                <p class="text-center text-sm " style="bottom: 0px; left: auto; right: auto; "> Forgot Password? <a href="#"> Reset </a> | No account yet? <a href="#"> Sign Up Now</a>  </p>
+                <br />
+                <p style="margin-bottom:-5px; "> Need Help ? </p>
+                <hr style="margin-left:auto; margin-right: auto; width:300px; border-bottom:1px inset white " />
+            </div>
+            <p> You can <a href="#">Live Chat</a> 24/7 Or Raise a ticket via our <a href="#">Call Centre</a>  </p>
+            <p> Call our Help Desk on +233-30-2458710. Fax: +233-30-6625335. <span style="color: lightcyan"> Monday - Friday including Public holidays</span></p>
+            <p> Visit <a target="_blank" href="https://rhemasystems.com/">www.rhema-systems.com</a></p>
+        </div>
+    }
+
+</div>
+
+
+@section Scripts {
+    @*script for show password*@
+   
+
+}
+

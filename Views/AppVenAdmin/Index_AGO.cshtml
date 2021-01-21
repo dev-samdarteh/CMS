@@ -1,0 +1,766 @@
+﻿
+@model RhemaCMS.Models.ViewModels.MSTRAppGlobalOwnerModel 
+
+@{
+    /// headers
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Denominations (Churches)";
+    ///
+    ViewData["Title"] = @_pageTitle;
+    //ViewData["Title"] = Model.strAppName + " - Denominations (Churches)";
+    Layout = "_Layout_sa";
+}
+
+
+    <body id="page-top" class="w-100">
+        @*@{
+            var _oCBId = -1; if (Model.oChurchBodyId != null) { _oCBId = (int)Model.oChurchBodyId; }
+            var _oAGOId = -1; if (Model.oAppGlolOwnId != null) { _oAGOId = (int)Model.oAppGlolOwnId; };
+        }*@
+
+        @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />*@
+
+
+        @*<input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+        <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+        <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />*@
+
+        <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oSubSetIndex" data-value="@Model.subSetIndex" />
+
+        @*<input type="hidden" id="_oChurchBody_Logged" data-value="@Model.oChurchBody_Logged" />*@
+        <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+        <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+        @*<input type="hidden" id="_pageIndex" data-value="@Model.pageIndex" />*@
+        <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+
+
+
+        <div class="card bg-gradient-light">
+            <div class="card-header border-bottom">
+                <h3 class="card-title text-primary">
+                    <i class="fas fa-th mr-1"></i>
+                    @Model.strCurrTask
+                </h3>
+                <div class="card-tools">
+                    @*<ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index_sa">Home</a></li>
+                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                    </ol>*@
+                    <button type="button" class="btn btn-sm bg-light" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm bg-danger text-light" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="wrapper">
+                    @*<div class="content-header pb-0">
+                        <div class="container-fluid pb-0">
+                            <div class="row mb-0">
+                                <div class="col-sm-6">
+                                    <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right">
+                                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                    @*@if (Model.setIndex == 1)
+                    {
+                        //var _strDesc = "'" + (Model.subSetIndex == 1 ? "Faith Stream" : "Faith Category") + "'";*@
+
+                    <table id="tbId_AppGlobalOwn" class="table table-sm table-bordered table-striped table-responsive-sm table-hover p-1" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="pl-1" style="vertical-align: middle">
+                                    Denomination
+                                </th>
+                                <th style="vertical-align: middle">
+                                    Faith stream (category)
+                                </th>
+                                <th style="vertical-align: middle">
+                                    Country
+                                </th>
+                                <th style="vertical-align: middle">
+                                    Total levels
+                                </th>
+                                <th style="vertical-align: middle">
+                                    Congregations
+                                </th>
+                                <th style="vertical-align: middle">
+                                    Status
+                                </th>
+                                <th width="100px" style="vertical-align: middle; text-align:center">
+                                    <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_AGO" data-backdrop="static" data-keyboard="false">
+                                        <i class="fa fa-refresh fa-sm text-success"></i>
+                                    </a>
+                                    <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                       onclick="AddEditCurrData_AGO(0, '[New] Faith Stream')">
+                                        <i class="fa fa-plus fa-sm fa-primary"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.lsAppGlobalOwnModels)
+                            {
+                                var strDesc = "'" + item.oAppGlobalOwn.OwnerName + "'";
+                                <tr>
+                                    <td style="vertical-align: middle">
+                                        &nbsp; @item.oAppGlobalOwn.OwnerName
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.strFaithCategory)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.strCountry)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalChurchLevels)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalCongregations)
+                                    </td>
+                                    <td>
+                                        @if (item.oAppGlobalOwn.Status == "A")
+                                            {<span class="badge badge-success">@Html.DisplayFor(modelItem => item.strStatus)</span> }
+                                        else
+                                            { <span class="badge badge-secondary">@Html.DisplayFor(modelItem => item.strStatus)</span>}
+                                    </td>
+                                    <td style=" vertical-align: middle ; text-align:center">
+                                        <div class="btn-group dropright">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v fa-sm"></i>
+                                            </button>
+                                            <div class="dropdown-menu p-1">
+                                                <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                   onclick="AddEditCurrData_AGO(@item.oAppGlobalOwn.Id, @strDesc)">
+                                                    <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                </a>
+                                                <a href="#" class="btn btn-light btn-sm text-danger small"
+                                                   onclick="DeleteCurrData_AGO(@item.oAppGlobalOwn.Id, false, '')">
+                                                    <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete 
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @*}*@
+                    <!-- /.content-wrapper -->
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center; display:none" id="divLoader">
+            <img src="~/css/images/load.gif" width="100" />
+        </div>
+
+        <!-- /#wrapper -->
+        <!-- Scroll to Top Button-->
+        @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+
+
+        <div id="loaderr">
+
+        </div>
+
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="_modalLabel">Logout!</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"> Logout to end your current session. Sure?</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-teal text-light">
+                        <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                    </div>
+                    <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                        <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                        <button id="btnSaveChanges" type="submit" class="btn btn-outline-primary save-data font-weight-bold"><i class="fa fa-database fa-sm"></i> Save changes </button>
+
+                        @*<button id="btnSaveChanges" class="btn btn-primary" type="submit" >Submit form</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal-->
+        <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+            <div class="modal-dialog modal-sm bg-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h5 style="color: white; font-weight:bold"> Done! </h5>
+                    </div>
+                    <div class="modal-body bg-white" style="align-items:center">
+                        <label id="lblUserMessage" class="text-sm font-weight-normal text-center"></label>
+                    </div>
+
+                    <div class="modal-footer bg-white">
+                        <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*<partial name="_CookieConsentPartial" />   *@
+
+
+    </body>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+
+        //$(document).on('click', '#btnSaveChanges', function (e) {
+        //    validateForm_AGO();
+        //});
+
+        //function validateForm_AGO() {
+
+        //    'use strict';
+        //    alert('val 1')
+        //   // window.addEventListener('load', function () {
+        //      //  alert('val 2')
+        //        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        //        var forms = document.getElementsByClassName('needs-validation');
+        //        alert('val 3')
+        //        // Loop over them and prevent submission
+        //    var validation = Array.prototype.filter.call(forms, function (form) {
+        //        alert('val 3')
+        //            form.addEventListener('submit', function (event) {
+        //                alert('val 4')
+        //                if (form.checkValidity() === false) {
+        //                    alert('val 5')
+        //                    event.preventDefault();
+        //                    event.stopPropagation();
+        //                }
+        //                form.classList.add('was-validated');
+        //            }, false);
+        //        });
+
+        //    alert('done! submitting...')
+
+        //   // }, false);
+        //}
+
+
+
+        //$(document).on('submit', '#currForm_AGO', function (e) {
+        //    alert('val 1c')
+        //   // validateForm_AGO();
+
+        //    const form = document.getElementById("currForm_AGO");
+        //    alert('val 4 .. ' + form.checkValidity())
+        //   // var form = new FormData($("#currForm_AGO").get(0));
+        //   // form.addEventListener('submit', function (event) {
+        //        alert('val 4')
+        //        alert('val 4 .. ' + form.checkValidity())
+        //        if (form.checkValidity() === false) {
+        //            alert('val 5')
+        //            event.preventDefault();
+        //            event.stopPropagation();
+        //        }
+        //        form.classList.add('was-validated');
+        //   // }, false);
+
+        //});
+
+        //(function () {
+        //    'use strict';
+        //    alert('val 1b')
+        //    window.addEventListener('load', function () {
+        //        alert('val 2b')
+        //        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        //        var forms = document.getElementsByClassName('needs-validation');
+        //        alert('val 3b')
+        //        // Loop over them and prevent submission
+        //        var validation = Array.prototype.filter.call(forms, function (form) {
+        //            alert('val 3b')
+        //            form.addEventListener('submit', function (event) {
+        //                alert('val 4b')
+        //                if (form.checkValidity() === false) {
+        //                    alert('val 5b')
+        //                    event.preventDefault();
+        //                    event.stopPropagation();
+        //                }
+        //                form.classList.add('was-validated');
+        //            }, false);
+        //        });
+
+        //        alert ('done! submitting...')
+        //    }, false);
+        //})();
+    </script>
+
+
+    <script>
+            $(document).ready(function () {
+                //for table row
+                $("tr:even").css("background-color", "#fff");
+                $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+                $('#tbId_AppGlobalOwn').DataTable({
+                    "processing": true,
+                    "columnDefs": [
+                        { "searchable": false, "orderable": false, "targets": [6] },
+                    ],
+                });
+
+            });
+
+            var AddEditCurrData_AGO = function (currId, _strItemName) {  //(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+                        //alert('addORedit...');
+                        // alert('addORedit.. ' + currId + ' __indx: ' + currSetIndex);
+
+            var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+            var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+            var currUserId_Logged = $("#_oUserId_Logged").data("value");
+           // var currParBodyId = null;
+
+                if (currId < 0) currId = null;
+
+            //if (currDenomId < 0) currDenomId = null;
+            //if (currChuBodyId < 0) currChuBodyId = null;
+            // if (currSetIndex < 0) currSetIndex = null;
+            //if (currSubSetIndex < 0) currSubSetIndex = null;
+
+            //if (currAGOId_Logged < 0) currAGOId_Logged = null;
+            //if (currCBId_Logged < 0) currCBId_Logged = null;
+            //if (currUserId_Logged < 0) currUserId_Logged = null;
+
+
+                        //public IActionResult AddOrEdit_AGO(int ? oAppGloOwnId = null, int ? oCurrChuBodyId = null, int id = 0, int ? oParentId = null, int setIndex = 0, int subSetIndex = 0,
+                                                        //    int ? oAGOId_Logged = null, int ? oCBId_Logged = null, int ? oUserId_Logged = null)
+
+            //alert('currChuBodyId.. ' + currChuBodyId + ' __currDenomId: ' + currDenomId);
+
+               //  var url = "@Url.Action("AddOrEdit_AGO", "AppVenAdmin")?oAppGloOwnId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&oParentId=" + currParBodyId +
+                //            "&setIndex=" + currSetIndex + "&subSetIndex=" + currSubSetIndex + "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                var url = "@Url.Action("AddOrEdit_AGO", "AppVenAdmin")?id=" + currId +
+                                            "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                     //   alert(url)
+
+                       // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                        if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                      //  alert(url)
+
+                        $('#divPopModal_AddEdit_lg').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        //$('#divPopModal_AddEdit_lg').modal({
+                        //    backdrop: false,
+                        //    show: true
+                        //});
+
+                        $('#divPopModal_AddEdit_lg .modal-dialog').draggable({
+                            handle: ".modal-header"
+                        });
+
+
+                        //alert('loading modal...')
+                        //$("#_setIndex").val(setIndex);
+                        //$('#divModalBody_AddEdit_lg').load(url, function () {
+                        $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                            $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                            $("#divPopModal_AddEdit_lg").modal('show');
+                        });
+
+                    };
+
+        //var DisplaySuccessInfo = function (msg, reload = false) { // (msg, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, reload = false) {
+
+        //                $.alert({
+        //                    title: 'Done!',
+        //                    type: 'green',
+        //                    typeAnimated: true,
+        //                    content: msg,
+        //                    closeIcon: true,
+        //                    closeIconClass: 'fa fa-close'
+        //                });
+
+        //                if (reload) {
+        //                    ReloadCurrPage_AGO(); //currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);
+        //                }
+        //            };
+
+            //var _DisplaySuccessInfo = function (msg, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, reload = false) {
+
+            //            $("#lblUserMessage").text(msg);
+            //            //$("#_urlSuccessOK").val(reloadUrl);
+
+            //            $("#divPopModal_Success").modal('show');
+
+            //            if (reload) {
+            //                ReloadCurrPage_AGO(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);
+
+            //                //window.location.href = "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&id=" + currId;
+            //            }
+            //        };
+
+
+        var DisplaySuccessInfo = function (msg, reload = false) {   //currSubSetIndex,  proScope, subScope,
+
+            $.alert({
+                title: 'Done!',
+                type: 'green',
+                typeAnimated: true,
+                content: msg,
+                closeIcon: true,
+                closeIconClass: 'fa fa-close'
+            });
+
+            if (reload) {
+                ReloadCurrPage_AGO();   //, currSubSetIndex , proScope, subScope
+            }
+        };
+
+
+            //public ActionResult Index(int? oDenomId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 1, int? oParentId = null)
+            var ReloadCurrPage_AGO = function () { //currDenomId = null, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+                       // alert('load..');
+
+                        // public ActionResult Index_AGO(int? oAppGloOwnId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 0)
+                       // window.location.href =  '@Url.Action("Index_AGO", "AppVenAdmin")?oAppGloOwnId=' + currDenomId + '&oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+                window.location.href = '@Url.Action("Index_AGO", "AppVenAdmin")';  //  ?oAppGloOwnId=' + currDenomId + '&oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+                        //if (parId == '') {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                        //}
+                        //else {
+                        //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+                        //}
+                    }
+    </script>
+
+
+    <script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+           // alert('click..');
+
+           // var currSetIndex = $("#_setIndex").val();
+           // var currSubSetIndex = $("#_subSetIndex").val();
+
+           //  alert('savin...: sub: ' + currSetIndex);
+
+            const form = document.getElementById("currForm_AGO");
+
+          //  alert('val 4 .. ' + form.checkValidity())
+            // var form = new FormData($("#currForm_AGO").get(0));
+            // form.addEventListener('submit', function (event) {
+            //alert('val 4')
+            //alert('val 4 .. ' + form.checkValidity())
+
+            if (form.checkValidity() === true) {
+
+                SaveCurr_AGO(); //currSetIndex, currSubSetIndex);
+            }
+            else {
+               // alert('val 5')
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+            }
+
+           
+           // }, false);
+        })
+
+
+        var SaveCurr_AGO = function () { // (currSetIndex, currSubSetIndex) {
+            // alert('save... ');
+
+            var currFormData = new FormData($("#currForm_AGO").get(0));
+            // var currFormData = $("#currForm_AGO").serialize();
+
+
+          //  alert('save... submitting...');
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEdit_AGO", "AppVenAdmin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_AGO",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                      //  var currChuBodyId = $("#_hdnChuBodyId").val();
+                       // var currDenomId = $("#_hdnAppGloOwnId").val();
+
+                        // var currId = $("#_hdnCurrId_AGO").val();
+                     //   alert(res.userMess)
+                        DisplaySuccessInfo(res.userMess); //(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+
+                        // document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+
+                        // $('#btnSaveChanges').html('Update');
+                        //var AddEditCurrData_AGO = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+                        var _desc = "'[New] Denomination (Church)'";
+                        if (res.resetNew == true) {
+                            AddEditCurrData_AGO(0, _desc); //(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                        }
+                        else {
+                            //$("#btnSaveChanges").prop();
+                           // alert('closing...')
+                            $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+        var DeleteCurrData_AGO = function (currId, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+       // alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + ' .. forceDeleteConfirm: ' + forceDeleteConfirm);
+
+            //  if (delConfirm == null) { delConfirm = false; }
+
+            //alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+           // var oAppGloId = null;
+
+       // var currUserId = $("#_oUserId_Logged").val();
+
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+       // var currDenomId = $("#_hdnAppGloOwnId").val();
+
+       // alert('currUserId: ' + currUserId)
+
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified denomination (church)' : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_AGO", "AppVenAdmin")',
+                               // url: "/AppVenAdmin/Delete_AGO",
+                                // public IActionResult Delete_AGO(int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                               // data: { loggedUserId: currUserId_Logged, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+
+                                data: { loggedUserId: currUserId_Logged, id: currId, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess); // currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_AGO(); //(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);                  // (oAppGloId, currChuBodyId, currSetIndex);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_AGO(currId, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+
+    </script>
+
+    <script>
+         $(document).on('change', '#_FaithTypeCategoryId', function (e) {
+            e.preventDefault();
+
+             var mainId = $("#_FaithTypeCategoryId").val();
+         //  alert('mainId: ' + mainId);  GetNextRootChurchCodeByAcronym
+
+             var url = '@Url.Action("GetFaithStreamByCategory", "AppVenAdmin")'; // '@Url.Content("~/")' + 'AppVenAdmin/GetFaithStreamByCategory';
+
+             document.getElementById('_strChurchStream').value = '';
+             $.getJSON(url, { categoryId: mainId }, function (res) {
+                 if (res != null) {  // alert(res.taskSuccess);  alert(res.strRes);
+                     document.getElementById('_strChurchStream').value = res.strRes;
+                 }
+            });
+
+
+              @*$.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetFaithStreamByCategory", "AppVenAdmin")',
+                data: { categoryId: mainId }, // currFormData,   categoryId
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        $('#_strChurchStream').html(res.strRes);
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        $('#_strChurchStream').html('');
+                    }
+                }
+            })*@
+
+         });
+
+        @*document.getElementById("_Acronym").oninput = function () {
+            alert('acronym ...')
+            var _strAcronym = $("#_Acronym").val();
+          // alert('mainId: ' + mainId);
+
+             var url = '@Url.Action("GetNextRootChurchCodeByAcronym", "AppVenAdmin")';
+
+             document.getElementById('_RootChurchCode').value = '';
+             $.getJSON(url, { strAcronym: _strAcronym }, function (res) {
+                 if (res != null) {
+                     alert(res.taskSuccess);
+                     alert(res.strRes);
+                     document.getElementById('_RootChurchCode').value = res.strRes;
+                 }
+            });
+        };*@
+
+
+
+        @*$(document).on('change', '#_Acronym', function (e) {
+            e.preventDefault();
+
+            var _strAcronym = $("#_Acronym").val();
+         //  alert('mainId: ' + mainId);
+
+             var url = '@Url.Action("GetNextRootChurchCodeByAcronym", "AppVenAdmin")';
+
+             document.getElementById('_RootChurchCode').value = '';
+             $.getJSON(url, { strAcronym: _strAcronym }, function (res) {
+                 if (res != null) {
+                     alert(res.taskSuccess);
+                     alert(res.strRes);
+                     document.getElementById('_RootChurchCode').value = res.strRes;
+                 }
+            });
+
+         });*@
+
+
+        //const source = document.getElementById('_Acronym');
+        //const result = document.getElementById('_RootChurchCode');
+
+        //const inputHandler = function (e) {
+        //    result.value = e.target.value;
+        //   // result.innerHTML = e.target.value;
+        //}
+
+        //source.addEventListener('input', inputHandler);
+        //source.addEventListener('propertychange', inputHandler); // for IE8
+        //// Firefox/Edge18-/IE9+ don’t fire on <select><option>
+        //// source.addEventListener('change', inputHandler);
+
+    </script>
+
+}

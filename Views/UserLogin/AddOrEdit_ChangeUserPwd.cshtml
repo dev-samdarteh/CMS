@@ -1,0 +1,378 @@
+﻿@model RhemaCMS.Models.ViewModels.ResetUserPasswordModel
+
+@{
+    //ViewData["Title"] = "RHEMA-CMS";
+    //Layout = "_LayoutLogin";
+
+    /// headers
+    var userMess = @ViewData["strUserLoginFailMess"] as string;
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Change Password";
+    ///
+    ViewData["Title"] = @_pageTitle;
+
+    Layout = "_LayoutLogin";
+
+}
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center p-0" style="width:400px;  margin: 0px auto 10px auto ;  ">
+
+    <form needs-validation novalidate id="currForm_UP_ChgPwd" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_UP_ChgPwd" class="form-group bg-transparent mt-0 p-3 rounded" 
+          style="border: 1px solid lightgray">
+
+        @*<div asp-validation-summary="ModelOnly" class="alert alert-danger text-sm text-light p-1 mb-1 " role="alert"> </div>*@
+
+        <input type="hidden" asp-for="UserId" id="_hdnCurrId_UP" />
+        <input type="hidden" asp-for="oChurchBodyId" id="_hdnChuBodyId" />
+        <input type="hidden" asp-for="oAppGloOwnId" id="_hdnAppGloOwnId" />
+        <input type="hidden" asp-for="profileScope" />
+        <input type="hidden" asp-for="SentVerificationCode" />
+        <input type="hidden" asp-for="CurrentPassword" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        @*<input type="hidden" asp-for="@Model.ChurchCode" id="_ChurchCode" />*@
+        @*<input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />*@
+        <input type="hidden" asp-for="@Model.oCurrUserId_Logged" id="_oCurrUserId_Logged" />
+        <input type="hidden" asp-for="@Model.strLogUserDesc" id="_strLogUserDesc" />
+
+
+        <div class="modal-header text-center w-100 border-0 p-0 pb-1 mt-3 " style="border-bottom: 2px solid lightgray">
+            <div class="form-group">
+                <span><i class="fas fa-lock fa-lg text-warning"></i></span>
+                <h2> CHANGE USER PASSWORD </h2>
+            </div>
+        </div>
+
+        @*<button asp-controller="UserLogin" asp-action="AddOrEdit_ChangeUserPwd" asp-route-navBack="true" class="btn btn-link btn-lg " style="position:absolute; left:0; top:0">
+            <i class="fas fa-arrow-left fa-sm text-dark"></i>
+        </button>*@
+
+        <br />
+
+        @*@if (Model.pageIndex == 0)
+        {
+            <div class="alert alert-success" role="alert">
+                <span id="_userMess" class="text-center text-light"></span>
+            </div>
+        }*@
+
+        @if (Model.pageIndex >= 1)
+        {
+            <div class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-transparent border" id="basic-addon1"><i class="fa fa-home text-secondary" style="width: 25px" aria-hidden="true"></i></span>
+                </div>
+                <input id="_ChurchCode" asp-for="ChurchCode" class="form-control bg-light border text-dark  " type="text" placeholder="Church code" aria-label="Church code" aria-describedby="basic-addon1"
+                       style="font-size:small;font-family:Verdana, Geneva, Tahoma, sans-serif ; " disabled>
+            </div>
+            <div class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-transparent border" id="basic-addon1"><i class="fa fa-user text-secondary" style="width: 25px" aria-hidden="true"></i></span>
+                </div>
+                <input id="_Username" asp-for="Username" class="form-control bg-light border" type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"  
+                       style="font-size:small;font-family:Verdana, Geneva, Tahoma, sans-serif;" disabled>
+            </div>
+
+            @*<div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="ChurchCode" class="control-label"></label>
+                    <input asp-for="ChurchCode" class="form-control text-sm" autocomplete="off" />
+                    <span asp-validation-for="ChurchCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                <div class="form-group col-sm">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control text-sm" autocomplete="off" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+            </div>*@
+        }
+
+        @if (Model.pageIndex == 2)
+        {
+            <br />
+            <br />
+            <input type="hidden" asp-for="ChurchCode" />
+            <input type="hidden" asp-for="Username" />
+            <div class="form-group col-sm" >
+                <h6 class="text-center">Please authenticate... Enter 8-digit verification code sent via email /sms: </h6>
+                <input asp-for="VerificationCode" type="text" autocomplete="off" class="form-control text-center text-lg text-dark" 
+                       placeholder="verification code" aria-label="" aria-describedby="basic-addon2" required />
+                <span asp-validation-for="VerificationCode" class="text-danger"></span>
+            </div>
+             
+            <br />
+
+            @*<div class="form-group col-sm">
+               <label asp-for="CurrentPassword" class="control-label"></label>
+                <input asp-for="CurrentPassword" class="form-control text-sm border-0" autocomplete="off" placeholder="Current Password" />
+                <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+            </div>*@
+            @*<div class="form-group col-sm">
+                <label asp-for="AuthTypeUsed" class="control-label"></label>
+                <select class="form-control text-sm border-0" asp-for="AuthTypeUsed" asp-items="Model.lkpAuthTypes"></select>
+                <span asp-validation-for="AuthTypeUsed" class="text-danger"></span>
+            </div>*@
+
+            <div class="form-group col-sm">
+                @*<label asp-for="NewPassword" class="control-label"></label>*@
+                <input asp-for="NewPassword" type="password" class="form-control text-sm border-0" autocomplete="off" placeholder="New Password" />
+                <span asp-validation-for="NewPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-sm">
+                @*<label asp-for="RepeatPassword" class="control-label"></label>*@
+                <input asp-for="RepeatPassword" type="password" class="form-control text-sm border-0" autocomplete="off" placeholder="Repeat Password" />
+                <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+            </div>
+        }
+
+
+    <div class="modal-footer justify-content-center p-0 mt-5 border-0 " style=" width:400px; margin: 0 auto 0 auto ; border-top: 2px solid lightgray ">
+        @*@{ var loginDesc = Model.pageIndex != 0 ? "Back to Login" : "Cancel"; }
+        <a asp-controller="UserLogin" asp-action="LoginUserAcc" class="btn btn-light " data-dismiss="modal">
+            @loginDesc
+        </a>*@
+        <a asp-controller="UserLogin" asp-action="LoginUserAcc" class="btn btn-secondary" data-dismiss="modal">
+            Back to Login
+        </a>
+        @if (Model.pageIndex == 1)
+        {<button id="btnOk_UserAcc" type="submit" class="btn btn-info border"><i class="fa fa-search fa-sm"></i>&nbsp; Search </button>}
+
+        else if (Model.pageIndex == 2)
+        { 
+            <button id="btnSaveChanges" type="submit" class="btn btn-primary save-data border"><i class="fa fa-database fa-sm"></i>&nbsp; Change Password </button> 
+        }
+    </div>
+    </form>
+</div>
+
+ 
+
+
+@section Scripts {
+    @*script for show password*@
+    <script type="text/javascript">
+
+        function myFunction() {
+            var x = document.getElementById("Password"); /*/getElementById("Pwd_1");  *('# <%= Pwd.ClientID %>');*/
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        //$(".toggle-password").click(function () {
+        $("#showPwd").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $("#Password");
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+    </script>
+     
+
+    <script>
+              
+        var AddEditCurrData_UP_ChgPwd = function (currChurchCode, currUsername, currSetIndex, _strItemName) {
+                  //  alert('addORedit...');
+                    // alert('addORedit.. ' + currId + ' __indx: ' + currSetIndex);
+
+           
+
+        //var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+        //var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+
+       // var currUserId_Logged = $("#_oUserId_Logged").data("value");
+       // var currParBodyId = null;
+
+        //if (currId < 0) currId = null;
+        //if (currDenomId < 0) currDenomId = null;
+        //if (currChuBodyId < 0) currChuBodyId = null;
+        //if (currSetIndex < 0) currSetIndex = null;
+        //if (currSubSetIndex < 0) currSubSetIndex = null;
+
+        //if (currAGOId_Logged < 0) currAGOId_Logged = null;
+        //if (currCBId_Logged < 0) currCBId_Logged = null;
+        //if (currUserId_Logged < 0) currUserId_Logged = null;
+
+
+            //   public IActionResult AddOrEdit_ChangeUserPwd(string churchCode = null, string username = null, int setIndex = 0)
+            // public IActionResult AddOrEdit_ChangeUserPwd(string churchCode, string username, int setIndex) 
+
+            var url = "@Url.Action("AddOrEdit_ChangeUserPwd", "UserLogin")?churchCode=" + currChurchCode + "&username=" + currUsername + "&setIndex=" + currSetIndex;
+
+                //   alert(url)
+            window.location.href = url;
+
+                   // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                    //   if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                  //  alert(url)
+
+                    //$('#divPopModal_AddEdit_lg').modal({
+                    //    backdrop: 'static',
+                    //    keyboard: false
+                    //});
+
+                    ////$('#divPopModal_AddEdit_lg').modal({
+                    ////    backdrop: false,
+                    ////    show: true
+                    ////});
+
+                    //$('#divPopModal_AddEdit_lg .modal-dialog').draggable({
+                    //    handle: ".modal-header"
+                    //});
+
+
+                    ////alert('loading modal...')
+                    ////$("#_setIndex").val(setIndex);
+                    ////$('#divModalBody_AddEdit_lg').load(url, function () {
+                    //$('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                    //    $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                    //    $("#divPopModal_AddEdit_lg").modal('show');
+                    //});
+
+                };
+
+        // var DisplaySuccessInfo = function (msg, currDenomId, currChuBodyId, proScope, subScope, currSubSetIndex, reload = false) {
+        var DisplaySuccessInfo = function (msg, reload = false) {   //currSubSetIndex,  proScope, subScope,
+
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close'
+                    });
+
+                    if (reload) {
+                        ReloadCurrPage();   //, currSubSetIndex , proScope, subScope
+                    }
+                };
+
+        // var ReloadCurrPage = function (currDenomId = null, currChuBodyId = null, proScope, subScope, currSubSetIndex ) { //, chuCategId = null, showAllCong = true) {
+        var ReloadCurrPage = function ( pageIndex = 1) {   
+            window.location.href = '@Url.Action("GetChangeUserPwdDetail", "UserLogin")?pageIndex=' + pageIndex;  
+        }
+
+        var ReloadCurrPageUserLogin = function () {   
+            window.location.href = '@Url.Action("LoginUserAcc", "UserLogin")';  
+        }
+
+    </script>
+
+
+    <script>
+        $(document).on('click', '#btnOk_UserAcc', function (e) {
+            e.preventDefault();
+            alert('search login user...');
+
+            var currChurchCode = $("#_ChurchCode").val();
+            var currUsername = $("#_Username").val();
+            var currSetIndex = $("#_setIndex").val();
+            var strItemName = $("#_strLogUserDesc").val(); 
+
+         //   alert('click..');
+
+            AddEditCurrData_UP_ChgPwd(currChurchCode, currUsername, currSetIndex, strItemName);
+        })
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+          //  alert('click..');
+
+           // var currSetIndex = $("#_setIndex").val();
+           // var currSubSetIndex = $("#_subSetIndex").val();
+           
+           //  alert('savin...: sub: ' + currSetIndex);
+
+            SaveCurr_UP_ChgPwd();
+        })
+
+        var SaveCurr_UP_ChgPwd = function () {
+           // alert('save... ');// + currSetIndex);
+
+            var currFormData = new FormData($("#currForm_UP_ChgPwd").get(0));
+            // var currFormData = $("#currForm_UP").serialize();
+
+            alert('save... ');  // + currSetIndex);
+
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEdit_ChangeUserPwd", "UserLogin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_UP",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+
+                        alert('success')
+
+                        //var currChuBodyId = $("#_hdnChuBodyId").val();
+                        //var currDenomId = $("#_hdnAppGloOwnId").val();
+                        //
+                        //var proScope = $("#_oProScope").val();
+                        //var subScope = $("#_oSubScope").val();
+
+                        // var currId = $("#_hdnCurrId_UP").val();
+
+
+                        DisplaySuccessInfo(res.userMess);
+
+                        //, currSubSetIndex, proScope, subScope DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        // document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+
+                        // $('#btnSaveChanges').html('Update');
+                        //var AddEditCurrData_UP = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+                       // ReloadCurrPageUserLogin();
+
+                        //alert(res.userMess);
+                        $("#_userMess").val(res.userMess);
+                        $("#_userMess").innerText = res.userMess;
+
+                        ReloadCurrPage(0);
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        alert('failed: ' + res.userMess)
+
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',                            
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+   
+    </script>
+
+}
+

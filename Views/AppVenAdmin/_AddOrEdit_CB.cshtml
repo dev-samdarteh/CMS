@@ -1,0 +1,235 @@
+﻿@model RhemaCMS.Models.ViewModels.MSTRChurchBodyModel
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center w-75" style="margin: 0 auto 0 auto ; padding:0;  ">
+
+    @if (Model.oChurchBody != null)
+    {
+        //var photoPath = "~/img_db/" + (Model.oChurchBody.ChurchLogo ?? "df_user_p.png");
+
+        <form class="needs-validation novalidate bg-transparent p-2" id="currForm_CB" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_CB">
+        @{ var CBNameTag = Model.oChurchBody.OrganisationType == "CH" ? "Name of Congregation Head-unit" : Model.oChurchBody.OrganisationType == "CN" ? "Name of Congregation" : "Church Unit Name"; }
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oChurchBody.Id" id="_hdnCurrId_CB" />
+        <input type="hidden" asp-for="oChurchBody.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+        <input type="hidden" asp-for="PageIndex" id="_hdnPageIndex" />
+        <input type="hidden" asp-for="oCBLevelCount" id="_oCBLevelCount"  />
+        <input type="hidden" asp-for="numCLIndex" id="_numCLIndex" />
+
+        <input type="hidden" asp-for="oChurchBody.Created" />
+        <input type="hidden" asp-for="oChurchBody.LastMod" />
+        <input type="hidden" asp-for="oChurchBody.CreatedByUserId" />
+        <input type="hidden" asp-for="oChurchBody.LastModByUserId" />
+
+        @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.subSetIndex" id="_subSetIndex" />*@
+
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oCurrUserId_Logged" />
+
+
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="strAppGlobalOwn">Denomination (Church)</small>
+                <input id="_strAppGlobalOwn" class="form-control text-center text-sm" type="text" asp-for="strAppGloOwn" placeholder="Denomination (Church)" readonly>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.Name"> @CBNameTag </small>
+                <input type="text" class="form-control text-sm" asp-for="oChurchBody.Name" placeholder="@CBNameTag " aria-describedby="fd_Name" required>
+                <div class="invalid-feedback" id="fd_Name">
+                    @{ var strName = @CBNameTag + " required"; }
+                    @strName
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.OrganisationType">Organisation Type </small>
+                <select id="_OrganisationType" class="form-control text-sm" asp-for="oChurchBody.OrganisationType" asp-items="Model.lkpOrgTypes" aria-describedby="fd_OrganisationType" required>
+                    @*<option selected disabled value="">Select...</option>*@
+                </select>
+                <div class="invalid-feedback" id="fd_OrganisationType">
+                    Select the church [organisation] type
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.ChurchLevelId"> Church Level </small>
+                <select id="_ChurchLevelId" class="form-control text-sm" asp-for="oChurchBody.ChurchLevelId" asp-items="Model.lkpChurchLevels" aria-describedby="fd_ChurchLevelId" required>
+                    @*<option selected disabled value=""> Select Church level </option>*@
+                </select>
+                <div class="invalid-feedback" id="fd_ChurchLevelId">
+                    Select the church level
+                </div>
+            </div>
+        </div>
+                
+            
+@*//if (Model.oCBLevelCount > 0)
+//{
+// var _desc_1 = "Select " + ViewBag.strChurchLevel_1;*@
+                    <div class="form-row" id="_div_ChurchBodyId_1" hidden>
+                        <div class="col-md mb-3">
+                            <small class="font-weight-normal" asp-for="ChurchBodyId_1"> @ViewBag.strChurchLevel_1 </small>
+                            <input id="_strChurchBody_1" class="form-control text-sm" type="text" asp-for="strChurchBody_1" placeholder="@ViewBag.strChurchLevel_1" readonly>
+                            <input type="hidden" asp-for="ChurchBodyId_1" id="_ChurchBodyId_1" />
+                            <input type="hidden" asp-for="strChurchLevel_1"  />
+                        </div>
+                    </div>
+
+                    @*//if (Model.oCBLevelCount > 1)
+                    //{*@
+                    
+                        @{ var _desc_2 = "Select " + ViewBag.strChurchLevel_2;}
+                        <div class="form-row" id="_div_ChurchBodyId_2" hidden>
+                            <div class="col-md mb-3" >
+                                <small class="font-weight-normal" asp-for="ChurchBodyId_2"> @ViewBag.strChurchLevel_2 </small>
+                                <select id="_ChurchBodyId_2" class="form-control text-sm" asp-for="ChurchBodyId_2"  aria-describedby="fd_ChurchBodyId_2"  >
+                                    <option selected disabled value=""> @_desc_2 </option>
+                                </select>
+                                <input type="hidden" asp-for="strChurchLevel_2"  />
+                                <input id="hdn_ChurchBodyId_2" type="hidden" value="@Model.ChurchBodyId_2"  />
+
+                                @*<div class="invalid-feedback" id="fd_ChurchBodyId_2">
+                                    @_desc_2
+                                </div>*@
+                            </div>
+                        </div>
+
+                        @*//if (Model.oCBLevelCount > 2)
+                        //{*@
+                       @{ var _desc_3 = "Select " + ViewBag.strChurchLevel_3;}
+                            <div class="form-row" id="_div_ChurchBodyId_3" hidden>
+                                <div class="col-md mb-3">
+                                    <small class="font-weight-normal" asp-for="ChurchBodyId_3"> @ViewBag.strChurchLevel_3 </small>
+                                    <select id="_ChurchBodyId_3" class="form-control text-sm" asp-for="ChurchBodyId_3"  aria-describedby="fd_ChurchBodyId_3" >
+                                        <option selected disabled value=""> @_desc_3 </option>
+                                    </select>
+                                    <input type="hidden" asp-for="strChurchLevel_3"  />
+                                    <input id="hdn_ChurchBodyId_3" type="hidden" value="@Model.ChurchBodyId_3"  />
+                                    @*<div class="invalid-feedback" id="fd_ChurchBodyId_3">
+                                        @_desc_3
+                                    </div>*@
+                                </div>
+                            </div>
+
+                            @*//if (Model.oCBLevelCount > 3)
+                            //{*@
+
+                          @{  var _desc_4 = "Select " + ViewBag.strChurchLevel_4; }
+                                <div class="form-row" id="_div_ChurchBodyId_4" hidden>
+                                    <div class="col-md mb-3">
+                                        <small class="font-weight-normal" asp-for="ChurchBodyId_4"> @ViewBag.strChurchLevel_4 </small>
+                                        <select id="_ChurchBodyId_4" class="form-control text-sm" asp-for="ChurchBodyId_4"  aria-describedby="fd_ChurchBodyId_4" >
+                                            <option selected disabled value=""> @_desc_4 </option>
+                                        </select>
+                                        <input type="hidden" asp-for="strChurchLevel_4"  />
+                                         <input id="hdn_ChurchBodyId_4" type="hidden" value="@Model.ChurchBodyId_4"  />
+                                        @*<div class="invalid-feedback" id="fd_ChurchBodyId_4">
+                                            @_desc_4
+                                        </div>*@
+                                    </div>
+                                </div>
+
+                                @*//if (Model.oCBLevelCount > 4)
+                                //{*@
+
+                               @{ var _desc_5 = "Select " + ViewBag.strChurchLevel_5;}
+                                    <div class="form-row" id="_div_ChurchBodyId_5" hidden>
+                                        <div class="col-md mb-3">
+                                            <small class="font-weight-normal" asp-for="ChurchBodyId_5"> @ViewBag.strChurchLevel_5 </small>
+                                            <select id="_ChurchBodyId_5" class="form-control text-sm" asp-for="ChurchBodyId_5"   aria-describedby="fd_ChurchBodyId_5" >
+                                                <option selected disabled value="">  @_desc_5 </option>
+                                            </select>
+                                            <input type="hidden" asp-for="strChurchLevel_5"  />
+                                             <input id="hdn_ChurchBodyId_5" type="hidden" value="@Model.ChurchBodyId_5"  />
+                                            @*<div class="invalid-feedback" id="fd_ChurchBodyId_5">
+                                                @_desc_5
+                                            </div>*@
+                                        </div>
+                                    </div>
+
+                                    @*//                }
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //}*@
+            
+         
+
+
+
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.GlobalChurchCode"> Church Code </small>
+                <input type="text" class="form-control text-sm" asp-for="oChurchBody.GlobalChurchCode" placeholder="Church code" aria-describedby="fd_GlobalChurchCode" readonly>
+                @if (string.IsNullOrEmpty(Model.oChurchBody.GlobalChurchCode))
+                {
+                    <small id="fd_GlobalChurchCode" class="form-text text-muted">
+                        Code will be auto-generated when saved.
+                    </small>
+                }
+            </div>
+            @*<div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.cu"> Custom Church Code </small>
+                <input type="text" class="form-control text-sm" asp-for="oChurchBody.CustomCode" placeholder="Church code" aria-describedby="fd_CustomCode"  >
+            </div>*@
+        </div>
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.RootChurchCode"> Relative Church Code </small>
+                <input type="text" class="form-control text-sm" asp-for="oChurchBody.RootChurchCode" placeholder="Relative Church Code" aria-describedby="fd_RootChurchCode" readonly>
+                @if (string.IsNullOrEmpty(Model.oChurchBody.RootChurchCode))
+                {
+                    <small id="fd_RootChurchCode" class="form-text text-muted">
+                        Code will be auto-generated when saved.
+                    </small>
+                }
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.CtryAlpha3Code"> Country of Operation </small>
+                <select id="_CountryId" class="form-control text-sm" asp-for="oChurchBody.CtryAlpha3Code" asp-items="Model.lkpCountries" aria-describedby="fd_CountryId" required>
+                    <option selected  value="">Select country</option>
+                </select>
+                <div class="invalid-feedback" id="fd_CountryId">
+                    Select the country
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.CountryRegionId"> Country Region </small>
+                <select id="_CountryRegionId" class="form-control text-sm" asp-for="oChurchBody.CountryRegionId" asp-items="Model.lkpCountryRegions">
+                    <option selected disabled value="">Select country region </option>
+                </select>
+                <input id="hdn_CountryRegionId" type="hidden" value="@Model.oChurchBody.CountryRegionId" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.SubscriptionKey"> Subscription Key </small>
+                <input type="text" class="form-control text-sm" asp-for="oChurchBody.SubscriptionKey" placeholder="Subscription key" aria-describedby="fd_SubscriptionKey" >
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-9 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.Comments"> Any comments </small>
+                <textarea asp-for="oChurchBody.Comments" class="form-control text-sm" rows="3"></textarea>
+            </div>
+            <div class="col-md-3 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchBody.Status"> Status </small>
+                <div class="custom-control custom-switch ">
+                    <input type="checkbox" class="custom-control-input" asp-for="blStatusActivated">
+                    <label id="_blStatusActivated" class="custom-control-label font-weight-normal" asp-for="blStatusActivated"> Activated </label>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    }
+
+</div>

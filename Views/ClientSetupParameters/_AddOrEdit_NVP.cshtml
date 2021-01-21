@@ -1,0 +1,77 @@
+﻿@model RhemaCMS.Models.ViewModels.vm_cl.AppUtilityNVPModel
+
+@if (Model != null)
+{
+    @if (Model.oAppUtilityNVP != null)
+    {
+        <div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center w-75 " style="margin: 0 auto 0 auto ; padding: 0">
+            <form class="needs-validation bg-transparent p-2" novalidate id="currForm_NVP" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_NVP">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="oAppUtilityNVP.Id" id="_hdnCurrId_AGO" />
+                <input type="hidden" asp-for="oAppUtilityNVP.AppGlobalOwnerId" />
+                <input type="hidden" asp-for="oAppUtilityNVP.ChurchBodyId" />
+
+                <input type="hidden" asp-for="oAppUtilityNVP.NVPSubCode" />
+
+                <input type="hidden" asp-for="oAppUtilityNVP.Created" />
+                <input type="hidden" asp-for="oAppUtilityNVP.LastMod" />
+                <input type="hidden" asp-for="oAppUtilityNVP.CreatedByUserId" />
+                <input type="hidden" asp-for="oAppUtilityNVP.LastModByUserId" />
+
+                <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+                @*<input type="hidden" asp-for="@Model.subSetIndex" id="_subSetIndex" />*@
+                <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+                <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+                <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oCurrUserId_Logged" />
+
+
+
+                <div class="form-row mb-3">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppUtilityNVP.NVPCode">Lookup Parameter</small>
+                        <select class="form-control text-sm" asp-for="oAppUtilityNVP.NVPCode" asp-items="Model.lkpAppParameterTags" aria-describedby="fd_NVPCode" required>
+                            <option selected disabled value="">Select parameter...</option>
+                        </select>
+                        <div class="invalid-feedback" id="fd_NVPCode">
+                            Select lookup parameter
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppUtilityNVP.NVPValue">Parameter Value</small>
+                        <input type="text" class="form-control text-sm" asp-for="oAppUtilityNVP.NVPValue" placeholder="Parameter Value" aria-describedby="fd_NVPValue" required>
+                        <div class="invalid-feedback" id="fd_NVPValue">
+                            Parameter value is required
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppUtilityNVP.NVPCategoryId">Parameter Category</small>
+                        <select class="form-control text-sm" asp-for="oAppUtilityNVP.NVPCategoryId" asp-items="Model.lkpNVPCategories"   >
+                            <option selected disabled value="">Select category...</option>
+                        </select> 
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="oAppUtilityNVP.Acronym"> Acronym </small>
+                        <input type="text" class="form-control text-sm" asp-for="oAppUtilityNVP.Acronym" placeholder="Acronym">
+                    </div>
+                    <div class="col-md-3">
+                        <small class="font-weight-normal" asp-for="oAppUtilityNVP.OrderIndex">Order Index</small>
+                        <input type="number" min="1" class="form-control text-sm" asp-for="oAppUtilityNVP.OrderIndex" placeholder="Order Index">
+                    </div>
+                    <div class="col-md-3">
+                        <small class="font-weight-normal" asp-for="oAppUtilityNVP.NVPStatus">Status</small>
+                        <select class="form-control text-sm" asp-for="oAppUtilityNVP.NVPStatus" asp-items="Model.lkpStatuses">
+                            <option selected disabled value="">Select status...</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+}

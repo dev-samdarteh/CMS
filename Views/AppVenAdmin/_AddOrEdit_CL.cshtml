@@ -1,0 +1,73 @@
+﻿@model RhemaCMS.Models.ViewModels.MSTRChurchLevelModel
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center w-75" style="margin: 0 auto 0 auto ; padding:0;  ">
+
+    @if (Model.oChurchLevel != null)
+    {
+        //var photoPath = "~/img_db/" + (Model.oChurchLevel.ChurchLogo ?? "df_user_p.png");
+
+    <form class="needs-validation bg-transparent p-2" novalidate id="currForm_CL" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_CL">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oChurchLevel.Id" id="_hdnCurrId_CL" />
+        <input type="hidden" asp-for="oChurchLevel.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+        <input type="hidden" asp-for="PageIndex" id="_hdnPageIndex" />
+
+        <input type="hidden" asp-for="oChurchLevel.Created" />
+        <input type="hidden" asp-for="oChurchLevel.LastMod" />
+        <input type="hidden" asp-for="oChurchLevel.CreatedByUserId" />
+        <input type="hidden" asp-for="oChurchLevel.LastModByUserId" />
+
+        @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.subSetIndex" id="_subSetIndex" />*@
+
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oCurrUserId_Logged" />
+
+
+        <div class="justify-content-center">
+            <small class="font-weight-normal" asp-for="strAppGlobalOwn">Denomination (Church)</small>
+            <input id="_strAppGlobalOwn" class="form-control text-center " type="text" asp-for="strAppGloOwn" placeholder="Denomination (Church)" readonly>
+        </div>
+
+        <br /> 
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchLevel.LevelIndex">Church Levels</small>
+                @if (Model.oChurchLevel.Id > 0)
+                    { <input type="number" min="1" max="10" class="form-control text-sm" asp-for="oChurchLevel.LevelIndex" placeholder="Level Index" aria-describedby="fd_LevelIndex" readonly> }
+                else
+                    { <input type="number" min="1" max="10" class="form-control text-sm" asp-for="oChurchLevel.LevelIndex" placeholder="Level Index" aria-describedby="fd_LevelIndex" required> }
+            </div>
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchLevel.Name"> Level Name </small>
+                @if (Model.oChurchLevel.Id > 0)
+                    { <input type="text" class="form-control text-sm" asp-for="oChurchLevel.Name" placeholder="Level name" aria-describedby="fd_Name" readonly > }
+                else
+                    { <input type="text" class="form-control text-sm" asp-for="oChurchLevel.Name" placeholder="Level name" aria-describedby="fd_Name" required> }                
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <small class="font-weight-normal" asp-for="oChurchLevel.CustomName"> Custom Name </small>
+                <input type="text" class="form-control text-sm" asp-for="oChurchLevel.CustomName" placeholder="Custom name" aria-describedby="fd_CustomName" required>
+                <div class="invalid-feedback" id="fd_CustomName">
+                    Custom name for church level required
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <small class="font-weight-normal" asp-for="oChurchLevel.Acronym">Acronym</small>
+                <input type="text" min="2" max="3" class="form-control text-sm " asp-for="oChurchLevel.Acronym" placeholder="Acronym" aria-describedby="fd_Acronym" required>
+            </div>
+            <div class="invalid-feedback" id="fd_Acronym">
+                Level acronym required for calendar (suggest) -- 3 chars max
+            </div>
+        </div>
+    </form>
+    }
+
+</div>

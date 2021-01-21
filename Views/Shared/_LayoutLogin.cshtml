@@ -1,0 +1,346 @@
+﻿@{
+    /// headers
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Login";
+    ///
+    //  var imgUrl_LogUser = "~/frontend/dist/img_db/" + ViewBag.strAppCurrUser_PhotoFilename;
+    //  var imgUrl_Logo = "~/frontend/dist/img_db/" + ViewBag.strAppCurrChu_LogoFilename;
+    // var imgUrl = "~/frontend/dist/img/2020_dev_sam.jpg";
+
+    
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> @_pageTitle </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <environment include="Development">
+        <link href="~/frontend/plugins/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/fontawesome-free/css/all.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/icheck-bootstrap/icheck-bootstrap.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/jqvmap/jqvmap.css" rel="stylesheet" />
+        <link href="~/frontend/dist/css/adminlte.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/overlayScrollbars/css/OverlayScrollbars.css" rel="stylesheet" />
+        <link href="~/frontend/plugins/summernote/summernote-bs4.css" rel="stylesheet" />
+
+    </environment>
+
+    <environment exclude="Development">
+        <link href="~/frontend/plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link href="~/frontend/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+        <!-- Tempusdominus Bbootstrap 4 -->
+        <link href="~/frontend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+        <!-- iCheck -->
+        <link href="~/frontend/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+        <!-- JQVMap -->
+        <link href="~/frontend/plugins/jqvmap/jqvmap.min.css" rel="stylesheet" />
+        <!-- Theme style -->
+        <link href="~/frontend/dist/css/adminlte.min.css" rel="stylesheet" />
+        <!-- overlayScrollbars -->
+        <link href="~/frontend/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" rel="stylesheet" />
+        <!-- summernote -->
+        <link href="~/frontend/plugins/summernote/summernote-bs4.min.css" rel="stylesheet" />
+
+    </environment>
+
+
+    <!-- Bootstrap CSS -->
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    *@
+
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/frontend/plugins/daterangepicker/daterangepicker.css" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    @* <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"> *@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" />
+
+</head>
+
+<body class="hold-transition sidebar-mini-md layout-fixed bg-gradient-light">
+    @*<div style="background-image: url('img_girl.jpg');">*@
+    @*<div class="wrapper ">  </div>*@
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-light m-0 border-bottom bg-gray-light justify-content-center" style="margin: auto auto auto auto ; padding:0;">
+        <!-- Brand Logo asp-controller="Home" asp-action="Index"-->
+        @*<a class="brand-link bg-transparent" target="_blank" href="@_strVendorEmail">
+                <img src="~/frontend/dist/img/rhema_logo.png" alt="Church logo" class="brand-image img-circle elevation-5 shadow-sm"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-normal text-lg-center text-orange" style="font-size:xx-large"> @_strAppName </span>
+            </a>*@
+
+        <a asp-controller="Home" asp-action="Index_sa" class="brand-link bg-transparent">
+            <img src="~/frontend/dist/img/rhema_logo.png" alt="Church logo" class="brand-image img-circle elevation-1 shadow-sm"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-normal text-lg-center text-dark" style="font-size:xx-large"> @_strAppName </span>
+        </a>
+        <!-- Left navbar links -->
+        @*<ul class="navbar-nav ">
+                <li>
+                     Brand Logo
+                    <a asp-controller="Home" asp-action="Index" class="brand-link bg-gray-light">
+                        <img src="~/frontend/dist/img/rhema_logo.png" alt="Church logo" class="brand-image img-circle elevation-1 shadow-sm"
+                             style="opacity: .8">
+                        <span class="brand-text font-weight-normal text-lg-center"> @ViewBag.strAppName </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link text-light">
+                        <i class="fas fa-home "></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link text-light">
+                        <i class="fas fa-cog "></i>
+                        <span>Configurations</span>
+                    </a>
+                </li>
+
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link text-light">
+                        <i class="fas fa-chart-area "></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+            </ul>*@
+
+    </nav>
+
+    @*<nav class="main-header navbar navbar-expand navbar-light navbar-light pl-5">
+            <div class="bg-transparent rounded pt-2 ">
+                <span class="text-body text-light" style="color: #dcdccf; padding: 0; position: absolute;   text-align:center;  font-family: Verdana, Geneva, Tahoma, sans-serif "> Licensed to: </span>
+                <span class="left badge badge-light navbar-badge small position-fixed" style="left:0; top:0">Licensed to:</span>
+
+                <h5 class="text-center"><i class="fas fa-map-marker-alt fa-sm"></i>&nbsp; @ViewBag.strChuBodyLogged  </h5>
+            </div
+        </nav>>*@
+    <!-- /.navbar -->
+    <!-- Content Wrapper. Contains page content -->
+
+    <div class="wrapper p-2">
+        <!-- Content Header (Page header) -->
+        @*<nav class="main-header navbar navbar-expand navbar-light m-0 border-bottom bg-light justify-content-center" style="margin: auto auto auto auto ; padding:0;">
+                <h1 class="m-0 p-0 text-white-50">LOGIN</h1>
+            </nav>*@
+
+        <div class="content-header justify-content-center" style="margin: 0 auto 0 auto ; padding:0;">
+            <div class="col-md-6 mb-3">
+                <h1 class="m-0 p-0 text-gray">LOGIN</h1>
+            </div>
+        </div>
+
+        <!-- <div class="content-header justify-content-center" style="margin: 0 auto 0 auto ; padding:0;">
+            <div class="row">
+               <div>
+        <h1 class="m-0 p-0 text-light">LOGIN</h1>
+        </div> /.container-fluid
+
+                <div class="col-md-6 mb-3">
+                    <h1 class="m-0 p-0 text-gray">LOGIN</h1>
+                </div>
+                <div class="col-md-6 mb-3 text-right text-light">
+                    <div >
+                        <a class="text-warning" href="http://rhema-systems.com" target="_blank">RHEMA SYSTEMS &amp; Associates LTD - Ghana </a>
+                    </div>
+                    <small class="font-weight-normal"> Delivering tailored solutions for today's needs </small>
+                </div>
+            </div>
+        </div>-->
+        <!-- /.content-header -->
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                @RenderBody()
+            </div><!-- /.container-fluid -->
+        </section>
+    </div>
+
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="changePwdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-gray">
+                    <h5 class="modal-title" id="exampleModalLabel"> Change User Password</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @{ await Html.RenderPartialAsync("_ChangeUserPwd"); }
+                </div>
+                <div class="modal-footer bg-gradient-gray">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc"> Save Password </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"> Logout to end your current session. Sure?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <environment include="Development">
+        <script src="~/frontend/plugins/jquery/jquery.js"></script>
+        <script src="~/frontend/plugins/jquery-ui/jquery-ui.js"></script>
+        <script src="~/frontend/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="~/frontend/plugins/chart.js/Chart.js"></script>
+        <script src="~/frontend/plugins/jqvmap/jquery.vmap.js"></script>
+        <script src="~/frontend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
+        <script src="~/frontend/plugins/summernote/summernote-bs4.js"></script>
+        <script src="~/frontend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.js"></script>
+        <script src="~/frontend/dist/js/adminlte.js"></script>
+
+
+
+    </environment>
+
+    <environment exclude="Development">
+        <!-- jQuery -->
+        <script src="~/frontend/plugins/jquery/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/frontend/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="~/frontend/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- ChartJS -->
+        <script src="~/frontend/plugins/chart.js/Chart.min.js"></script>
+        <!-- JQVMap -->
+        <script src="~/frontend/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="~/frontend/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Summernote -->
+        <script src="~/frontend/plugins/summernote/summernote-bs4.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/frontend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/frontend/dist/js/adminlte.min.js"></script>
+
+
+
+    </environment>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>*@
+
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Sparkline -->
+    <script src="~/frontend/plugins/sparklines/sparkline.js"></script>
+    <script src="~/frontend/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/frontend/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/frontend/plugins/moment/moment.min.js"></script>
+    <script src="~/frontend/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/frontend/dist/js/pages/dashboard.js"></script>
+    <script src="~/frontend/dist/js/pages/dashboard2.js"></script>
+    <script src="~/frontend/dist/js/pages/dashboard3.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/frontend/dist/js/demo.js"></script>
+
+
+    <script src="~/frontend/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/frontend/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+
+    <!-- ./wrapper -->
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+    <!-- Page level plugin JavaScript-->
+    @*<script src="~/content/vendor/chart.js/Chart.min.js"></script>*@
+    @*<script src="~/content/vendor/datatables/jquery.dataTables.js"></script>
+        <script src="~/content/vendor/datatables/dataTables.bootstrap4.js"></script>*@
+
+
+
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>*@
+
+
+
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+</html>
+
+
+
+ 
+
+
+

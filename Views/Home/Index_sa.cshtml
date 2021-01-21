@@ -1,0 +1,159 @@
+﻿@model RhemaCMS.Models.ViewModels.HomeDashboardVM
+
+@{ 
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Dashboard";
+    ///
+    /// dashboard values
+    var _TotalSubsDenom = @ViewData["TotalSubsDenom"] as string;
+    var _TotalSubsCong = @ViewData["TotalSubsCong"] as string;
+    var _TotalSysPriv = @ViewData["TotalSysPriv"] as string;
+    var _TotalSysRoles = @ViewData["TotalSysRoles"] as string;
+    var _TotSysProfiles = @ViewData["TotSysProfiles"] as string;
+    var _TotSubscribers = @ViewData["TotSubscribers"] as string;
+    var _TotDbaseCount = @ViewData["TotDbaseCount"] as string;
+    var _TodaysAuditCount = @ViewData["TodaysAuditCount"] as string;
+    var _TotClientProfiles = @ViewData["TotClientProfiles"] as string;
+    var _TotClientProfiles_Admins = @ViewData["TotClientProfiles_Admins"] as string;
+
+    ///
+    ViewData["Title"] = _pageTitle; // Model.strAppName + " - Dashboard";
+    Layout = "_Layout_sa";
+}
+
+    <partial name="_LoadingPartial" />
+
+    <body id="page-top" class="w-100 small">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Dashboard</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index_sa">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </div><!-- /.col Admin Pallete -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Small boxes (Stat box) -->
+
+        <div class="row">
+            <div class="col-lg col">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h2>@_TotalSubsDenom </h2>
+                        <p>Denominations</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-church"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <!-- ./col -->
+            <div class="col-lg col">
+                <!-- small box -->
+                <div class="small-box bg-gradient-indigo">
+                    <div class="inner">
+                        <h2>@_TotalSubsCong</h2>
+                        @*<h3>53<sup style="font-size: 20px">%</sup></h3>*@
+
+                        <p> Congregations </p>
+                    </div>
+                    <div class="icon">
+                        @*<i class="ion ion-stats-bars"></i>*@
+                        <i class="fas fa-place-of-worship"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg col">
+                <!-- small box -->
+                <div class="small-box bg-gradient-fuchsia">
+                    <div class="inner">
+                        <h2>@_TotSubscribers</h2>
+                        <p>Subscriptions</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <!-- ./col -->
+        </div>
+
+        <!-- /.row --> 
+        <div class="row">
+            <!-- ./col -->
+            <div class="col-lg ">
+                <!-- small box -->
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                        @*<sup style="font-size: 20px; font-weight:lighter">@ViewData["strCurrUsed"]</sup>*@
+                        <h2>@_TotClientProfiles</h2>
+                        <p>Users (Client Profiles)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user-tag"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg ">
+                <!-- small box -->
+                <div class="small-box bg-lightblue">
+                    <div class="inner">
+                        <h2>@_TotSysProfiles</h2>
+                        <p>System Accounts</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg ">
+                <!-- small box -->
+                <div class="small-box bg-gradient-teal">
+                    <div class="inner">
+                        <h2>@_TotDbaseCount</h2>
+                        <p>Managed Databases</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg ">
+                <!-- small box -->
+                <div class="small-box bg-dark">
+                    <div class="inner">
+                        <h2>@_TodaysAuditCount</h2>
+                        <p> Transactions Today </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main row -->
+        <!-- /.row (main row) -->
+    </body>
+
+ 

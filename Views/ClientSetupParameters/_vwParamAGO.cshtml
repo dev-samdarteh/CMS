@@ -1,0 +1,109 @@
+﻿@model RhemaCMS.Models.ViewModels.vm_cl.AppGlobalOwnerModel
+
+@if (Model != null)
+{
+    @if (Model.oAppGlobalOwn != null)
+    {
+        <div class="form-row mb-0 mb-1">
+            <div class="col-md-2 justify-content-center">
+                <small asp-for="oAppGlobalOwn.ChurchLogo" class="control-label"> Church logo </small>
+                <div class="card m-0 p-3 border-0 shadow-none bg-transparent">
+                    <div class="card-body m-0 p-0 text-center">
+                        @{ var photoPath = "~/img_db/" + (Model.oAppGlobalOwn.ChurchLogo ?? "noimg.gif"); }
+                        <img class="card-img-top" src="@photoPath" asp-append-version="true" id="imgFile" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-row mb-1">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.OwnerName">Denomination name</small>
+                        <input type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.OwnerName" placeholder="Denomination" aria-describedby="fd_OwnerName" readonly>
+                    </div>
+                </div>
+                <div class="form-row mb-1">
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="strFaithTypeCategory">Faith Stream Category</small>
+                        <input id="_FaithTypeCategoryId" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.strFaithTypeCategory" placeholder="Faith Stream Category" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="strFaithTypeStream">Faith Stream </small>
+                        <input id="_strChurchStream" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.strFaithStream" placeholder="Church stream" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-md-6">
+                <small class="font-weight-normal" asp-for="strCountry"> Host Country</small>
+                <input type="text" class="form-control text-sm" asp-for="strCountry" placeholder="Slogan Response" readonly>
+            </div>
+            <div class="col-md">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.Allias"> Church Allias</small>
+                <input type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.Allias" placeholder="Denomination" aria-describedby="fd_Allias" readonly>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-md-6">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.Acronym">Acronym</small>
+                <input id="_Acronym" type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.Acronym" placeholder="Acronym" aria-describedby="fd_Acronym" readonly>
+            </div>
+            <div class="col-md-6">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.TotalLevels">Church Levels</small>
+                <input type="number" min="1" max="10" class="form-control text-sm" asp-for="oAppGlobalOwn.TotalLevels" placeholder="Church Levels" aria-describedby="fd_TotalLevels" readonly>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-md-6">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.PrefixKey">Prefix Code</small>
+                <input id="_Acronym" type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.PrefixKey" placeholder="Prefix Code" aria-describedby="fd_PrefixKey" readonly>
+            </div>
+            <div class="col-md-6">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.GlobalChurchCode">Church Code</small>
+                <input id="_GlobalChurchCode" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.GlobalChurchCode" placeholder="Church code" readonly>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-md">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.RootChurchCode">Root Church Code</small>
+                <input id="_RootChurchCode" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.RootChurchCode" placeholder="Root Church code" readonly>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-md">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.Motto">Church Motto</small>
+                <input type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.Motto" placeholder="Church motto" aria-describedby="fd_Motto" readonly>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-md-6">
+                <small class="font-weight-normal" asp-for="strSlogan">Slogan</small>
+                <input type="text" class="form-control text-sm" asp-for="strSlogan" placeholder="Slogan" aria-describedby="strSlogan" readonly>
+            </div>
+            <div class="col-md-6">
+                <small class="font-weight-normal" asp-for="strSloganResponse">Slogan Response</small>
+                <input type="text" class="form-control text-sm" asp-for="strSloganResponse" placeholder="Slogan Response" aria-describedby="strSloganResponse" readonly>
+            </div>
+        </div>
+        <div class="form-row mb-1">
+            <div class="col-md">
+                <small class="font-weight-normal" asp-for="oAppGlobalOwn.Comments">Any comments</small>
+                <textarea asp-for="oAppGlobalOwn.Comments" class="form-control text-sm" rows="3" readonly></textarea>
+            </div>
+            <div class="col-md-2">
+                <small class="font-weight-normal" asp-for="strStatus"> Status </small>
+                <div>
+                    @if (Model.oAppGlobalOwn.Status == "A")
+                    {<span class="badge badge-btn badge-success">@Model.strStatus </span> }
+                else
+                { <span class="badge badge-btn badge-secondary">@Model.strStatus </span>}
+                </div>
+
+                @*<div class="custom-control custom-switch ">
+                        <input type="checkbox" class="custom-control-input" asp-for="blStatusActivated">
+                        <label class="custom-control-label font-weight-normal" asp-for="blStatusActivated"> Activated</label>
+                    </div>*@
+            </div>
+        </div>
+    }
+}

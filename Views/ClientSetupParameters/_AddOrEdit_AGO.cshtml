@@ -1,0 +1,172 @@
+﻿@model RhemaCMS.Models.ViewModels.vm_cl.AppGlobalOwnerModel
+
+@if (Model != null)
+{
+    @if (Model.oAppGlobalOwn != null)
+    {
+        <div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center w-75 " style="margin: 0 auto 0 auto ; padding: 0">
+            <form class="needs-validation bg-transparent p-2" novalidate id="currForm_AGO" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_AGO">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="oAppGlobalOwn.Id" id="_hdnCurrId_AGO" />
+                <input type="hidden" asp-for="oAppGlobalOwn.MSTR_AppGlobalOwnerId" />
+
+                <input type="hidden" asp-for="oAppGlobalOwn.Created" />
+                <input type="hidden" asp-for="oAppGlobalOwn.LastMod" />
+                <input type="hidden" asp-for="oAppGlobalOwn.CreatedByUserId" />
+                <input type="hidden" asp-for="oAppGlobalOwn.LastModByUserId" />
+
+                <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+                @*<input type="hidden" asp-for="@Model.subSetIndex" id="_subSetIndex" />*@
+                <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+                <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+                <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oCurrUserId_Logged" />
+
+
+                @if (Model.oAppGlobalOwn.ChurchLogo != null)
+                {
+                    var photoPath = "~/img_db/" + (Model.oAppGlobalOwn.ChurchLogo ?? "noimg.gif");
+                    <div class="row justify-content-center">
+                        <div class="form-group ">
+                            <div class="card">
+                                <div class="card-body text-center" style="width:200px; height:200px">
+                                    <img class="card-img-top" src="@photoPath" asp-append-version="true" id="imgFile" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1" value="Choose church logo" asp-for="ChurchLogoFile">
+                        <input type="hidden" asp-for="oAppGlobalOwn.ChurchLogo" id="_hdnCurrLogoId" />
+                    </div>
+                }
+
+                <div class="form-row mb-3">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.OwnerName">Denomination name</small>
+                        <input type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.OwnerName" placeholder="Denomination" aria-describedby="fd_OwnerName" required>
+                        <div class="invalid-feedback" id="fd_OwnerName">
+                            Denomination (church) name required
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.Allias">Allias</small>
+                        <input type="text" class="form-control text-sm " asp-for="oAppGlobalOwn.Allias" placeholder="Denomination" aria-describedby="fd_Allias">
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.Acronym">Acronym</small>
+                        <input id="_Acronym" type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.Acronym" placeholder="Acronym" aria-describedby="fd_Acronym" required>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.TotalLevels">Church Levels</small>
+                        <input type="number" min="1" max="10" class="form-control text-sm" asp-for="oAppGlobalOwn.TotalLevels" placeholder="Church Levels" aria-describedby="fd_TotalLevels" readonly>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.PrefixKey">Prefix Code</small>
+                        <input id="_Acronym" type="text" class="form-control text-sm" asp-for="oAppGlobalOwn.PrefixKey" placeholder="Prefix Code" aria-describedby="fd_PrefixKey" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.GlobalChurchCode">Church Code</small>
+                        <input id="_GlobalChurchCode" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.GlobalChurchCode" placeholder="Church code" readonly>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.RootChurchCode">Root Church Code</small>
+                        <input id="_RootChurchCode" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.RootChurchCode" placeholder="Root Church code" readonly>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="strFaithTypeCategory">Faith Stream Category</small>
+                        <input id="_FaithTypeCategoryId" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.strFaithTypeCategory" placeholder="Faith Stream Category" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="strFaithTypeStream">Faith Stream </small>
+                        <input id="_strChurchStream" class="form-control text-sm" type="text" asp-for="oAppGlobalOwn.strFaithStream" placeholder="Church stream" readonly>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md-6">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.Motto">Church Motto</small>
+                        <input type="text" class="form-control text-sm " asp-for="oAppGlobalOwn.Motto" placeholder="Church motto" aria-describedby="fd_Motto">
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md-6 ">
+                        <small class="font-weight-normal" asp-for="strSlogan">Slogan</small>
+                        <input type="text" class="form-control text-sm" asp-for="strSlogan" placeholder="Slogan" aria-describedby="strSlogan">
+                    </div>
+                    <div class="col-md-6 ">
+                        <small class="font-weight-normal" asp-for="strSloganResponse">Slogan Response</small>
+                        <input type="text" class="form-control text-sm " asp-for="strSloganResponse" placeholder="Slogan Response" aria-describedby="strSloganResponse">
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md-6 ">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.CtryAlpha3Code">Country</small>
+                        <select class="form-control text-sm" asp-for="oAppGlobalOwn.CtryAlpha3Code" asp-items="Model.lkpCountries" aria-describedby="fd_CountryId" required>
+                            <option selected disabled value="">Select country...</option>
+                        </select>
+                        <div class="invalid-feedback" id="fd_CountryId">
+                            Select country of operation
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="hidden" asp-for="oAppGlobalOwn.Status" />
+                        <small class="font-weight-normal" asp-for="strStatus"> Status </small>
+                        <div>
+                            @if (Model.oAppGlobalOwn.Status == "A")
+                            {<span class="badge badge-btn badge-success">@Model.strStatus </span> }
+                        else
+                        { <span class="badge badge-btn badge-secondary">@Model.strStatus </span>}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-md">
+                        <small class="font-weight-normal" asp-for="oAppGlobalOwn.Comments">Any comments</small>
+                        <textarea asp-for="oAppGlobalOwn.Comments" class="form-control text-sm" rows="3"></textarea>
+                    </div>
+                </div>
+
+                @if (Model.oAppGlobalOwn.ChurchLogo == null)
+                {
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input font-weight-normal" asp-for="ChurchLogoFile">
+                        <small class="custom-file-small" asp-for="ChurchLogoFile" data-browse="Browse">Choose church logo</small>
+                        <input type="hidden" asp-for="oAppGlobalOwn.ChurchLogo" id="_hdnCurrLogoId" />
+                    </div>
+                    <br />
+                }
+
+
+                @*<div class="col-md-3 justify-content-center">
+            <small asp-for="oAppGlobalOwn.ChurchLogo" class="control-small"> Church logo </small>
+            <div class="card m-0 p-3 border-0 shadow-none bg-transparent">
+                <div class="card-body m-0 p-0 text-center">
+                    @{ var photoPath = "~/img_db/" + (Model.oAppGlobalOwn.ChurchLogo ?? "noimg.gif"); }
+                    <img class="card-img-top" src="@photoPath" asp-append-version="true" id="imgFile" />
+                </div>
+            </div>
+        </div>*@
+
+
+                <!-- ONLY HQ level access -->
+                @*<div class="card-footer clearfix">
+            <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+            <button type="submit" class="btn btn-info btn-sm float-right" onclick="SaveCurr_AGO()">
+                <i class="fas fa-database fa-sm"></i> <span class="text-sm"> Save changes </span>
+            </button>
+        </div>*@
+
+            </form> 
+        </div>
+    }
+}

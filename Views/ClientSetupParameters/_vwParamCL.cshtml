@@ -1,0 +1,38 @@
+﻿@model List<RhemaCMS.Models.ViewModels.vm_cl.ChurchLevelModel>
+
+
+@if (Model != null)
+{
+    @if (Model.Count() > 0)
+    {
+        <ul class="todo-list" data-widget="todo-list">
+            @{
+                foreach (var oCLModel in Model)
+                {
+                    <li>
+                        <!-- drag handle -->
+                        @*<span class="handle">
+                                <i class="fas fa-ellipsis-v fa-sm"></i>
+                                <i class="fas fa-ellipsis-v fa-sm"></i>
+                            </span>*@
+                        <small class="badge badge-light text-center">
+                            <i class="far fa-ellipsis-h"></i>
+                            @oCLModel.oChurchLevel.LevelIndex
+                        </small>
+                        <span class="text font-weight-normal"> @oCLModel.strChurchLevelName </span>
+                        <span class="badge badge-warning text-center">
+                            <i class="far fa-ellipsis-h"></i>
+                            @oCLModel.oChurchLevel.Acronym
+                        </span>
+
+                        <!-- General tools such as edit or delete-->
+                        <div class="tools">
+                            <i class="fas fa-edit"></i>
+                            @*<i class="fas fa-trash-o"></i>*@
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    } 
+}

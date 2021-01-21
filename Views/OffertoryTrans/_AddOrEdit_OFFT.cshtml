@@ -1,0 +1,159 @@
+﻿@model RhemaCMS.Models.ViewModels.OffertoryModel
+
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center"
+     style="width: 80%; margin: 0px auto 10px auto ; padding:0;  ">
+
+    <form id="currForm_OFFT" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_OFFT" class=" form-group bg-transparent"
+          style="margin-top:0px; padding-left: 3px; padding-right:3px;   ">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oOffertoryTrans.Id" id="_hdnCurrId_OFFT" />
+        <input type="hidden" asp-for="oOffertoryTrans.ChurchBodyId" id="_hdnChuBodyId" />
+        <input type="hidden" asp-for="oOffertoryTrans.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+        <input type="hidden" asp-for="oOffertoryTrans.CurrencyId" />
+        <input type="hidden" asp-for="oOffertoryTrans.PostStatus" />
+        <input type="hidden" asp-for="oOffertoryTrans.PostedDate" />
+        <input type="hidden" asp-for="oOffertoryTrans.ReceivedByUserId" />
+
+        <input type="hidden" asp-for="oOffertoryTrans.Created" />
+        <input type="hidden" asp-for="oOffertoryTrans.LastMod" />
+        <input type="hidden" asp-for="oOffertoryTrans.CreatedByUserId" />
+        <input type="hidden" asp-for="oOffertoryTrans.LastModByUserId" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />
+         
+
+        <br />
+        <br />
+        @if (Model.oOffertoryTrans != null)
+        {
+            // var photoPath = "~/img_db/" + (Model.oOffertoryTrans.UserPhoto ?? "df_user_p.png");
+
+            <div class="form-row ">
+                <div class="form-group  col-sm-6">
+                    <div class="form-row col-sm">      
+                        <div class="form-group col-sm-6">
+                            <label asp-for="oOffertoryTrans.Id " class="control-label"> Trans. # </label>
+                            @if (Model.oOffertoryTrans.Id != 0)
+                            { <input asp-for="oOffertoryTrans.Id" class="form-control text-sm" autocomplete="off" disabled/> }
+                            else 
+                            { <input value="- NEW -" class="form-control text-sm text-center text-light bg-success small" autocomplete="off" disabled />}                                
+                              <span asp-validation-for="oOffertoryTrans.Id" class="text-danger"></span>
+                            </div> 
+                        <div class="form-group col-sm-6">
+                            <label asp-for="oOffertoryTrans.AccountPeriodId" class="control-label"></label>
+                            <select class="form-control text-sm" asp-for="oOffertoryTrans.AccountPeriodId" asp-items="Model.lkpAccountPeriods"></select>
+                            <span asp-validation-for="oOffertoryTrans.AccountPeriodId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oOffertoryTrans.OffertoryDate " class="control-label"></label>
+                            <input asp-for="oOffertoryTrans.OffertoryDate" class="form-control text-sm" autocomplete="off" />
+                            <span asp-validation-for="oOffertoryTrans.OffertoryDate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oOffertoryTrans.RelatedEventId" class="control-label"></label>
+                            <select class="form-control text-sm" asp-for="oOffertoryTrans.RelatedEventId" asp-items="Model.lkpChurchEvents"></select>
+                            <span asp-validation-for="oOffertoryTrans.RelatedEventId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oOffertoryTrans.OffertoryTypeId" class="control-label"></label>
+                            <select class="form-control text-sm" asp-for="oOffertoryTrans.OffertoryTypeId" asp-items="Model.lkpOffertoryTypes"></select>
+                            <span asp-validation-for="oOffertoryTrans.OffertoryTypeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                   
+                    <hr />
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oOffertoryTrans.ReceivedByUserId " class="control-label"></label>
+                            @*<label asp-for="strReceivedBy" class="form-control text-sm bg-gray-light"></label>*@
+                            <input asp-for="strReceivedBy" class="form-control text-sm" autocomplete="off" disabled/>
+                            <span asp-validation-for="oOffertoryTrans.ReceivedByUserId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6 mt-0 pl-3 border-left align-middle">
+                    @*<img class="card-img-top img-thumbnail smaller" src="@photoPath" asp-append-version="true" style="width:100%; height: 200px; margin:5px" />*@
+
+                    <div class="form-row col-sm">
+                        <label asp-for="oOffertoryTrans.AmtPaid" class="control-label"></label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text text-sm" id="basic-addon1">
+                                    <span class="text-center w-auto" aria-hidden="true">@Model.strCurrency</span>
+                                </span>
+                            </div>
+
+                            @*  fas fa-coins fa-sm
+                @Html.TextBoxFor(m => m.oOffertoryTrans.AmtPaid, new { @type = "number", @class = "form-control", @min = "0" }) border: 1px solid #52b4d9   placeholder="Offertory amount" *@
+
+                            <input asp-for="oOffertoryTrans.AmtPaid" type="number" min="0" max="@decimal.MaxValue" placeholder="0.00" class="form-control text-right" aria-label="Offertory amount" aria-describedby="basic-addon1"
+                                   style="font-size: larger; font-family:Verdana, Geneva, Tahoma, sans-serif; ">
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        @* <div>
+                                <label>
+                                    Amount $
+                                    <input type="number" placeholder="0.00" required name="price" min="0" value="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$" onblur="
+                                                        this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'red' ">
+                                </label>
+                            </div>
+                           <div class="form-group col-sm">
+                                <label asp-for="oOffertoryTrans.PmntMode" class="control-label"></label>
+                                <select class="form-control text-sm" asp-for="oOffertoryTrans.PmntMode" asp-items="Model.lkpPaymentModes"></select>
+                                <span asp-validation-for="oOffertoryTrans.PmntMode" class="text-danger"></span>
+                            </div>*@
+                    </div>
+                    @*<div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oOffertoryTrans.PmntMode" class="control-label"></label>
+                            <select class="form-control text-sm" asp-for="oOffertoryTrans.PmntMode" asp-items="Model.lkpPaymentModes"></select>
+                            <span asp-validation-for="oOffertoryTrans.PmntMode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oOffertoryTrans.PmntModeRefNo " class="control-label"></label>
+                            <input asp-for="oOffertoryTrans.PmntModeRefNo" class="form-control text-sm" autocomplete="off" />
+                            <span asp-validation-for="oOffertoryTrans.PmntModeRefNo" class="text-danger"></span>
+                        </div>
+                    </div>*@
+                    <div class="form-row col-sm">
+                        <label for="basic-url"> Posting </label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text text-sm" id="basic-addon3"> @Model.strPostStatus </span>
+                            </div>
+                            @*<label asp-for="strPostDate" class="form-control text-sm" id="basic-url" aria-describedby="basic-addon3"></label>*@
+                            <input asp-for="oOffertoryTrans.PostedDate" class="form-control text-sm" id="basic-url" aria-describedby="basic-addon3" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row col-sm">
+                        <div class="form-group col-sm">
+                            <label asp-for="oOffertoryTrans.Comments " class="control-label"></label>
+                            <textarea asp-for="oOffertoryTrans.Comments" class="form-control text-sm" aria-label="With textarea"></textarea>
+                            <span asp-validation-for="oOffertoryTrans.Comments" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <br />
+    </form>
+</div>

@@ -1,0 +1,587 @@
+﻿
+@model RhemaCMS.Models.ViewModels.ChurchFaithTypeModel
+
+@{
+    /// headers
+    var _strAppName = @ViewData["strAppName"] as string;
+    var _pageTitle = @_strAppName + " - Church Faith Streams";
+    ///
+    ViewData["Title"] = @_pageTitle;
+    //ViewData["Title"] = Model.strAppName + " - Church Faith Streams";
+    Layout = "_Layout_sa";
+}
+
+
+    <body id="page-top" class="w-100">
+        @{
+            var _oCBId = -1; if (Model.oChurchBodyId != null) { _oCBId = (int)Model.oChurchBodyId; }
+            var _oAGOId = -1; if (Model.oAppGloOwnId != null) { _oAGOId = (int)Model.oAppGloOwnId; };
+        }
+
+        @*<input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGloOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />*@
+
+
+        @*<input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+        <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+        <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />*@
+
+        <input type="hidden" id="_oSetIndex" data-value="@Model.setIndex" />
+        <input type="hidden" id="_oSubSetIndex" data-value="@Model.subSetIndex" />
+        <input type="hidden" id="_oChurchBody_Logged" data-value="@Model.oChurchBody_Logged" />
+        <input type="hidden" id="_oAppGloOwnId_Logged" data-value="@Model.oAppGloOwnId_Logged" />
+        @*<input type="hidden" id="_pageIndex" data-value="@Model.pageIndex" />*@
+        <input type="hidden" id="_oUserId_Logged" data-value="@Model.oUserId_Logged" />
+        <input type="hidden" id="_oChurchBodyId_Logged" data-value="@Model.oChurchBodyId_Logged" />
+
+
+        <div class="card bg-gradient-light">
+            <div class="card-header border-bottom">
+                <h3 class="card-title text-primary">
+                    <i class="fas fa-th mr-1"></i>
+                    @Model.strCurrTask
+                </h3>
+                <div class="card-tools">
+                    @*<ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index_sa">Home</a></li>
+                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                    </ol>*@
+                    <button type="button" class="btn btn-sm bg-light" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm bg-light text-danger" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="wrapper">
+                    @*<div class="content-header pb-0">
+                        <div class="container-fluid pb-0">
+                            <div class="row mb-0">
+                                <div class="col-sm-6">
+                                    <h3 class="m-0 text-dark"> @Model.strCurrTask</h3>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right">
+                                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                        <li class="breadcrumb-item active"> @Model.strCurrTask</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                    @if (Model.subSetIndex == 1)
+                    {
+                        //var _strDesc = "'" + (Model.subSetIndex == 1 ? "Faith Stream" : "Faith Category") + "'";
+                        <table id="tbId_FaithType" class="table table-sm table-bordered table-striped table-responsive-sm table-hover w-100 border" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th style="vertical-align: middle">
+                                        &nbsp; Description
+                                    </th>
+
+                                    <th width="100px" style="vertical-align: middle; text-align:center">
+                                        <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CFT" asp-route-oDenomId="@_oAGOId" asp-route-oCurrChuBodyId="@_oCBId" asp-route-setIndex="1" asp-route-subSetIndex="1" data-backdrop="static" data-keyboard="false">
+                                            <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                        </a>
+                                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                           onclick="AddEditCurrData_CFT(0, @_oAGOId, @_oCBId, 1, 1, '[New] Faith Stream')">
+                                            <i class="fa fa-plus fa-sm fa-primary"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.lsChurchFaithTypeModels)
+                                {
+                                    var strDesc = "'" + item.oChurchFaithType.FaithDescription + "'";
+                                    <tr>
+                                        <td style="vertical-align: middle">
+                                            &nbsp; @item.oChurchFaithType.FaithDescription
+                                        </td>
+                                        @if (Model.setIndex == 2)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.strFaithTypeClass)
+                                            </td>
+                                        }
+                                        <td style=" vertical-align: middle ; text-align:center">
+                                            <div class="btn-group dropright">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                </button>
+                                                <div class="dropdown-menu p-1">
+                                                    <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                       onclick="AddEditCurrData_CFT(@item.oChurchFaithType.Id, @_oAGOId, @_oCBId, 1, 1, @strDesc)">
+                                                        <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                    </a>
+                                                    <a href="#" class="btn btn-light btn-sm text-danger small"
+                                                       onclick="DeleteCurrData_CFT(@item.oChurchFaithType.Id, @_oAGOId, @_oCBId, 1, 1, false,'')">
+                                                        <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                                                    </a>
+                                                    @*DeleteCurrData_CFT = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, forceDeleteConfirm = false, msg = "")*@
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+
+                    else if (Model.subSetIndex == 2)
+                    {
+                        // var _strDesc = "'" + (Model.subSetIndex == 1 ? "Faith Stream" : "Faith Category") + "'";
+                        <table id="tbId_SubFaithType" class="table table-sm table-bordered table-striped table-responsive-sm table-hover w-100 border" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        &nbsp; Description
+                                    </th>
+                                    <th>
+                                        Church Faith Stream
+                                    </th>
+                                    <th width="100px" style=" vertical-align: middle; text-align:center">
+                                        <a class="btn btn-light btn-sm " asp-controller="AppVenAdmin" asp-action="Index_CFT" asp-route-oDenomId="@Model.oAppGloOwnId" asp-route-oCurrChuBodyId="@Model.oChurchBodyId" asp-route-setIndex="1" asp-route-subSetIndex="2" data-backdrop="static" data-keyboard="false">
+                                            <i class="fa fa-refresh fa-sm" style="color:green "></i>
+                                        </a>
+                                        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                           onclick="AddEditCurrData_CFT(0, @_oAGOId, @_oCBId, @Model.setIndex, 2, '[New] Faith Category')">
+                                            <i class="fa fa-plus fa-sm fa-primary"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.lsChurchFaithTypeModels)
+                                {
+                                    var strDesc = "'" + item.strFaithTypeClass + "'";
+                                    <tr>
+                                        <td style="vertical-align: middle">
+                                            &nbsp; @item.oChurchFaithType.FaithDescription
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.strFaithTypeClass)
+                                        </td>
+                                        <td style=" vertical-align: middle ; text-align:center">
+                                            <div class="btn-group dropright">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v fa-sm"></i>
+                                                </button>
+                                                <div class="dropdown-menu p-1">
+                                                    <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                                       onclick="AddEditCurrData_CFT(@item.oChurchFaithType.Id, @_oAGOId, @_oCBId, @Model.setIndex, 2, @strDesc)">
+                                                        <i class="fa fa-pencil fa-sm "></i> &nbsp; Edit
+                                                    </a>
+                                                    <a href="#" class="btn btn-light btn-sm text-danger small"
+                                                       onclick="DeleteCurrData_CFT(@item.oChurchFaithType.Id, @_oAGOId, @_oCBId, 1, 2, false,'')">
+                                                        <i class="fa fa-trash fa-sm"></i> &nbsp; Delete
+                                                    </a>
+
+
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    <!-- /.content-wrapper -->
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div style="text-align:center; display:none" id="divLoader">
+            <img src="~/css/images/load.gif" width="100" />
+        </div>
+
+        <!-- /#wrapper -->
+        <!-- Scroll to Top Button-->
+        @*<a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>*@
+
+
+
+        <div id="loaderr">
+
+        </div>
+
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="_modalLabel">Logout!</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"> Logout to end your current session. Sure?</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" asp-area="" asp-controller="UserLogin" asp-action="LoginUserAcc">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="divPopModal_AddEdit_lg" tabindex="-1" role="dialog" aria-labelledby="_modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-gradient-teal">
+                        <h5 class="modal-title"> Editing: </h5> @*@Model.strCurrTask*@
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body bg-light" style="font-family:Verdana, Geneva, Tahoma, sans-serif;
+                            font-size: 10pt" id="divModalBody_AddEdit_lg">
+                    </div>
+                    <div class="modal-footer " style="background-color: lightgrey; left:auto; right: auto">
+                        <a href="#" class="btn btn-outline-light " data-dismiss="modal"> Cancel </a>
+                        <button id="btnSaveChanges" type="button" class="btn btn-dark save-data"><i class="fa fa-database fa-sm"></i> Save changes </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal-->
+        <div class="modal fade" id="divPopModal_Success" tabindex="-1" role="dialog" aria-hidden="true" style="background-color:transparent; min-width:75px">
+            <div class="modal-dialog modal-sm bg-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h5 style="color: white; font-weight:bold"> Done! </h5>
+                    </div>
+                    <div class="modal-body bg-white" style="align-items:center">
+                        <label id="lblUserMessage" class="text-sm font-weight-normal text-center"></label>
+                    </div>
+
+                    <div class="modal-footer bg-white">
+                        <a href="#" id="_btnSuccessOK" class="btn btn-success shadow shadow-sm" data-dismiss="modal">Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*<partial name="_CookieConsentPartial" />   *@
+
+
+    </body>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+     
+
+
+<script>
+                $(document).ready(function () {
+                    //for table row
+                    $("tr:even").css("background-color", "#fff");
+                    $("tr:odd").css("background-color", " #f7f6f6 ");
+
+
+                   // var currSubSetIndex = $("#_oSetIndex").data("value");
+                    var currSubSetIndex = $("#_oSubSetIndex").data("value");
+                                       
+
+                    if (currSubSetIndex == 1) {
+                       // alert('currSubSetIndex: ' + currSubSetIndex)
+                        $('#tbId_FaithType').DataTable({
+                            "processing": true,
+                            "columnDefs": [
+                                { "searchable": false, "orderable": false, "targets": [1] },
+                            ],
+                        });
+                    }
+                    else if (currSubSetIndex == 2) {
+                      //  alert('currSubSetIndex: ' + currSubSetIndex)
+                        $('#tbId_SubFaithType').DataTable({
+                            "processing": true,
+                            "columnDefs": [
+                                { "searchable": false, "orderable": false, "targets": [2] },
+                            ],
+                        });
+                    }
+
+
+
+                });
+
+
+        var AddEditCurrData_CFT = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName) {
+                    //alert('addORedit...');
+                    // alert('addORedit.. ' + currId + ' __indx: ' + currSetIndex);
+
+        var currAGOId_Logged = $("#_oAppGloOwnId_Logged").data("value");
+        var currCBId_Logged = $("#_oChurchBodyId_Logged").data("value");
+        var currUserId_Logged = $("#_oUserId_Logged").data("value");
+        var currParBodyId = null;
+
+        if (currId < 0) currId = null;
+        if (currDenomId < 0) currDenomId = null;
+        if (currChuBodyId < 0) currChuBodyId = null;
+        if (currSetIndex < 0) currSetIndex = null;
+        if (currSubSetIndex < 0) currSubSetIndex = null;
+
+        //if (currAGOId_Logged < 0) currAGOId_Logged = null;
+        //if (currCBId_Logged < 0) currCBId_Logged = null;
+        //if (currUserId_Logged < 0) currUserId_Logged = null;
+
+                   
+                    //public IActionResult AddOrEdit_CFT(int ? oAppGloOwnId = null, int ? oCurrChuBodyId = null, int id = 0, int ? oParentId = null, int setIndex = 0, int subSetIndex = 0,
+                                                    //    int ? oAGOId_Logged = null, int ? oCBId_Logged = null, int ? oUserId_Logged = null)
+
+        //alert('currChuBodyId.. ' + currChuBodyId + ' __currDenomId: ' + currDenomId);
+
+                    var url = "@Url.Action("AddOrEdit_CFT", "AppVenAdmin")?oAppGloOwnId=" + currDenomId + "&oCurrChuBodyId=" + currChuBodyId + "&id=" + currId + "&oParentId=" + currParBodyId +
+                        "&setIndex=" + currSetIndex + "&subSetIndex=" + currSubSetIndex + "&oAGOId_Logged=" + currAGOId_Logged + "&oCBId_Logged=" + currCBId_Logged + "&oUserId_Logged=" + currUserId_Logged;
+
+                 //   alert(url)
+
+                   // if (currId > 0) { document.querySelector('#btnSaveChanges').innerHTML = 'Update'; }
+                    if (currId > 0) { $('#btnSaveChanges').html('Update'); }
+
+                  //  alert(url)
+
+                    $('#divPopModal_AddEdit_lg').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+
+                    //$('#divPopModal_AddEdit_lg').modal({
+                    //    backdrop: false,
+                    //    show: true
+                    //});
+
+                    $('#divPopModal_AddEdit_lg .modal-dialog').draggable({
+                        handle: ".modal-header"
+                    });
+
+
+                    //alert('loading modal...')
+                    //$("#_setIndex").val(setIndex);
+                    //$('#divModalBody_AddEdit_lg').load(url, function () {
+                    $('#divPopModal_AddEdit_lg .modal-body').load(url, function () {
+
+                        $('#divPopModal_AddEdit_lg .modal-title').html(_strItemName);
+                        $("#divPopModal_AddEdit_lg").modal('show');
+                    });
+
+                };
+
+                var DisplaySuccessInfo = function (msg, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, reload = false) {
+         
+                    $.alert({
+                        title: 'Done!',
+                        type: 'green',
+                        typeAnimated: true,
+                        content: msg,
+                        closeIcon: true,
+                        closeIconClass: 'fa fa-close'
+                    });
+
+                    if (reload) {
+                        ReloadCurrPage_CFT(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); 
+                    }
+                };
+
+                var _DisplaySuccessInfo = function (msg, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, reload = false) {
+
+                    $("#lblUserMessage").text(msg);
+                    //$("#_urlSuccessOK").val(reloadUrl);
+
+                    $("#divPopModal_Success").modal('show');
+
+                    if (reload) {
+                        ReloadCurrPage_CFT(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);
+
+                        //window.location.href = "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&id=" + currId;
+                    }
+                };
+
+                //public ActionResult Index(int? oDenomId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 1, int? oParentId = null)
+                var ReloadCurrPage = function (currDenomId = null, currChuBodyId = null, currSetIndex, currSubSetIndex, parId = null) { //, chuCategId = null, showAllCong = true) {
+                   // alert('load..'); 
+                    
+                    // public ActionResult Index_CFT(int? oAppGloOwnId = null, int? oCurrChuBodyId = null, int setIndex = 0, int subSetIndex = 0)
+                    window.location.href =  '@Url.Action("Index_CFT", "AppVenAdmin")?oAppGloOwnId=' + currDenomId + '&oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&subSetIndex=' + currSubSetIndex + '&oParentId=' + parId; // + '&oChuCategId=' + chuCategId + '&oShowAllCong=' + showAllCong;
+
+                    //if (parId == '') {
+                    //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    //}
+                    //else {
+                    //    window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex + '&oParentId=' + parId;
+                    //}
+                }
+     
+</script>
+
+
+<script>
+
+        $(document).on('click', '#btnSaveChanges', function (e) {
+            e.preventDefault();
+
+           // alert('click..');
+            var currSetIndex = $("#_setIndex").val();
+            var currSubSetIndex = $("#_subSetIndex").val();
+
+           //  alert('savin...: sub: ' + currSetIndex);
+
+            SaveCurr_CFT(currSetIndex, currSubSetIndex);
+        })
+
+
+        var SaveCurr_CFT = function (currSetIndex, currSubSetIndex) {
+           //   alert('save... ' + currSetIndex);
+
+            var currFormData = new FormData($("#currForm_CFT").get(0));
+            // var currFormData = $("#currForm_CFT").serialize();
+
+          //  alert('save... ' + currSetIndex);
+            $.ajax({
+                type: 'POST',
+                // data: formdata,
+                // processData: false,
+
+                url: '@Url.Action("AddOrEdit_CFT", "AppVenAdmin")',
+
+               // url: "/AppVenAdmin/AddOrEdit_CFT",
+                data: currFormData,   //{ data: currFormData, taskIndx: oTask },  //
+                //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+
+                    if (res.taskSuccess == true) {
+                        var currChuBodyId = $("#_hdnChuBodyId").val();
+                        var currDenomId = $("#_hdnAppGloOwnId").val();
+
+                        // var currId = $("#_hdnCurrId_CFT").val();
+                        DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex); // "/AppVenAdmin/Index?oCurrChuBodyId=" + currChuBodyId + "&dxn=" + dxn);
+                        // document.querySelector('#btnSaveChanges').innerHTML = 'Update';
+
+                        // $('#btnSaveChanges').html('Update');
+                        //var AddEditCurrData_CFT = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _strItemName)
+
+                        var _desc = "'[New] " + currSubSetIndex == 1 ? "Faith Stream" : "Faith Category"; // + "]'";
+                        if (res.resetNew == true) {
+                            AddEditCurrData_CFT(0, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, _desc);
+                        }
+                        else {
+
+                            $("#divPopModal_AddEdit_lg .close").click();
+                        }
+
+                        //window.location.href = '/AppVenAdmin/Index?oCurrChuBodyId=' + currChuBodyId + '&setIndex=' + currSetIndex;
+                    }
+
+                    else //if (res.taskSuccess == false)
+                    {
+                        $.alert({
+                            title: 'Oops!',
+                            content: res.userMess,
+                            type: 'red',
+                            typeAnimated: true,
+                        });
+
+                       // alert(res.userMess); //"Member transfer request failed. Details: " + ViewBag.UserMsg);
+                        // $("#lblUserMessage").text(msg);
+                    }
+                }
+            })
+        }
+
+    var DeleteCurrData_CFT = function (currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, forceDeleteConfirm = false, msg = "") {
+       // alert('deleting')
+       // alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + ' .. forceDeleteConfirm: ' + forceDeleteConfirm);
+
+            //  if (delConfirm == null) { delConfirm = false; }
+
+            //alert('DEL.. ' + currId + ' __ indx: ' + currSetIndex + 'delConfirm: ' + delConfirm);
+           // var oAppGloId = null;
+
+        var currUserId = $("#_oUserId_Logged").val();
+       // var currDenomId = $("#_hdnAppGloOwnId").val();
+
+      //  alert('currUserId: ' + currUserId)
+            $.confirm({
+                title: 'Confirm delete!',
+                content: (msg == '' ? 'Are you sure you want to delete the specified ' + (currSubSetIndex == 1 ? 'faith stream' : 'faith category') : msg) + ' ?',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    cancel: function () {
+                        //$.alert('Canceled!');
+                    },
+                    //info: {
+                    //    btnClass: 'btn-blue',
+                    //    action: function(){}
+                    //},
+
+                    delete: {
+                        btnClass: 'btn-danger ',
+                        action: function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Delete_CFT", "AppVenAdmin")',
+                               // url: "/AppVenAdmin/Delete_CFT",
+                                // public IActionResult Delete_CFT(int? loggedUserId, int id, int setIndex, int subSetIndex, bool forceDeleteConfirm = false)
+                                data: { loggedUserId: currUserId, id: currId, setIndex: currSetIndex, subSetIndex: currSubSetIndex, forceDeleteConfirm: forceDeleteConfirm },  //forceDeleteConfirm = -1 {denied-error, info}, 0 {denied-dependencies, info}, 1 {denied-confirm to force-delete, task}
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                success: function (res) {
+                                    if (res.taskSuccess == true) {          //var currChuBodyId = $("#_hdnChuBodyId").val();
+                                        DisplaySuccessInfo(res.userMess, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);        //DisplaySuccessInfo(res.userMess, oAppGloId, currChuBodyId, currSetIndex);
+                                        ReloadCurrPage_CFT(currDenomId, currChuBodyId, currSetIndex, currSubSetIndex);                  // (oAppGloId, currChuBodyId, currSetIndex);
+                                    }
+
+                                    else {
+                                        // alert(res.userMess);  (currSetIndex == 1 && !delConfirm)   //
+                                        if (res.tryForceDelete == true) {
+                                            DeleteCurrData_CFT(currId, currDenomId, currChuBodyId, currSetIndex, currSubSetIndex, true, res.userMess);
+                                        }
+
+                                        else {
+                                            //alert(res.userMess);
+                                            $.alert({
+                                                title: 'Oops! Delete failed.',
+                                                content: res.userMess, //'Could not delete specified record(s). Please try again.',
+                                                type: 'red',
+                                            });
+                                        }
+                                    }
+                                },
+
+                                error: function () {
+                                    alert("Error occured while deleting data");
+                                }
+                            });
+                        }
+                    },
+
+                    //,
+                }
+            });
+
+        };
+     
+</script>
+     
+}

@@ -1,0 +1,71 @@
+﻿@model List<RhemaCMS.Models.ViewModels.vm_cl.CountryRegionModel>
+
+
+@if (Model != null)
+{
+    <table id="tabData_CTRY_RGN" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name of Region</th>
+                <th>RGN Code</th>
+                <th>Country</th>
+                <th>Scope</th>
+                <th>Status</th>
+                <th class="p-1" style="vertical-align: middle; text-align: center; width: 60px ">
+                    <a href="#" id="btnAddEdit_0CTRY_RGN" data-remote="false" class="btn btn-default btn-sm text-success border-0" data-backdrop="static"
+                       onclick="ReloadCurrPage_CTRY_RGN(7, 3)">
+                        <i class="fa fa-refresh fa-sm"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.oCountryRegion != null)
+                {
+                    var strDesc = "'" + item.oCountryRegion.Name + "(" + item.strCountry + ")'";
+            <tr>
+                <td>
+                    @item.oCountryRegion.Name
+                </td>
+                <td>
+                    @item.oCountryRegion.RegCode
+                </td>
+                <td>
+                    @item.strCountry
+                </td>
+                <td>
+                    @item.strSharingStatus
+                </td>
+                <td>
+                    <div class="icheck-success d-inline">
+                        <input type="checkbox" checked id="checkboxSuccess1" value="@item.isCustomDisplay">
+                        <label for="checkboxSuccess1">
+                        </label>
+                    </div>
+                </td>
+                <td class="p-1" style="vertical-align: middle; text-align:center ">
+                    <div class="btn-group  ">
+                        <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v text-gray text-lg"></i>
+                        </button>
+                        <div class="dropdown-menu p-1">
+                            <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                               onclick="AddEditCurrData_CTRY_RGN(@item.oCountryRegion.Id, @strDesc)">
+                                <i class="fa fa-edit fa-sm "></i> &nbsp; Edit
+                            </a>
+                            <a href="#" class="btn btn-light btn-sm text-danger small"
+                               onclick="DeleteCurrData_CTRY_RGN(@item.oCountryRegion.Id, false, '')">
+                                <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+}

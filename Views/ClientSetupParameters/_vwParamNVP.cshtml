@@ -1,0 +1,106 @@
+﻿@model List<RhemaCMS.Models.ViewModels.vm_cl.AppUtilityNVPModel>
+
+
+@if (Model != null)
+{
+    <table id="tabData_NVP" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Setting Tag</th>
+                <th>Value</th>
+                <th>Acronym</th>
+                <th>Order</th>
+                <th>Status</th>
+                <th class="p-1"  style="vertical-align: middle; text-align: center; width: 60px ">
+                    <a href="#" id="btnAddEdit_0NVP" data-remote="false" class="btn btn-default btn-sm text-success border-0" data-backdrop="static"
+                       onclick="ReloadCurrPage_NVP(6, 1)">
+                        <i class="fa fa-refresh fa-sm"></i>
+                    </a>
+
+                    @* <a href="#" id="btnAddEdit_0NVP" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+            onclick="AddEditCurrData_NVP(0, '[New Lookup Parameter]')">
+             <i class="fas fa-edit"></i>
+         </a>
+        <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-info btn-sm" data-backdrop="static" onclick="AddEditCurrData(0, @_oAGOId, @_oCBId, @Model.setIndex, '[New Tithe]')">
+             <span class="fas fa-plus fa-sm " aria-hidden="true"></span>
+         </a>*@
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.oAppUtilityNVP != null)
+                {
+                    var strDesc = "'" + item.strNVPTag + ":- " + item.oAppUtilityNVP.NVPValue + "'";
+                    <tr>
+                        <td>
+                            @item.strNVPTag
+                        </td>
+                        <td>
+                            @item.oAppUtilityNVP.NVPValue
+                        </td>
+                        <td>
+                            @item.oAppUtilityNVP.Acronym
+                        </td>
+                        <td>
+                            @item.oAppUtilityNVP.OrderIndex
+                        </td>
+                        <td align="center" valign="middle">
+                            @if (item.oAppUtilityNVP.NVPStatus == "A")
+                            {
+                                <span class="badge badge-success text-center">
+                                    <i class="far fa-check fa-sm"></i>
+                                    @item.strNVPStatus
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary text-center">
+                                    <i class="far fa-check fa-sm"></i>
+                                    @item.strNVPStatus
+                                </span>
+                            }
+                        </td>  
+                        <td class="p-1" style="vertical-align: middle; text-align:center ">
+                            <div class="btn-group  ">
+                                <button type="button" class="btn btn-outline-light btn-sm dropdown-toggle border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-gray text-lg"></i>
+                                </button>
+                                <div class="dropdown-menu p-1">
+                                    <a href="#" id="btnAddEdit" data-remote="false" class="btn btn-light btn-sm text-primary" data-backdrop="static"
+                                       onclick="AddEditCurrData_NVP(@item.oAppUtilityNVP.Id, @strDesc)">
+                                        <i class="fa fa-edit fa-sm "></i> &nbsp; Edit
+                                    </a>
+                                    <a href="#" class="btn btn-light btn-sm text-danger small"
+                                       onclick="DeleteCurrData_NVP(@item.oAppUtilityNVP.Id, false, '')">
+                                        <i class="fa fa-trash fa-sm  "></i> &nbsp; Delete
+                                    </a>
+                                </div>
+                            </div>
+
+                            @*<a href="#" id="btnAddEdit_NVP" data-remote="false" class="btn btn-sm btn-outline-danger border-0 text-primary" data-backdrop="static"
+                               onclick="AddEditCurrData_NVP(@item.oAppUtilityNVP.Id, @strDesc)">
+                                <i class="fas fa-edit fa-sm"></i>
+                            </a>
+                            <a href="#" id="btnDelete_NVP" data-remote="false" class="btn btn-sm btn-outline-danger border-0 text-secondary" data-backdrop="static"
+                               onclick="DeleteCurrData_NVP(@item.oAppUtilityNVP.Id, false, '')">
+                                <i class="fas fa-trash-alt fa-sm"></i>
+                            </a>*@
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        @*<tfoot>
+            <tr>
+                <th>Rendering engine</th>
+                <th>Browser</th>
+                <th>Platform(s)</th>
+                <th>Engine version</th>
+                <th>CSS grade</th>
+            </tr>
+        </tfoot>*@
+    </table>
+
+}

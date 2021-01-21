@@ -1,0 +1,173 @@
+﻿@model RhemaCMS.Models.ViewModels.AccountMasterModel
+
+
+<div id="divModalContainer" class="jumbotron-fluid shadow-none form-group justify-content-center"
+     style="width: 80%; margin: 0px auto 10px auto ; padding:0;  ">
+
+    <form id="currForm_AM" method="post" enctype="multipart/form-data" asp-action="AddOrEdit_AM" class=" form-group bg-transparent"
+          style="margin-top:0px; padding-left: 3px; padding-right:3px;   ">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="oAccountMaster.Id" id="_hdnCurrId_AM" />
+        <input type="hidden" asp-for="oAccountMaster.ChurchBodyId" id="_hdnChuBodyId" />
+        <input type="hidden" asp-for="oAccountMaster.AppGlobalOwnerId" id="_hdnAppGloOwnId" />
+
+        <input type="hidden" asp-for="oAccountMaster.Status" />
+        <input type="hidden" asp-for="oAccountMaster.AccountCode" id="_hdnAccountNo_AM" />
+        <input type="hidden" asp-for="oAccountMaster.strMainAccountNo" />  @*// id="_hdnMainAccountNo" />*@
+        <input type="hidden" asp-for="oAccountMaster.strSubAccountNo" />  @*// id="_hdnSubAccountNo" />  //*@
+        <input type="hidden" asp-for="oAccountMaster.AccountCategoryId" />  @*// id="_hdnAccountCategoryId" />*@
+
+        <input type="hidden" asp-for="oAccountMaster.Created" />
+        <input type="hidden" asp-for="oAccountMaster.LastMod" />
+        <input type="hidden" asp-for="oAccountMaster.CreatedByUserId" />
+        <input type="hidden" asp-for="oAccountMaster.LastModByUserId" />
+
+        <input type="hidden" asp-for="@Model.setIndex" id="_setIndex" />
+        <input type="hidden" asp-for="@Model.oChurchBodyId_Logged" id="_oChurchBody_Logged" />
+        <input type="hidden" asp-for="@Model.oAppGlolOwnId_Logged" id="_oAppGloOwnId_Logged" />
+        <input type="hidden" asp-for="@Model.oUserId_Logged" id="_oUserId_Logged" />
+
+        <br />
+        <br />
+        @if (Model.oAccountMaster != null)
+        {
+            <div class="form-row col-sm">
+                <div class="form-group col-sm-4">
+                    <label asp-for="oAccountMaster.Id " class="control-label"> Trans. # </label>
+                    @if (Model.oAccountMaster.Id != 0)
+                    {<input asp-for="oAccountMaster.Id" class="form-control text-sm" autocomplete="off" disabled /> }
+                    else
+                    { <input value="- NEW -" class="form-control text-sm text-center text-light bg-teal small" autocomplete="off" disabled />}
+                    <span asp-validation-for="oAccountMaster.Id" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4"></div>
+                <div class="form-group col-sm-4" id="_divIsSubAccount">
+                    <label asp-for="oAccountMaster.IsSubAccount" class="control-label">&nbsp;</label>
+                    <label class="chk_container">
+                        <span> Sub-account </span>
+                        <input id="chk_IsSubAccount" type="checkbox" asp-for="oAccountMaster.IsSubAccount" />
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-row col-sm" id="_divReportAreaCode">
+                <div class="form-group col-sm">
+                    <label asp-for="ReportAreaCode" class="control-label">Report Area</label>
+                    <select id="_ReportAreaCode" class="form-control text-sm" asp-for="ReportAreaCode" asp-items="Model.lkpReportAreas"></select>
+                    <span asp-validation-for="ReportAreaCode" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm">
+                    <label asp-for="AccountTypeCode" class="control-label">Account type</label>
+                    <select id="_AccountTypeCode" class="form-control text-sm" asp-for="AccountTypeCode" asp-items="Model.lkpAccountTypes"></select>
+                    <span asp-validation-for="AccountTypeCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm" id="_divAccountTypeCode">
+                <div class="form-group col-sm">
+                    <label asp-for="oAccountMaster.AccountCategoryId" class="control-label">Financial category</label>
+                    <select id="_AccountCategoryId" class="form-control text-sm" asp-for="oAccountMaster.AccountCategoryId" asp-items="Model.lkpAccountTypeCategories"></select>
+                    <span asp-validation-for="oAccountMaster.AccountCategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label asp-for="strBalanceType" class="control-label">Balance</label>
+                    <input id="_strBalanceType" asp-for="strBalanceType" class="form-control text-sm" disabled />
+                    @*<label id="_strBalanceType" asp-for="strBalanceType" class="control-label"></label>*@
+                </div>
+            </div>
+            <hr style="border: 1px solid" />
+            <div class="form-row col-sm" id="_divAccountCategoryId" hidden>
+                <div class="form-group col-sm">
+                    <label asp-for="oAccountMaster.AccountCategoryId" class="control-label">Parent account</label>
+                    <select id="_AccountCategoryId" class="form-control text-sm" asp-for="oAccountMaster.AccountCategoryId" asp-items="Model.lkpGLAccounts"></select>
+                    <span asp-validation-for="oAccountMaster.AccountCategoryId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm" id="_divAccountName">
+                <div class="form-group col-sm">
+                    <label asp-for="oAccountMaster.AccountName" class="control-label">Account name</label>
+                    <input id="_AccountName" asp-for="oAccountMaster.AccountName" class="form-control text-sm" />
+                    <span asp-validation-for="oAccountMaster.AccountName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row col-sm">
+                @*<div class="form-group col-sm" id="_divAccountNo">
+                    <label asp-for="oAccountMaster.AccountNo" class="control-label" hidden ></label>
+                </div>*@
+                <div class="form-group col-sm-4" id="_divMainAccountNo">
+                    <label asp-for="oAccountMaster.strMainAccountNo " class="control-label">Main Acc #</label>
+                    <input id="_MainAccountNo" asp-for="oAccountMaster.strMainAccountNo" class="form-control text-sm" />
+                    @*<span class="text-body font-weight-bold">-</span>*@
+                    <span asp-validation-for="oAccountMaster.strMainAccountNo" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-2" id="_divSubAccountNo">
+                    <label asp-for="oAccountMaster.strSubAccountNo  " class="control-label">Sub Acc #</label>
+                    <input id="_SubAccountNo" asp-for="oAccountMaster.strSubAccountNo" class="form-control text-sm" disabled />
+                    <span asp-validation-for="oAccountMaster.strSubAccountNo" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-3"></div>
+                <div class="form-row col-sm" id="_divStatus">
+                    <div class="form-group col-sm">
+                        <label asp-for="oAccountMaster.Status" class="control-label"></label>
+                        <select id="_Status" class="form-control text-sm" asp-for="oAccountMaster.Status" asp-items="Model.lkpStatuses"></select>
+                        <span asp-validation-for="oAccountMaster.Status" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row col-sm" id="_divStatus">
+                <div class="form-group col-sm ml-0">
+                    <label asp-for="oAccountMaster.PerTransLimit" class="control-label"></label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-sm" id="basic-addon1">
+                                <span class="text-center w-auto" aria-hidden="true">@Model.strCurrency</span>
+                            </span>
+                        </div>
+                        <input asp-for="oAccountMaster.PerTransLimit" type="number" min="0" max="@decimal.MaxValue" placeholder="0.00" class="form-control text-right" aria-label="Transaction limit" aria-describedby="basic-addon1"
+                               style="font-size: larger; font-family:Verdana, Geneva, Tahoma, sans-serif; ">
+                    </div>
+                </div>
+                <div class="form-group col-sm mr-0">
+                    <label asp-for="oAccountMaster.BudgetEst" class="control-label"></label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-sm" id="basic-addon1">
+                                <span class="text-center w-auto" aria-hidden="true">@Model.strCurrency</span>
+                            </span>
+                        </div>
+                        <input asp-for="oAccountMaster.BudgetEst" type="number" min="0" max="@decimal.MaxValue" placeholder="0.00" class="form-control text-right" aria-label="Account budget" aria-describedby="basic-addon1"
+                               style="font-size: larger; font-family:Verdana, Geneva, Tahoma, sans-serif; ">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row col-sm" id="_divStatus">
+                <div class="form-group col-sm ml-0">
+                    <label asp-for="strAccBalance" class="control-label">Account Bal</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-sm" id="basic-addon1">
+                                <span class="text-center w-auto" aria-hidden="true">@Model.strCurrency</span>
+                            </span>
+                        </div>
+                        <input asp-for="strAccBalance" type="number" min="0" max="@decimal.MaxValue" placeholder="0.00" class="form-control text-right" aria-label="Account balance" aria-describedby="basic-addon1"
+                               style="font-size: larger; font-family:Verdana, Geneva, Tahoma, sans-serif; " disabled>
+                    </div>
+                </div>
+                <div class="form-group col-sm mr-0">
+                    <label asp-for="strAccVariance" class="control-label">Variance</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-sm" id="basic-addon1">
+                                <span class="text-center w-auto" aria-hidden="true">@Model.strCurrency</span>
+                            </span>
+                        </div>
+                        <input asp-for="strAccVariance" type="number" min="0" max="@decimal.MaxValue" placeholder="0.00" class="form-control text-right" aria-label="Variance" aria-describedby="basic-addon1"
+                               style="font-size: larger; font-family:Verdana, Geneva, Tahoma, sans-serif; " disabled>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <br />
+    </form>
+</div>
